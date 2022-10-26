@@ -14,3 +14,9 @@ This website presents all the code used to analyse the molecular mechanisms and 
 knitr::include_graphics("assets/logoBPRI.png", error = FALSE)
 knitr::include_graphics("assets/logoSongLab.png", error = FALSE)
 ```
+
+<figure class="center">
+
+<img src="assets/ogoBPRI.png" alt="Figure2_Tihelka2020" width="400px"/>
+
+</figure>
