@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Comparative transcriptomics analysis of Schistocerca Locust Phase Transition"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -8,4 +8,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+This website presents all the code used to analyse the molecular mechanisms and gene expression changes that contributes to the phenotypic plasticity in locusts and grasshoppers (Acrididae: _Schistocerca_). 
+
+<figure class="center">
+<img src="docs/logoBPRI.png" alt="Logo BPRI" width="100px"/>
+<img src="docs/logoSongLab.png" alt="Logo Song Lab" width="100px"/>
+</figure>
