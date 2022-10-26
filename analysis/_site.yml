@@ -1,32 +1,32 @@
-name: locust-phase-transition-RNAseq
+name: "locust-phase-transition-RNAseq"
 output_dir: ../docs
 navbar:
-  title: locust-phase-transition-RNAseq
+  title: "Locust Phase Transition RNA-seq"
   left:
-  - text: Home
+  - text: "Home"
     href: index.html
-  - text: About
+  - text: "About"
     href: about.html
-  - text: Mapping Reads
-    icon: fa-info
+  - text: "Mapping Reads"
+  - icon: fa-info
     menu:
-      - text: Desert Locust
+      - text: "Desert Locust"
         href: gregaria.html
-      - text: Central American Locust
+      - text: "Central American Locust"
         href: piceifrons.html
-      - text: South American Locust
+      - text: "South American Locust"
         href: cancellata.html
-      - text: American bird grasshopper
+      - text: "American bird grasshopper"
         href: americana.html
-      - text: S. serialis cubense
+      - text: "S. serialis cubense"
         href: cubense.html
-      - text: Vagrant grasshopper
+      - text: "Vagrant grasshopper"
         href: nitens.html
-  - text: License
+  - text: "License"
     href: license.html
   right:
   - icon: fab fa-github
-    text: Source code
+    text: "Source code"
     href: https://github.com/MaevaTecher/locust-phase-transition-RNAseq
 output:
   workflowr::wflow_html:
