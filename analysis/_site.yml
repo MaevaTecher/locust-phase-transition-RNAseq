@@ -1,7 +1,7 @@
-name: "locust-phase-transition-RNAseq"
+name: locust-phase-transition-RNAseq
 output_dir: ../docs
 navbar:
-  title: "locust-phase-transition-RNAseq"
+  title: locust-phase-transition-RNAseq
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/MaevaTecher/locust-phase-transition-RNAseq
 output:
   workflowr::wflow_html:
     toc: yes
