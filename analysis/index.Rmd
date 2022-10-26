@@ -10,7 +10,7 @@ editor_options:
 
 This website presents all the code used to analyse the molecular mechanisms and gene expression changes that contributes to the phenotypic plasticity in locusts and grasshoppers (Acrididae: _Schistocerca_). 
 
-<figure class="center">
-<img src="docs/logoBPRI.png" alt="Logo BPRI" width="100px"/>
-<img src="docs/logoSongLab.png" alt="Logo Song Lab" width="100px"/>
-</figure>
+```{r image1, message=FALSE, warning=FALSE}
+knitr::include_graphics("docs/logoBPRI.png", error = FALSE)
+knitr::include_graphics("docs/logoSongLab.png", error = FALSE)
+```
