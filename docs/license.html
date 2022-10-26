@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,8 +30,11 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -226,6 +229,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -248,7 +254,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">locust-phase-transition-RNAseq</a>
+      <a class="navbar-brand" href="index.html">Locust Phase Transition RNA-seq</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -258,18 +264,61 @@ $(document).ready(function () {
 <li>
   <a href="about.html">About</a>
 </li>
+<li class="dropdown-header">Mapping Reads</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-info"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="gregaria.html">Desert Locust</a>
+    </li>
+    <li>
+      <a href="piceifrons.html">Central American Locust</a>
+    </li>
+    <li>
+      <a href="cancellata.html">South American Locust</a>
+    </li>
+    <li>
+      <a href="americana.html">American bird grasshopper</a>
+    </li>
+    <li>
+      <a href="cubense.html">S. serialis cubense</a>
+    </li>
+    <li>
+      <a href="nitens.html">Vagrant grasshopper</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="license.html">License</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -350,13 +399,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongde1c7ec">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree04953181417eb2e4b63c59cd034b8e463530b031targetblank0495318a">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> de1c7ec
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/04953181417eb2e4b63c59cd034b8e463530b031" target="_blank">0495318</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongde1c7ec"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree04953181417eb2e4b63c59cd034b8e463530b031targetblank0495318a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -365,7 +416,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version de1c7ec.
+The results in this page were generated with repository version
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/04953181417eb2e4b63c59cd034b8e463530b031" target="_blank">0495318</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -382,6 +434,36 @@ were generated:
 Ignored files:
     Ignored:    .DS_Store
     Ignored:    analysis/.DS_Store
+    Ignored:    data/.DS_Store
+    Ignored:    data/americana/.DS_Store
+    Ignored:    data/americana/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/cancellata/.DS_Store
+    Ignored:    data/cancellata/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/cubense/.DS_Store
+    Ignored:    data/cubense/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/gregaria/.DS_Store
+    Ignored:    data/gregaria/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/gregaria/list/.DS_Store
+    Ignored:    data/metadata/.DS_Store
+    Ignored:    data/nitens/.DS_Store
+    Ignored:    data/nitens/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/piceifrons/.DS_Store
+    Ignored:    data/piceifrons/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/piceifrons/list/.DS_Store
+
+Unstaged changes:
+    Deleted:    img/FASTQC_after.png
+    Deleted:    img/FASTQC_after2.png
+    Deleted:    img/FASTQC_before.png
+    Deleted:    img/FASTQC_before2.png
+    Deleted:    img/ReadPerGene.png
+    Deleted:    img/Schistocerca_rRNA.png
+    Deleted:    img/Schistocerca_rRNA_fasta.png
+    Deleted:    img/Schistocerca_taxonomy.png
+    Deleted:    img/Schistocerca_taxonomy2.png
+    Deleted:    img/Schistocerca_taxonomy3.png
+    Deleted:    img/Schistocerca_taxonomy4.png
+    Deleted:    img/module_spider.png
 
 </code></pre>
 <p>
@@ -429,10 +511,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/ff0ae0260b3b0227ec3dad0db1f81708bb4cc037/docs/license.html" target="_blank">ff0ae02</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-de1c7ec
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/de1c7ecd8a91a7cf9665def7ad08d519c7b0b1dd/analysis/license.Rmd" target="_blank">de1c7ec</a>
 </td>
 <td>
 MaevaTecher
@@ -510,6 +609,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
