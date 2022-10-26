@@ -1,20 +1,23 @@
 ---
 title: "transcriptome-mapping-analysis2"
-author: "MaevaTecher"
-date: "2022-10-25"
-output: workflowr::wflow_html
-editor_options:
-  toc: true
-  code_folding: show
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
 ---
 
 This document was written in R Markdown, and translated into html using the R package `knitr`. Press the buttons labelled **Code** to show or hide the R code used to produce each table, plot or statistical result. You can also select **Show all code** at the top of the page.
 
 
 ### Load R libraries (install first from CRAN or Bioconductor)
-```{r setup, message=FALSE, warning=FALSE}
+```{r libraries, message=FALSE, warning=FALSE}
 library("knitr")
 library("rmdformats")
+library("tidyverse")
+library("DT")  # for making interactive search table
+library("plotly") # for interactive plots
+library("ggthemes") # for theme_calc
+library("reshape2")
 
 ## Global options
 options(max.print="10000")
@@ -30,16 +33,6 @@ knitr::opts_chunk$set(
 opts_knit$set(width=75)
 ```
 
-```{r libraries}
-# Set the working folder path
-setwd("~/Documents/GitHub/BPRI-RNASeq/")
-
-library("tidyverse")
-library("DT")  # for making interactive search table
-library("plotly") # for interactive plots
-library("ggthemes") # for theme_calc
-library("reshape2")
-```
 # 1 | Brief background: locust phase polyphenism
 
 > add description here
@@ -48,15 +41,14 @@ library("reshape2")
 ## 2.1. Use a conda environment
 
 > add what to install on the Macpro tower
-> e.g., we install a [`conda` environment](https://docs.conda.io/en/latest/miniconda.html#) called **rna-seq**
+> e.g., we install a [conda environment](https://docs.conda.io/en/latest/miniconda.html#) called **rna-seq**
 
 ## 2.2. Use modules on TAMU Grace cluster
 
 We use a Snakemake pipeline for each species. Therefore, verifying that the software is installed as a module beforehand on the Grace cluster at Texas A&M University is essential. In addition, each module requires some dependencies, which is why we need to ensure they will be loaded together.  
 
 For this we use the function `module spider` [targeted software] w/o the version.
-<figure class="center">
 
-<img src="img/module_spider.png" alt="module_spider" width="800px"/>
-
-</figure>
+```{r image1, message=FALSE, warning=FALSE}
+knitr::include_graphics("assets/module_spider.png", error = FALSE)
+```

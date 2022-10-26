@@ -7,6 +7,21 @@ navbar:
     href: index.html
   - text: About
     href: about.html
+  - text: Mapping Reads
+    icon: fa-info
+    menu:
+      - text: "Desert Locust"
+        href: gregaria.html
+      - text: "Central American Locust"
+        href: piceifrons.html
+      - text: "South American Locust"
+        href: cancellata.html
+      - text: "American bird grasshopper"
+        href: americana.html
+      - text: "S. serialis cubense"
+        href: cubense.html
+      - text: "Vagrant grasshopper"
+        href: nitens.html
   - text: License
     href: license.html
   right:
@@ -17,5 +32,6 @@ output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: cosmo
+    theme: flatly
     highlight: textmate
+    code_folding: hide
