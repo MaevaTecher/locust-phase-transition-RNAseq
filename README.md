@@ -1,0 +1,5 @@
+# locust-phase-transition-RNAseq
+
+A [workflowr][] project.
+
+[workflowr]: https://github.com/workflowr/workflowr
