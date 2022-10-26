@@ -11,5 +11,5 @@ editor_options:
 This website presents all the code used to analyse the molecular mechanisms and gene expression changes that contributes to the phenotypic plasticity in locusts and grasshoppers (Acrididae: _Schistocerca_). 
 
 ![](assets/Desert-locust-BrandonWoo.jpeg)
-![](assets/logoBPRISong.png)
+![](assets/LogoBPRISong.png)
 
