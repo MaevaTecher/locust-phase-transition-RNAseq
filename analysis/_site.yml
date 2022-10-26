@@ -8,7 +8,6 @@ navbar:
   - text: "About"
     href: about.html
   - text: "Mapping Reads"
-  - icon: fa-info
     menu:
       - text: "Desert Locust"
         href: gregaria.html
