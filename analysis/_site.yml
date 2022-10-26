@@ -9,18 +9,36 @@ navbar:
     href: about.html
   - text: "Mapping Reads"
     menu:
+      - text: Schistocerca Locusts
       - text: "Desert Locust"
-        href: gregaria.html
+        href: readmap-gregaria.html
       - text: "Central American Locust"
-        href: piceifrons.html
+        href: readmap-piceifrons.html
       - text: "South American Locust"
-        href: cancellata.html
-      - text: "American bird grasshopper"
-        href: americana.html
-      - text: "S. serialis cubense"
-        href: cubense.html
-      - text: "Vagrant grasshopper"
+        href: readmap-cancellata.html
+      - text: Schistocerca Grasshoppers
+      - text: "American Bird Grasshopper"
+        href: readmap-americana.html
+      - text: "Cubense Bird Grasshopper"
+        href: readmap-cubense.html
+      - text: "Vagrant Grasshopper"
         href: nitens.html
+  - text: "DEG analysis"
+    menu:
+      - text: Schistocerca Locusts
+      - text: "Desert Locust"
+        href: deg-gregaria.html
+      - text: "Central American Locust"
+        href: deg-piceifrons.html
+      - text: "South American Locust"
+        href: deg-cancellata.html
+      - text: Schistocerca Grasshoppers
+      - text: "American Bird Grasshopper"
+        href: deg-americana.html
+      - text: "Cubense Bird Grasshopper"
+        href: deg-cubense.html
+      - text: "Vagrant Grasshopper"
+        href: deg-nitens.html
   - text: "License"
     href: license.html
   right:
