@@ -1,0 +1,90 @@
+---
+title: "Preparation of the local/cluster computing and R environments"
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
+---
+
+This document was written in R Markdown, and translated into html using the R package `knitr`. Press the buttons labelled **Code** to show or hide the R code used to produce each table, plot or statistical result. You can also select **Show all code** at the top of the page.
+
+# Work environment
+
+## Environment
+- Grace Cluster at Texas A&M University, College Station, Texas, USA 
+- Local Mac: macOS Monterey Version 12.6  
+- R version 4.2.1  
+
+## Directories  
+
+| Path                                             | Purpose                                        |
+| ------------------------------------------------ | ---------------------------------------------- |
+| `/scratch/user/XXXX/locust-phase`                | Working repository                             |
+| `/scratch/user/XXXX/locust-phase/workflow`       | Location of the Snakemake pipeline             |
+| `/scratch/user/XXXX/refgenomes/locust-complete`  | Reference genome, annotation and index         |
+| `/scratch/user/XXXX/locust-phase/data/reads`     | Raw FASTQ.GZ files                             |
+| `/scratch/user/XXXX/locust-phase/data/kaiju`     | Kaiju database and output                      |
+| `/scratch/user/XXXX/locust-phase/data/trimming`     | Trimmed FASTQ files                  |
+| `/scratch/user/XXXX/locust-phase/data/alignment/STAR`     | Output from STAR                      |
+| `/scratch/user/XXXX/locust-phase/data/alignment/STAR_SALMON`     | Output from STAR-Salmon        |
+| `/scratch/user/XXXX/locust-phase/data/alignment/STAR_RSEM`     | Output from STAR-Salmon          |
+| `/scratch/user/XXXX/locust-phase/data/analysis`     | R analysis (DGE)          |
+
+# Snakemake pipeline
+
+We use a Snakemake pipeline for each species. Therefore, it is essential to verify that each software is installed 1) locally or via a conda environment or 2) as a module or cloned via Github on the Grace cluster at Texas A&M University is essential.    
+
+![](assets/assets/Workflow_bioinformatics.png)
+
+## Softwares and database
+
+Links to each software to add in the future
+
+### Use a conda environment
+
+
+> add what to install on the Macpro tower
+> e.g., we install a [conda environment](https://docs.conda.io/en/latest/miniconda.html#) called **rna-seq**
+
+### Use modules on TAMU Grace cluster
+
+On Grace, each module may requires some dependencies, which is why we need to ensure they will be loaded together. For this we use the function `module spider` [targeted software] w/o the version.
+
+![](assets/assets/module_spider.png)
+Today we will need the following software:  
+  
+- to launch the Snakemake pipeline
+```
+module load GCC/11.2.0 OpenMPI/4.1.1 snakemake/6.10.0 Biopython/1.79
+```
+  
+- to perform adapter trimming and QC
+
+```
+module load Trimmomatic/0.39-Java-11
+module load FastQC/0.11.9-Java-11
+```
+- to perform short read mapping
+
+```
+module load GCC/11.2.0 STAR/2.7.9a
+```
+
+## R packages neccessary
+
+### List of R packages used
+
+CRAN  
+data.table: https://cran.r-project.org/package=data.table  
+dplyr: https://cran.r-project.org/package=dplyr  
+reshape2: https://cran.r-project.org/package=reshape2  
+ggplot2: https://cran.r-project.org/package=ggplot2  
+ggrepel: https://cran.r-project.org/package=ggrepel  
+
+Bioconductor  
+DESeq2: https://bioconductor.org/packages/DESeq2/  
+apeglm: https://bioconductor.org/packages/apeglm/  
+EnhancedVolcano: https://bioconductor.org/packages/EnhancedVolcano/  
+edgeR: https://www.bioconductor.org/packages/edgeR/  
+
+   

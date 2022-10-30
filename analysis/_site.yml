@@ -7,22 +7,13 @@ navbar:
     href: index.html
   - text: "About"
     href: about.html
-  - text: "Mapping Reads"
+  - text: "Bioinformatics"
     menu:
-      - text: Schistocerca Locusts
-      - text: "Desert Locust"
-        href: readmap-gregaria.html
-      - text: "Central American Locust"
-        href: readmap-piceifrons.html
-      - text: "South American Locust"
-        href: readmap-cancellata.html
-      - text: Schistocerca Grasshoppers
-      - text: "American Bird Grasshopper"
-        href: readmap-americana.html
-      - text: "Cubense Bird Grasshopper"
-        href: readmap-cubense.html
-      - text: "Vagrant Grasshopper"
-        href: nitens.html
+      - text: Sequencing data -> Mapping reads
+      - text: "Using the right RefSeq genome"
+        href: own-refseq.html
+      - text: "Using alternate RefSeq genome"
+        href: alternate-refseq.html
   - text: "DEG analysis"
     menu:
       - text: Schistocerca Locusts
