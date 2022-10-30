@@ -7,14 +7,36 @@ navbar:
     href: index.html
   - text: "About"
     href: about.html
-  - text: "Bioinformatics"
+  - text: "Bioinformatics code"
     menu:
-      - text: Sequencing data -> Mapping reads
+      - text: Sequence data pre-processing
+      - text: "Preparation for the analysis"
+        href: workenvs-prep.html
+      - text: "Download/Obtain sequencing data"
+        href: seqdata-prep.html
+      - text: "Data quality control"
+        href: seqdata-qc.html
+      - text: Genome alignment and gene quantification 
+      - text: "Mapping reads to Schistocerca RefSeq"
+        href: map-refseq.html
+      - text: "Gene quantification"
+        href: gene-quant.html
+      - text: Data post-processing and stats
+      - text: "Indexing and stats on bam files"
+        href: bam-stats.html
+      - text: "DEG workflow"
+        href: deg-workflow.html
+  - text: "Analysis & Results"
+    menu:
+      - text: Mapping success
       - text: "Using the right RefSeq genome"
         href: own-refseq.html
       - text: "Using alternate RefSeq genome"
         href: alternate-refseq.html
-  - text: "DEG analysis"
+      - text: Differential Gene Expression
+      - text: "DEG per tissue"
+        href: deg-tissue.html
+  - text: "Species"
     menu:
       - text: Schistocerca Locusts
       - text: "Desert Locust"
