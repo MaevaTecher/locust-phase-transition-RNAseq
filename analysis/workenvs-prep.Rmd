@@ -1,5 +1,5 @@
 ---
-title: "Preparation of the local/cluster computing and R environments"
+title: "Preparation of the working environment"
 author: "Maeva Techer"
 date: "`r Sys.Date()`"
 output:
@@ -34,7 +34,7 @@ This document was written in R Markdown, and translated into html using the R pa
 
 We use a Snakemake pipeline for each species. Therefore, it is essential to verify that each software is installed 1) locally or via a conda environment or 2) as a module or cloned via Github on the Grace cluster at Texas A&M University is essential.    
 
-![](assets/assets/Workflow_bioinformatics.png)
+![](assets/Workflow_bioinformatics.png)
 
 ## Softwares and database
 
@@ -50,7 +50,7 @@ Links to each software to add in the future
 
 On Grace, each module may requires some dependencies, which is why we need to ensure they will be loaded together. For this we use the function `module spider` [targeted software] w/o the version.
 
-![](assets/assets/module_spider.png)
+![](assets/module_spider.png)
 Today we will need the following software:  
   
 - to launch the Snakemake pipeline
