@@ -266,23 +266,60 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Bioinformatics
+    Bioinformatics code
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Sequencing data -&gt; Mapping reads</li>
+    <li class="dropdown-header">Sequence data pre-processing</li>
+    <li>
+      <a href="workenvs-prep.html">Preparation for the analysis</a>
+    </li>
+    <li>
+      <a href="seqdata-prep.html">Download/Obtain sequencing data</a>
+    </li>
+    <li>
+      <a href="seqdata-qc.html">Data quality control</a>
+    </li>
+    <li class="dropdown-header">Genome alignment and gene quantification</li>
+    <li>
+      <a href="map-refseq.html">Mapping reads to Schistocerca RefSeq</a>
+    </li>
+    <li>
+      <a href="gene-quant.html">Gene quantification</a>
+    </li>
+    <li class="dropdown-header">Data post-processing and stats</li>
+    <li>
+      <a href="bam-stats.html">Indexing and stats on bam files</a>
+    </li>
+    <li>
+      <a href="deg-workflow.html">DEG workflow</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis &amp; Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Mapping success</li>
     <li>
       <a href="own-refseq.html">Using the right RefSeq genome</a>
     </li>
     <li>
       <a href="alternate-refseq.html">Using alternate RefSeq genome</a>
     </li>
+    <li class="dropdown-header">Differential Gene Expression</li>
+    <li>
+      <a href="deg-tissue.html">DEG per tissue</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    DEG analysis
+    Species
      
     <span class="caret"></span>
   </a>
@@ -415,15 +452,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreef65c630ff5f9a5de44bcfdfb29dfbf01e606946atargetblankf65c630a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreecf926bfc5bb1ef48293e6d95818902a583f0dc04targetblankcf926bfa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/f65c630ff5f9a5de44bcfdfb29dfbf01e606946a" target="_blank">f65c630</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/cf926bfc5bb1ef48293e6d95818902a583f0dc04" target="_blank">cf926bf</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreef65c630ff5f9a5de44bcfdfb29dfbf01e606946atargetblankf65c630a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreecf926bfc5bb1ef48293e6d95818902a583f0dc04targetblankcf926bfa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -433,7 +470,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/f65c630ff5f9a5de44bcfdfb29dfbf01e606946a" target="_blank">f65c630</a>.
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/cf926bfc5bb1ef48293e6d95818902a583f0dc04" target="_blank">cf926bf</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -514,6 +551,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/61f4b75dd51dd84ad06beaa4a5701c0e58c0c22a/docs/license.html" target="_blank">61f4b75</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
