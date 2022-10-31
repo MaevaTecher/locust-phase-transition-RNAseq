@@ -1,13 +1,10 @@
 ---
-title: "transcriptome-mapping-analysis2"
+title: "Downloading or obtaining sequencing data"
 author: "Maeva Techer"
 date: "`r Sys.Date()`"
 output:
   workflowr::wflow_html
 ---
-
-This document was written in R Markdown, and translated into html using the R package `knitr`. Press the buttons labelled **Code** to show or hide the R code used to produce each table, plot or statistical result. You can also select **Show all code** at the top of the page.
-
 
 ### Load R libraries (install first from CRAN or Bioconductor)
 ```{r libraries, message=FALSE, warning=FALSE}
@@ -33,78 +30,29 @@ knitr::opts_chunk$set(
 opts_knit$set(width=75)
 ```
 
-# 1 | Brief background: locust phase polyphenism
+# Schistocerca reference genome
 
-> add description here
+The BPRI generated high-quality and chromosome length genome for six species of grasshoppers and locusts _Schistocerca_. For this, the genome assembly team used a combination of long-reads sequencing with HiFi PacBio and short-reads with Hi-C. Following the finalization of the genomes assemblies, the annotation was conducted by the Eukaryotic Annotation Pipeline for RefSeq by NCBI.  
 
-# 2 | Preparation for the analysis
-## 2.1. Use a conda environment
+We will use the assemblies that received accession numbers for RefSeq and associated with .gtf and .gff files.
 
-> add what to install on the Macpro tower
-> e.g., we install a [conda environment](https://docs.conda.io/en/latest/miniconda.html#) called **rna-seq**
+Below is an example for downloading _Schistocerca piceifrons_ from NCBI RefSeq:
+```
+## Downloading the genome sequence, primary assembly fasta file with RefSeq contig accessions
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/461/385/GCF_021461385.2_iqSchPice1.1/GCF_021461385.2_iqSchPice1.1_genomic.fna.gz
 
-## 2.2. Use modules on TAMU Grace cluster
-
-We use a Snakemake pipeline for each species. Therefore, verifying that the software is installed as a module beforehand on the Grace cluster at Texas A&M University is essential. In addition, each module requires some dependencies, which is why we need to ensure they will be loaded together.  
-
-For this we use the function `module spider` [targeted software] w/o the version.
-
-```{r image1, message=FALSE, warning=FALSE}
-knitr::include_graphics("assets/module_spider.png", error = FALSE)
+## Downloading the comprehensive annotation file in .gtf format
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/461/385/GCF_021461385.2_iqSchPice1.1/GCF_021461385.2_iqSchPice1.1_genomic.gtf.gz
 ```
 
+# Obtaining RNA sequence reads
 
-Today we will need the following software:  
-  
-- to launch the Snakemake pipeline
-```
-module load GCC/11.2.0 OpenMPI/4.1.1 snakemake/6.10.0 Biopython/1.79
-```
-  
-- to perform adapter trimming and QC
+The reads that can be mapped on these sequences can be either from sequences with accession on NCBI, DDBJ or yet to be release after being generated _de novo_.  
 
-```
-module load Trimmomatic/0.39-Java-11
-module load FastQC/0.11.9-Java-11
-```
-- to perform short read mapping
 
-```
-module load GCC/11.2.0 STAR/2.7.9a
-```
+## Downloading NCBI Transcriptome SRAs
 
-## 2.3. _De novo_ sequencing
-
-We generated new whole transcriptomes from two density conditions for the desert locust (Acrididae: _Schistocerca gregaria_). Here, we analyze 20 transcriptomes for a pilot project using Illumina Stranded Total RNA with RiboZero depletion and sequenced on a NovaSeq SP flow cell at TxGen.  
-
-The details of the sequences are as follow:  
-**Bulk tissue from 2nd generation solitary control**  
-GREG-HATCH-S1-FULL_S20: Solitary hatch-ling 1st instar from Pearl and Atticus   	
-GREG-S-ICT-9-ALB_S6: Antenna lobes from replicate #9  	
-GREG-S-ICT-9-ANT_S5: Antennae from replicate #9  
-GREG-S-ICT-9-FAT_S3: Fat body from replicate #9  
-GREG-S-ICT-9-MHB_S7: Mushroom body from replicate #9  
-GREG-S-ICT-9-MOP_S4: Maxillary palps from replicate #9  
-GREG-S-ICT-9-MTG_S2: Metathoracic ganglia from replicate #9  
-GREG-S-ICT-9-OLB_S8: Optical lobes from replicate #9  
-GREG-S-ICT-9-WG_S1: Whole gut from replicate #9  
-  
-**Bulk tissue from highly crowded control**  
-GREG-G-CCT-11-ALB_S14: Antenna lobes from replicate #11  
-GREG-G-CCT-11-ALB-FULL_S17: Antenna lobes from replicate #11  
-GREG-G-CCT-11-ANT_S13: Antennae from replicate #11  
-GREG-G-CCT-11-FAT_S11: Fat body from replicate #11  
-GREG-G-CCT-11-FAT-FULL_S19: Fat body from replicate #11  
-GREG-G-CCT-11-MHB_S15: Mushroom body from replicate #11  
-GREG-G-CCT-11-MOP_S12: Maxillary palps from replicate #11  
-GREG-G-CCT-11-MTG_S10: Metathoracic ganglia from replicate #11  
-GREG-G-CCT-11-OLB_S16: Optical lobes from replicate #11  
-GREG-G-CCT-11-OLB-FULL_S18: Optical lobes from replicate #11  
-GREG-G-CCT-11-WG_S9: Whole gut from replicate #11  
-  
-## 2.4. Downloading NCBI SRAs
-
-We searched through the NCBI database for RNA SRA associated with _Schistocerca_ in general and found [**160 accessions**](https://www.ncbi.nlm.nih.gov/Traces/study/?query_key=2&WebEnv=MCID_62fb21f526f8fb0d3100cc06&o=acc_s%3Aa) were available.  
+We searched through the NCBI database for RNA SRA associated with _Schistocerca_ in general and found [**160 accessions**](https://www.ncbi.nlm.nih.gov/Traces/study/?query_key=2&WebEnv=MCID_62fb21f526f8fb0d3100cc06&o=acc_s%3Aa) were available. All RNA-seq data for _S. americana_, _S. piceifrons_, _S. cubense_, _S. cancellata_, _S. nitens_ were generated originally in the Song Lab at Texas A&M University and were produced following the same standard protocol.  
 
 Using the Run Selector from NCBI, we can easily download a metadata table which we can use to visualize how the accessions are distributed per species. We will use this metadata table for analysis in which we include pre-generated SRA.  
   
@@ -127,17 +75,63 @@ another option
 ```
 for x in *.sra ; do fasterq-dump --split-files $x ; mv *.fastq ../../paired_end_piceifrons/; done
 ```
+  
+## _De novo_ sequencing
 
-# 3 | Locust transcriptomes mapping 
+We generated new whole transcriptomes from two density conditions for the desert locust (Acrididae: _Schistocerca gregaria_). Here, we analyze 20 transcriptomes for a pilot project using Illumina Stranded Total RNA with RiboZero depletion and sequenced on a NovaSeq SP flow cell at TxGen for a targeted amount of 40 millions reads per library.   
 
-## 3.1. Preparing the metadata file
+The details of the sequences are as follow:  
+**Bulk tissue from 2nd generation solitary control**  
+| Sample name                        | Description                                 |
+| ---------------------------------- | ------------------------------------------- |
+|GREG-HATCH-S1-FULL_S20| Solitary hatch-ling 1st instar from Pearl and Atticus   |	
+|GREG-S-ICT-9-ALB_S6| Antenna lobes from replicate #9  	|
+|GREG-S-ICT-9-ANT_S5| Antennae from replicate #9  |
+|GREG-S-ICT-9-FAT_S3| Fat body from replicate #9  |
+|GREG-S-ICT-9-MHB_S7| Mushroom body from replicate #9  |
+|GREG-S-ICT-9-MOP_S4| Maxillary palps from replicate #9  |
+|GREG-S-ICT-9-MTG_S2| Metathoracic ganglia from replicate #9  |
+|GREG-S-ICT-9-OLB_S8| Optical lobes from replicate #9  |
+|GREG-S-ICT-9-WG_S1| Whole gut from replicate #9  |
+  
+**Bulk tissue from highly crowded control**  
+| Sample name                        | Description                                 |
+| ---------------------------------- | ------------------------------------------- |
+GREG-G-CCT-11-ALB_S14| Antenna lobes from replicate #11  |
+GREG-G-CCT-11-ALB-FULL_S17| Antenna lobes from replicate #11  |
+GREG-G-CCT-11-ANT_S13| Antennae from replicate #11  |
+GREG-G-CCT-11-FAT_S11| Fat body from replicate #11  |
+GREG-G-CCT-11-FAT-FULL_S19| Fat body from replicate #11  |
+GREG-G-CCT-11-MHB_S15| Mushroom body from replicate #11  |
+GREG-G-CCT-11-MOP_S12| Maxillary palps from replicate #11  |
+GREG-G-CCT-11-MTG_S10| Metathoracic ganglia from replicate #11  |
+GREG-G-CCT-11-OLB_S16| Optical lobes from replicate #11  |
+GREG-G-CCT-11-OLB-FULL_S18| Optical lobes from replicate #11  |
+GREG-G-CCT-11-WG_S9| Whole gut from replicate #11  |
+
+## Merging several runs into a single fastq.gz file
+
+For transcriptome that have yet to be released, it is common for libraries to be run on multiples lanes depending on the amount of reads needed. I used the following loop to merge several files with different Lanes:  
+
+```
+#!/bin/bash
+# add the print $3 for TxGen reads as it is for samples S
+for i in $(ls -1 *R1*.gz | awk -F '_' '{print $1"_"$2"_"$3}' | sort | uniq)
+do echo $i
+echo "Merging R1 ${i}"
+cat "$i"_L00*_R1_001.fastq.gz > "$i"_MERGE_R1_001.fastq.gz
+echo "Merging R2 ${i}"
+cat "$i"_L00*_R2_001.fastq.gz > "$i"_MERGE_R2_001.fastq.gz
+done;
+```
+
+# Preparing the metadata file
 
 Make a `.csv` file with as much information as possible per sample/file name (e.g., Sample_ID, Species, Sex, RearingCondition). An interactive and searchable table is found below and even be downloaded directly.  
 
 _NB: Throughout our analysis, we will complete this metadata file by adding other stats related to sequencing and mapping._ 
 
 ``` {r Metadata}
-
 
 # Load our SRA metadata table
 metaseq <- read_table("data/metadata/RNAseq_modified_METADATA2022.txt", col_names  = TRUE,  guess_max = 5000)
@@ -148,293 +142,3 @@ metaseq %>%
         "csv", "excel"), lengthMenu = list(c(10, 20, 50, 100, 200, -1), c(10, 20,
         50, 100, 200, "All"))))
 ```
-
-## 3.2. Repository and Snakefile
-
-We will use from here our Snakemake pipeline that we will customize by launching small individual jobs to tailor each cluster parameter for the best memory and time efficiency.  
-  
-To ease the indexing of our file and folder, we generate some shared parameters which will be helpful in the future: 1) reference genome directory path `REFdir`, 2) output directory path `OUTdir` and 3) a list `LOCUSTS` containing sample base name referred as `locust`.
-
-```
-### SET DIRECTORY PATHS FOR REFERENCE AND OUTPUT DATA
-
-REFdir = "/scratch/user/maeva-techer/refgenomes"
-OUTdir = "/scratch/user/maeva-techer/locust-rna/data"
-
-### SAMPLES LIST AND OTHER PARAMETERS
-
-LOCUSTS, = glob_wildcards(OUTdir + "/reads/{locust}_1.fastq.gz")
-print(LOCUSTS)
-```
-
-## 3.3. Trim and adapter removal
-
-From the point we have the renamed, and paired-end / single-end read for the species of interest (one folder), we will now run our Snakemake pipeline on it. If not done beforehand, we need to check randomly the quality of the sequences downloaded or generated using `FASTQC`. After our quick check, we can determine any parameters change for `Trimmomatic`.
-
-```
-########################################
-# Snakefile rule
-########################################
-
-rule trim_adapt:
-	input:
-		read1 = OUTdir + "/reads/{locust}_1.fastq.gz",
-		read2 = OUTdir + "/reads/{locust}_2.fastq.gz",
-		adaptfile = OUTdir + "/list/TruSeqNextera_PE.fa"
-	output:
-		trimmedread1 = OUTdir + "/trimming/{locust}_trim1P_1.fastq.gz",
-		badread1 = OUTdir + "/trimming/{locust}_trim1U_1.fastq.gz",
-		trimmedread2 = OUTdir + "/trimming/{locust}_trim2P_2.fastq.gz",
-		badread2 = OUTdir + "/trimming/{locust}_trim2U_2.fastq.gz",
-	shell:
-		"""
-		module load Trimmomatic/0.39-Java-11
-		java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 2 -phred33 {input.read1} {input.read2} {output.trimmedread1} {output.badread1} {output.trimmedread2} {output.badread2} ILLUMINACLIP:{input.adaptfile}:2:30:10 LEADING:30 TRAILING:30 SLIDINGWINDOW:4:15 MINLEN:36 
-		"""
-		
-########################################
-# Parameters in the cluster.json file
-########################################
-
-    "trim_adapt":
-    {
-        "cpus-per-task" : 2,
-        "partition" : "medium",
-	"ntasks": 2,
-        "mem" : "1G",
-        "time": "0-04:00:00"
-    },
-
-```
-
-## 3.4. Trim quality control
-
-We always QC after trimming to ensure fine-tuning that the sequences clipping and filtering were not unnecessarily harsh. Given the number of sequences we work with, we do not need to go through each file immediately for time purposes. Instead, sample randomly across species, rearing conditions, and tissues to see that the process worked well. 
-  
-```
-########################################
-# Snakefile rule
-########################################
-
-#Quality control step after trimming: checked for adapter content in particular and quality scores
-rule trim_fastqc:
-	input:
-		read1 = OUTdir + "/trimming/{locust}_trim1P_1.fastq.gz",
-		read2 = OUTdir + "/trimming/{locust}_trim2P_2.fastq.gz",
-	output:
-		htmlqc1 = OUTdir + "/trimming/{locust}_trim1P_1_fastqc.html",
-		htmlqc2 = OUTdir + "/trimming/{locust}_trim2P_2_fastqc.html",
-	shell:
-		"""
-		module load FastQC/0.11.9-Java-11
-		fastqc {input.read1}
-		fastqc {input.read2}
-		"""
-		
-########################################
-# Parameters in the cluster.json file
-########################################
-
-    "trim_fastqc":
-    {
-        "cpus-per-task" : 2,
-        "partition" : "medium",
-        "ntasks": 1,
-        "mem" : "500M",
-        "time": "0-03:00:00"
-    },
-
-```
-  
-  
-<figure class="center">
-**EXAMPLE OF READS QUALITY BEFORE TRIMMING**  
-<img src="img/FASTQC_before.png" alt="module_spider" width="800px"/>  
-**EXAMPLE OF READS QUALITY AFTER TRIMMING**   
-We can see that the sequence length has changed and that the 5' and 3' end positions with lower quality have been removed.  
-<img src="img/FASTQC_after.png" alt="module_spider" width="800px"/>  
-  
-   
-   
-**EXAMPLE OF READS QUALITY BEFORE TRIMMING**   
-<img src="img/FASTQC_before2.png" alt="module_spider" width="800px"/>  
-**EXAMPLE OF READS QUALITY AFTER TRIMMING**   
-We can see that most detected adapter sequences have been adequately removed after trimming.  
-<img src="img/FASTQC_after2.png" alt="module_spider" width="800px"/>  
-</figure>
-  
-  
-## 3.5. Short Reads mapping {.tabset .tabset-fade}
-
-We used `STAR` for mapping reads to either 1) their own species reference genome or 2) an alternate sister reference genome. The pipeline is the same, except that the code will change index.
-
-```
-########################################
-# Snakefile rule
-########################################
-
-#Ahead of the alignment I will build independently the index for STAR, HiSat2 and Segemehl
-
-rule STAR_align:
-	input:
-		index = REFdir + "/locusts_complete/index_GCF_021461395.2_iqSchAmer2.1_genomic/STAR",
-		read1 = OUTdir + "/trimming/{locust}_trim1P_1.fastq.gz",
-		read2 = OUTdir + "/trimming/{locust}_trim2P_2.fastq.gz"
-	params:
-		prefix = OUTdir + "/alignment/STAR/{locust}_"
-	output:
-		OUTdir + "/alignment/STAR/{locust}_Aligned.sortedByCoord.out.bam"
-	shell:
-		"""
-		module load GCC/11.2.0 STAR/2.7.9a
-		STAR --runThreadN 8 --genomeDir {input.index} --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts --outFileNamePrefix {params.prefix} --readFilesCommand zcat --readFilesIn {input.read1} {input.read2} 
-		"""
-		
-########################################
-# Parameters in the cluster.json file
-########################################
-
-    "STAR_align":
-    {
-        "cpus-per-task" : 12,
-        "partition" : "medium",
-        "ntasks": 1,
-        "mem" : "100G",
-        "time": "0-08:00:00"
-    }
-```
-
-After mapping, we obtained alignment statistics from the `*_Log.final.out` file and filled out the metadata table with it.
-
-```
-grep 'Number of input reads' *_Log.final.out
-grep 'Average input read length' *_Log.final.out
-grep 'Uniquely mapped reads number' *_Log.final.out
-grep 'Number of reads mapped to multiple loci' *_Log.final.out
-grep 'Number of reads mapped to too many loci' *_Log.final.out
-grep 'Number of reads unmapped: too many mismatches' *Log.final.out
-grep 'Number of reads unmapped: too short' *Log.final.out
-grep 'Number of reads unmapped: other' *Log.final.out
-```
-  
-### Map to own species
-
-```{r Mapping success own}
-
-mycol_species <- c("green", "deeppink", "orange", "orange2", "blue2", "red2", "yellow2")
-
-## READS AVERAGE colored by STATUS
-eren <- ggplot(metaseq, aes(x=Map_SUM, y = Inputtrim_reads, color = Species, label = SampleID))
-eren <- eren + geom_point(size=2, alpha =0.7)
-eren <- eren + scale_color_manual(values = mycol_species)
-eren <- eren + theme_calc()
-eren <- eren + geom_hline(yintercept=30000000, linetype="dotted", color = "green3")
-eren <- eren + geom_hline(yintercept=50000000, linetype="dotted", color = "green3")
-eren <- eren + geom_vline(xintercept=80, linetype="dotted", color = "blue2")
-eren <- eren +  xlim(0,100)
-options(scipen=20) #to remove the scientific annotation of the axis
-
-## make an interactive version of the scatter plot
-attacktitan <- ggplotly(eren)
-attacktitan
-```
-
-#### Figure XX: Interactive plot of the mapping rate success of each sample against their respective reference genome.
-  
-We added the green thresholds to indicate how many reads are recommended by Illumina (lower end and optimal). The blue line demonstrates where the mapping ratio could be considered not contaminated.   
-
-### Map to gregaria
-
-```{r Mapping success gregaria}
-
-## READS AVERAGE colored by STATUS
-mikasa <- ggplot(metaseq, aes(x=Map_SUM, y = Inputtrim_reads, color = Species, label = SampleID))
-mikasa <- mikasa + geom_point(size=2, alpha =0.7)
-mikasa <- mikasa + scale_color_manual(values = mycol_species)
-mikasa <- mikasa + theme_calc()
-mikasa <- mikasa + geom_hline(yintercept=30000000, linetype="dotted", color = "green3")
-mikasa <- mikasa + geom_hline(yintercept=50000000, linetype="dotted", color = "green3")
-mikasa <- mikasa + geom_vline(xintercept=80, linetype="dotted", color = "blue2")
-mikasa <- mikasa +  xlim(0,100)
-options(scipen=20) #to remove the scientific annotation of the axis
-
-## make an interactive version of the scatter plot
-attacktitan <- ggplotly(eren)
-attacktitan
-```
-
-#### Figure XX: Interactive plot of the mapping rate success of each sample against gregaria genome.
-
-We added the green thresholds to indicate how many reads are recommended by Illumina (lower end and optimal). The blue line demonstrates where the mapping ratio could be considered not contaminated.
-
-### Map to piceifrons
-
-### Map to cancellata
-
-### Map to americana
-
-### Map to cubense
-
-### Map to nitens
-
-
-
-  
-
-
-## 3.6. Quantification
-
-We can note that the option `--quantMode GeneCounts` from STAR produces the same output as the htseq-count tool if we used the `–-sjdbGTFfile` option.   
-  
-In the output file `{locust}_ReadsPerGene.out.tab` we can obtain the read counts per gene depending if our data is **unstranded** (column 2) or **stranded** (columns 3 and 4).  
-  
-column 1: gene ID  
-column 2: counts for unstranded RNA-seq.  
-column 3: counts for the 1st read strand aligned with RNA  
-column 4: counts for the 2nd read strand aligned with RNA (the most common protocol nowadays)  
-  
-
-For our pilot _S. gregaria_ project, we know we used Illumina stranded kit but to check we can with the following code:  
-
-```
-grep -v "N_" {locust}_ReadsPerGene.out.tab | awk '{unst+=$2;forw+=$3;rev+=$4}END{print unst,forw,rev}'
-
-#or as a loop
-for i in *_ReadsPerGene.out.tab; do echo $i; grep -v "N_" $i | awk '{unst+=$2;forw+=$3;rev+=$4}END{print unst,forw,rev}'; done
-```
-  
-In a stranded library preparation protocol, there should be a strong imbalance between number of reads mapped to known genes in forward versus reverse strands. This is what we observe for example on _S. cancellata_ libraries here.  
-  
-<figure class="center">
-<img src="img/ReadPerGene.png" alt="module_spider" width="800px"/>  
-</figure>   
-  
-**PREFERRED OPTION:** We need to extract in our case the 1st and 4th columns for each file.
-
-```
-########################################
-# Snakefile rule
-########################################
-
-#either ran the following rule
-rule reads_count:
-        input:
-                readtable = OUTdir + "/alignment/STAR2/{locust}_ReadsPerGene.out.tab",
-        output:
-                OUTdir + "/DESeq2/counts_4thcol/{locust}_counts.txt"
-        shell:
-                """
-                cut -f1,4 {input.readtable} | grep -v "_" > {output}  
-                """
-
-#or simply this loop for less core usage
-# for i in $SCRATCH/locust_phase/data/alignment/STAR/*ReadsPerGene.out.tab; do echo $i; cut -f1,4 $i | grep -v "_" > $SCRATCH/locust_phase/data/DESeq2/counts_4thcol/`basename $i ReadsPerGene.out.tab`counts.txt; done
-```
-
-**ALTERNATIVE OPTION:** We can also build a single matrix of expression with all individuals targeted. Below is the example for _S. piceifrons_:
-
-```
-paste SPICE_*_ReadsPerGene.out.tab | grep -v "_" | awk '{printf "%s\t", $1}{for (i=4;i<=NF;i+=4) printf "%s\t", $i; printf "\n" }' > tmp
-sed -e "1igene_name\t$(ls SPICE_*ReadsPerGene.out.tab | tr '\n' '\t' | sed 's/_ReadsPerGene.out.tab//g')" tmp > raw_counts_piceifrons_matrix.txt
-```
-   

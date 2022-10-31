@@ -1,0 +1,107 @@
+---
+title: "Bul Tissue RNAseq Mapping success on Schistocerca genome"
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
+---
+
+This document was written in R Markdown, and translated into html using the R package `knitr`. Press the buttons labelled **Code** to show or hide the R code used to produce each table, plot or statistical result. You can also select **Show all code** at the top of the page.
+
+
+### Load R libraries (install first from CRAN or Bioconductor)
+```{r libraries, message=FALSE, warning=FALSE}
+library("knitr")
+library("rmdformats")
+library("tidyverse")
+library("DT")  # for making interactive search table
+library("plotly") # for interactive plots
+library("ggthemes") # for theme_calc
+library("reshape2")
+
+## Global options
+options(max.print="10000")
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = FALSE,
+	comment = FALSE,
+	prompt = FALSE,
+	tidy = TRUE
+)
+opts_knit$set(width=75)
+```
+
+# Short Reads mapping and Gene Quantification
+## STAR mapping to own species {.tabset .tabset-fade}
+
+```{r Mapping success own}
+
+# Load our SRA metadata table
+metaseq <- read_table("data/metadata/RNAseq_modified_METADATA2022.txt", col_names  = TRUE,  guess_max = 5000)
+
+## Create an interactive search table
+metaseq %>%
+    datatable(extensions = "Buttons", options = list(dom = "Blfrtip", buttons = c("copy",
+        "csv", "excel"), lengthMenu = list(c(10, 20, 50, 100, 200, -1), c(10, 20,
+        50, 100, 200, "All"))))
+
+mycol_species <- c("green", "deeppink", "orange", "orange2", "blue2", "red2", "yellow2")
+
+## READS AVERAGE colored by STATUS
+eren <- ggplot(metaseq, aes(x=Map_SUM, y = Inputtrim_reads, color = Species, label = SampleID))
+eren <- eren + geom_point(size=2, alpha =0.7)
+eren <- eren + scale_color_manual(values = mycol_species)
+eren <- eren + theme_calc()
+eren <- eren + geom_hline(yintercept=30000000, linetype="dotted", color = "green3")
+eren <- eren + geom_hline(yintercept=50000000, linetype="dotted", color = "green3")
+eren <- eren + geom_vline(xintercept=80, linetype="dotted", color = "blue2")
+eren <- eren +  xlim(0,100)
+options(scipen=20) #to remove the scientific annotation of the axis
+
+## make an interactive version of the scatter plot
+attacktitan <- ggplotly(eren)
+attacktitan
+```
+
+#### Figure XX: Interactive plot of the mapping rate success of each sample against their respective reference genome.
+  
+We added the green thresholds to indicate how many reads are recommended by Illumina (lower end and optimal). The blue line demonstrates where the mapping ratio could be considered not contaminated.   
+
+
+## STAR mapping to alternate species {.tabset .tabset-fade}
+
+### To _gregaria_
+
+```{r Mapping success gregaria}
+
+## READS AVERAGE colored by STATUS
+mikasa <- ggplot(metaseq, aes(x=Map_SUM, y = Inputtrim_reads, color = Species, label = SampleID))
+mikasa <- mikasa + geom_point(size=2, alpha =0.7)
+mikasa <- mikasa + scale_color_manual(values = mycol_species)
+mikasa <- mikasa + theme_calc()
+mikasa <- mikasa + geom_hline(yintercept=30000000, linetype="dotted", color = "green3")
+mikasa <- mikasa + geom_hline(yintercept=50000000, linetype="dotted", color = "green3")
+mikasa <- mikasa + geom_vline(xintercept=80, linetype="dotted", color = "blue2")
+mikasa <- mikasa +  xlim(0,100)
+options(scipen=20) #to remove the scientific annotation of the axis
+
+## make an interactive version of the scatter plot
+attacktitan <- ggplotly(eren)
+attacktitan
+```
+
+#### Figure XX: Interactive plot of the mapping rate success of each sample against gregaria genome.
+
+We added the green thresholds to indicate how many reads are recommended by Illumina (lower end and optimal). The blue line demonstrates where the mapping ratio could be considered not contaminated.
+
+### To _piceifrons_
+
+### To _cancellata_
+
+### To _americana_
+
+### To _cubense_
+
+### To _nitens_

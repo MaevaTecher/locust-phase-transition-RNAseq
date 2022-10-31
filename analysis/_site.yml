@@ -12,15 +12,13 @@ navbar:
       - text: Sequence data pre-processing
       - text: "Preparation for the analysis"
         href: workenvs-prep.html
-      - text: "Download/Obtain sequencing data"
+      - text: "Download/obtain sequencing data"
         href: seqdata-prep.html
       - text: "Data quality control"
         href: seqdata-qc.html
       - text: Genome alignment and gene quantification 
       - text: "Mapping reads to Schistocerca RefSeq"
         href: map-refseq.html
-      - text: "Gene quantification"
-        href: gene-quant.html
       - text: Data post-processing and stats
       - text: "Indexing and stats on bam files"
         href: bam-stats.html

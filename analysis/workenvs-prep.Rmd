@@ -1,12 +1,10 @@
 ---
-title: "Preparation of the working environment"
+title: "Preparations needed for launching the analysis"
 author: "Maeva Techer"
 date: "`r Sys.Date()`"
 output:
   workflowr::wflow_html
 ---
-
-This document was written in R Markdown, and translated into html using the R package `knitr`. Press the buttons labelled **Code** to show or hide the R code used to produce each table, plot or statistical result. You can also select **Show all code** at the top of the page.
 
 # Work environment
 
@@ -36,6 +34,23 @@ We use a Snakemake pipeline for each species. Therefore, it is essential to veri
 
 ![](assets/Workflow_bioinformatics.png)
 
+We built our Snakemake pipeline by launching small individual jobs to tailor each cluster parameter for the best memory and time efficiency.  
+  
+To ease the indexing of our file and folder, we generate some shared parameters which will be helpful in the future: 1) reference genome directory path `REFdir`, 2) output directory path `OUTdir` and 3) a list `LOCUSTS` containing sample base name referred as `locust`.
+
+```
+### SET DIRECTORY PATHS FOR REFERENCE AND OUTPUT DATA
+
+REFdir = "/scratch/user/maeva-techer/refgenomes"
+OUTdir = "/scratch/user/maeva-techer/locust-rna/data"
+
+### SAMPLES LIST AND OTHER PARAMETERS
+
+LOCUSTS, = glob_wildcards(OUTdir + "/reads/{locust}_1.fastq.gz")
+print(LOCUSTS)
+```
+
+
 ## Softwares and database
 
 Links to each software to add in the future
@@ -46,7 +61,7 @@ Links to each software to add in the future
 > add what to install on the Macpro tower
 > e.g., we install a [conda environment](https://docs.conda.io/en/latest/miniconda.html#) called **rna-seq**
 
-### Use modules on TAMU Grace cluster
+### Use modules on Grace cluster
 
 On Grace, each module may requires some dependencies, which is why we need to ensure they will be loaded together. For this we use the function `module spider` [targeted software] w/o the version.
 
