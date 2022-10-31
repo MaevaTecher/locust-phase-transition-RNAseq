@@ -27,29 +27,13 @@ navbar:
   - text: "Analysis & Results"
     menu:
       - text: Mapping success
-      - text: "Using the right RefSeq genome"
-        href: own-refseq.html
-      - text: "Using alternate RefSeq genome"
-        href: alternate-refseq.html
+      - text: "Using STAR"
+        href: map-star.html
+      - text: "Using HISAT2"
+        href: map-hisat2.html
       - text: Differential Gene Expression
       - text: "DEG per tissue"
         href: deg-tissue.html
-  - text: "Species"
-    menu:
-      - text: Schistocerca Locusts
-      - text: "Desert Locust"
-        href: deg-gregaria.html
-      - text: "Central American Locust"
-        href: deg-piceifrons.html
-      - text: "South American Locust"
-        href: deg-cancellata.html
-      - text: Schistocerca Grasshoppers
-      - text: "American Bird Grasshopper"
-        href: deg-americana.html
-      - text: "Cubense Bird Grasshopper"
-        href: deg-cubense.html
-      - text: "Vagrant Grasshopper"
-        href: deg-nitens.html
   - text: "License"
     href: license.html
   right:

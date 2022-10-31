@@ -1,0 +1,263 @@
+---
+title: "Differential Gene Expression Workflow"
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
+---
+
+# Load required R libraries 
+```{r libraries, message=FALSE, warning=FALSE}
+#(install first from CRAN or Bioconductor)
+library("knitr")
+library("rmdformats")
+library("tidyverse")
+library("DT")  # for making interactive search table
+library("plotly") # for interactive plots
+library("ggthemes") # for theme_calc
+library("reshape2")
+library("DESeq2")
+library("data.table")
+library("apeglm")
+library("ggpubr")
+library("ggplot2")
+library("ggrepel")
+library("EnhancedVolcano")
+
+## Global options
+options(max.print="10000")
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = FALSE,
+	comment = FALSE,
+	prompt = FALSE,
+	tidy = TRUE
+)
+opts_knit$set(width=75)
+```
+
+Here we present the workflow example with the head data from _S. piceifrons_  
+  
+For the analysis of differentially expressed genes, we will follow some guidelines from an online RNA course [tutorial](https://biocorecrg.github.io/RNAseq_course_2019/differential_expression.html) that uses either `DESeq2` or `edgeR` on STAR output. 
+
+DESeq2 tests for differential expression using negative binomial generalized linear models.
+DESeq2 (as edgeR) is based on the hypothesis that most genes are not differentially expressed. The package takes as an input raw counts (i.e. non normalized counts): the DESeq2 model internally corrects for library size, so giving as an input normalized count would be incorrect.
+
+# DGE analysis with STAR input 
+## Preparing input files 
+### Raw count matrices
+
+We generated this in the precedent section.
+
+### Transcript-to-gene annotation file
+  
+Below is the example with _S. gregaria_
+```
+# Download annotation and place it into the folder refgenomes
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/897/955/GCF_023897955.1_iqSchGreg1.2/GCF_023897955.1_iqSchGreg1.2_genomic.gtf.gz
+
+# first column is the transcript ID, second column is the gene ID, third column is the gene symbol
+zcat GCF_023897955.1_iqSchGreg1.2_genomic.gtf.gz | awk -F "\t" 'BEGIN{OFS="\t"}{if($3=="transcript"){split($9, a, "\""); print a[4],a[2],a[8]}}' > tx2gene.gregaria.csv
+```
+  
+### Sample sheet 
+  
+DESeq2 needs a sample sheet that describes the samples characteristics: SampleName, FileName (...counts.txt), and subsequently anything that can be used for **statistical design** such as RearingCondition, replicates, tissue, time points, etc. in the form. 
+  
+The design indicates how to model the samples: in the model we need to specify what we want to measure and what we want to **control**.  
+
+# Differential expression analysis
+## Import input count data
+
+We start by reading the sample sheet.
+```{r DESeq2 sample, message=FALSE, warning=FALSE}
+
+## import the sample sheet that indicates Rearing Conditions and Tissue origins
+sampletable <- fread("data/piceifrons/list/HeadSPICE.txt")
+# add the sample names as row names (it is needed for some of the DESeq functions)
+rownames(sampletable) <- sampletable$SampleName
+
+# Make sure discriminant variables are factor
+sampletable$RearingCondition <- as.factor(sampletable$RearingCondition)
+sampletable$Tissue <- as.factor(sampletable$Tissue)
+dim(sampletable)
+
+```
+
+Then we obtain the output from `STAR GeneCount` and import here individually using the sampletable as a reference to fetch them. We also filter the lowly expressed genes to avoid noisy data.
+
+```{r DESeq2 import, message=FALSE, warning=FALSE}
+
+# Read in the two-column data.frame linking transcript id (column 1) to gene id (column 2)
+tx2gene <- read.table("data/piceifrons/list/tx2gene.piceifrons.csv", sep="\t", header=F)
+
+satoshi <- DESeqDataSetFromHTSeqCount(sampleTable = sampletable,
+                        directory = "data/piceifrons/STAR_counts_4thcol",
+                        design = ~ RearingCondition)
+
+satoshi
+
+# keep genes for which sums of raw counts across experimental samples is > 5
+satoshi <- satoshi[rowSums(counts(satoshi)) > 5, ]
+nrow(satoshi)
+
+#set a standard to be compared to (hatchling) ONLY IF WE HAVE A CONTROL
+#satoshi$Tissue <- relevel(satoshi$Tissue, ref = "Whole_body")
+```
+
+## Run the model Fit DESeq2
+
+Run DESeq2 analysis using `DESeq`, which performs (1) estimation of size factors, (2) estimation of dispersion, then (3) Negative Binomial GLM fitting and Wald statistics. The results tables (log2 fold changes and p-values) can be generated using the results function ([copied from online chapter](https://ycl6.gitbook.io/guide-to-rna-seq-analysis/differential-expression-analysis/differential-gene-expression/dge-analysis-with-star-input))
+
+```{r DESeq2 model, message=FALSE, warning=FALSE}
+
+# Fit the statistical model
+shigeru <- DESeq(satoshi)
+cbind(resultsNames(shigeru))
+
+# Here we plot the adjusted p-value means corrected for multiple testing (FDR padj)
+res_shigeru <- results(shigeru)
+
+# We only keep genes with an adjusted p-value cutoff > 0.05 by changing the default significance cut-off
+#sum(res_shigeru$padj < 0.05, na.rm = TRUE)
+
+brock <- results(shigeru, name = "RearingCondition_Isolated_vs_Crowded", alpha = 0.05)
+summary(brock)
+
+# Details of what is each column meaning in our final result 
+mcols(brock)$description
+head(brock)
+
+```
+
+For this data set after FDR filtering of 0.05, we have 254 genes up-regulates and 404 genes down-regulated in crowded versus solitary individuals.
+
+# Visualizing and exploring the results
+## PCA of the samples
+
+We transformed the data for visualization by comparing both recommended **rlog** (Regularized log) or **vst** (Variance Stabilizing Transformation) transformations. Both options produce log2 scale data which has been normalized by the DESeq2 method with respect to library size.
+
+```{r Transform data, message=FALSE, warning=FALSE}
+# Try with the vst transformation
+shigeru_vsd <- vst(shigeru)
+shigeru_rlog <- rlog(shigeru)
+```
+
+Plot the PCA rlog
+
+```{r DESeq2 PCA rlog, message=FALSE, warning=FALSE}
+
+# Create the pca on the defined groups
+pcaData <- plotPCA(object = shigeru_rlog, intgroup = c("RearingCondition", "Tissue"),returnData=TRUE)
+
+# Store the information for each axis variance in %
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+# Make sure that the discriminant variable are in factor for using shape and color later on
+pcaData$RearingCondition<-factor(pcaData$RearingCondition,levels=c("Crowded","Isolated"), labels=c("crowded piceifrons","isolated piceifrons"))
+levels(pcaData$RearingCondition)
+#pcaData$Tissue<-factor(pcaData1$Tissue,levels=c("Whole_body","Optical_lobes"), labels=c("Hatchling", "OLB"))
+#levels(pcaData$Tissue)
+
+
+ggplot(pcaData, aes(PC1, PC2, color= RearingCondition)) +
+  geom_point(size=4)+xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  scale_color_manual(values = c("blue", "red")) +
+  geom_text_repel(aes(label = name), nudge_x = -1, nudge_y = 0.2, size = 3) +
+  coord_fixed()+
+  theme_bw()+
+  theme(legend.title = element_blank())+ 
+  theme(legend.text = element_text(face="bold", size=15))+
+  theme(axis.text = element_text(size=15))+
+  theme(axis.title = element_text(size=16))+ 
+  ggtitle("PCA on S. piceifrons head tissues", subtitle = "rlog transformation") + 
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance"))
+```
+
+Plot the PCA vsd
+
+```{r DESeq2 PCA vsd, message=FALSE, warning=FALSE}
+
+# Create the pca on the defined groups
+pcaData <- plotPCA(object = shigeru_vsd, intgroup = c("RearingCondition", "Tissue"),returnData=TRUE)
+
+# Store the information for each axis variance in %
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+# Make sure that the discriminant variable are in factor for using shape and color later on
+pcaData$RearingCondition<-factor(pcaData$RearingCondition,levels=c("Crowded","Isolated"), labels=c("crowded piceifrons","isolated piceifrons"))
+levels(pcaData$RearingCondition)
+#pcaData$Tissue<-factor(pcaData1$Tissue,levels=c("Whole_body","Optical_lobes"), labels=c("Hatchling", "OLB"))
+#levels(pcaData$Tissue)
+
+
+ggplot(pcaData, aes(PC1, PC2, color= RearingCondition)) +
+  geom_point(size=4)+xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  scale_color_manual(values = c("blue", "red")) +
+  geom_text_repel(aes(label = name), nudge_x = -1, nudge_y = 0.2, size = 3) +
+  coord_fixed()+
+  theme_bw()+
+  theme(legend.title = element_blank())+ 
+  theme(legend.text = element_text(face="bold", size=15))+
+  theme(axis.text = element_text(size=15))+
+  theme(axis.title = element_text(size=16))+ 
+  ggtitle("PCA on S. piceifrons head tissues", subtitle = "vst transformation") + 
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance"))
+```
+
+## MA-plot
+
+This plot allows us to show the log2 fold changes over the mean of normalized counts for all the samples. Points will be colored in red if the adjusted p-value is less than 0.05 and the log2 fold change is bigger than 1. In blue, will be the reverse for the log2 fold change.
+
+
+
+```{r DESeq2 MA plot , message=FALSE, warning=FALSE}
+
+# include the log2FoldChange shrinkage use to visualize gene ranking
+de_shrink <- lfcShrink(dds = shigeru, coef="RearingCondition_Isolated_vs_Crowded", type="apeglm")
+
+# Ma plot
+maplot <-ggmaplot(de_shrink, fdr = 0.05, fc = 1, size = 1.5, palette = c("#B31B21", "#1465AC", "darkgray"), genenames = as.vector(rownames(de_shrink$name)), top = 0,legend="top",label.select = NULL) +
+coord_cartesian(xlim = c(0, 18)) + 
+scale_y_continuous(limits=c(-8, 8)) + 
+theme(axis.text.x = element_text(size=16),axis.text.y = element_text(size=15),axis.title.x = element_text(size=17),axis.title.y = element_text(size=17),axis.line = element_line(size = 1, colour="gray20"),axis.ticks = element_line(size = 1, colour="gray20"))+
+guides(color = guide_legend(override.aes = list(size = c(3,3,3))))+
+theme(legend.position = c(0.70, 0.12),legend.text=element_text(size=14,face="bold"),legend.background = element_rect(fill="transparent"))+
+theme(plot.title = element_text(size=18, colour="gray30", face="bold",hjust=0.06, vjust=-5))+
+labs(title="MA-plot for the shrunken log2 fold changes in the head")
+maplot
+```
+
+
+The `EnhancedVolcano` helps visualise the resulst of differential expression analysis.
+
+```{r DESeq2 Volcano plot , message=FALSE, warning=FALSE}
+keyvals <-ifelse( 
+  res_shigeru$log2FoldChange >= 1 & res_shigeru$padj <= 0.05, 'red', 
+  ifelse(res_shigeru$log2FoldChange <= -1 & res_shigeru$padj <= 0.05, 'green', 'black')) 
+
+keyvals[is.na(keyvals)] <-'black' 
+names(keyvals)[keyvals == 'red'] <-'Upregulated' 
+names(keyvals)[keyvals == 'green'] <-'Downregulated' 
+names(keyvals)[keyvals == 'black'] <-'NS'
+
+EnhancedVolcano(res_shigeru,
+                lab = rownames(res_shigeru),
+                x = 'log2FoldChange',
+                y = 'padj',
+                pCutoff = 0.05,
+                FCcutoff = 1,
+                pointSize = 3.0,
+                labSize = 3.0,
+                colAlpha = 4/5,
+                colCustom = keyvals,
+                drawConnectors = FALSE)
+```
+
+  

@@ -1,0 +1,10 @@
+---
+title: "Indexing and stats on bam files"
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
+---
+
+
+Needs to be written

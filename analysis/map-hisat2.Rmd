@@ -1,0 +1,10 @@
+---
+title: "Mapping Success using HISAT2"
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
+---
+
+
+Needs to be written
