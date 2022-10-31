@@ -13,7 +13,7 @@
 
 <meta name="date" content="2022-10-31" />
 
-<title>Sequence data quality control</title>
+<title>Differential Gene Expression Workflow</title>
 
 <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -421,7 +421,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Sequence data quality control</h1>
+<h1 class="title toc-ignore">Differential Gene Expression Workflow</h1>
 <h4 class="author">Maeva Techer</h4>
 <h4 class="date">2022-10-31</h4>
 
@@ -656,9 +656,9 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/seqdata-qc.Rmd</code>) and HTML
-(<code>docs/seqdata-qc.html</code>) files. If you’ve configured a remote
-Git repository (see <code>?wflow_git_remote</code>), click on the
+made to the R Markdown (<code>analysis/deg-workflow.Rmd</code>) and HTML
+(<code>docs/deg-workflow.html</code>) files. If you’ve configured a
+remote Git repository (see <code>?wflow_git_remote</code>), click on the
 hyperlinks in the table below to view the files as they were in that
 past version.
 </p>
@@ -686,44 +686,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/8481823d9015b1cc26ecb64e487d74f829d2643f/docs/seqdata-qc.html" target="_blank">8481823</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/ea70380071caa0d86932413a6c0120d766a79768/docs/seqdata-qc.html" target="_blank">ea70380</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/de64b6bfd0f4a47e2f2cae212c8eb07a05a30c10/analysis/seqdata-qc.Rmd" target="_blank">de64b6b</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/2ccb4bc5e57b273db98e89c4b87c580ee510cd67/analysis/deg-workflow.Rmd" target="_blank">2ccb4bc</a>
 </td>
 <td>
 MaevaTecher
@@ -732,75 +698,8 @@ MaevaTecher
 2022-10-31
 </td>
 <td>
-wflow_publish(c("analysis/_site.yml", "analysis/map-refseq.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/8b34f19e548dccf41714638a6e5862030e68bfae/docs/seqdata-qc.html" target="_blank">8b34f19</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/bd04bb56b25f982ed729cec095ff5ada3eb61535/docs/seqdata-qc.html" target="_blank">bd04bb5</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/61f4b75dd51dd84ad06beaa4a5701c0e58c0c22a/docs/seqdata-qc.html" target="_blank">61f4b75</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/f65c630ff5f9a5de44bcfdfb29dfbf01e606946a/analysis/seqdata-qc.Rmd" target="_blank">f65c630</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-wflow_publish(c("analysis/_site.yml", "analysis/gene-quant.Rmd",
+wflow_publish(c("analysis/_site.yml",
+"data/gregaria/list/BrainPilot.txt",
 </td>
 </tr>
 </tbody>
@@ -810,14 +709,23 @@ wflow_publish(c("analysis/_site.yml", "analysis/gene-quant.Rmd",
 </div>
 </div>
 </div>
-<p>Load R libraries (install first from CRAN or Bioconductor)</p>
-<pre class="r"><code>library(&quot;knitr&quot;)
+<div id="load-required-r-libraries" class="section level1">
+<h1>Load required R libraries</h1>
+<pre class="r"><code>#(install first from CRAN or Bioconductor)
+library(&quot;knitr&quot;)
 library(&quot;rmdformats&quot;)
 library(&quot;tidyverse&quot;)
 library(&quot;DT&quot;)  # for making interactive search table
 library(&quot;plotly&quot;) # for interactive plots
 library(&quot;ggthemes&quot;) # for theme_calc
 library(&quot;reshape2&quot;)
+library(&quot;DESeq2&quot;)
+library(&quot;data.table&quot;)
+library(&quot;apeglm&quot;)
+library(&quot;ggpubr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggrepel&quot;)
+library(&quot;EnhancedVolcano&quot;)
 
 ## Global options
 options(max.print=&quot;10000&quot;)
@@ -831,183 +739,268 @@ knitr::opts_chunk$set(
     tidy = TRUE
 )
 opts_knit$set(width=75)</code></pre>
-<div id="control-the-quality-of-fastq-files" class="section level1">
-<h1>Control the quality of fastq files</h1>
-<p>From the point we have the renamed, and paired-end / single-end read
-for the species of interest (one folder), we are ready to run our
-Snakemake pipeline on it. If not provided beforehand by TxGen, we need
-to check the quality of the sequences downloaded or generated using
-<code>FASTQC</code>.</p>
-<p>Results can be view by opening the *.html files in web browser.</p>
-<p>[WRITE ABOUT MULTIQC]</p>
+<p>Here we present the workflow example with the head data from <em>S.
+piceifrons</em></p>
+<p>For the analysis of differentially expressed genes, we will follow
+some guidelines from an online RNA course <a
+href="https://biocorecrg.github.io/RNAseq_course_2019/differential_expression.html">tutorial</a>
+that uses either <code>DESeq2</code> or <code>edgeR</code> on STAR
+output.</p>
+<p>DESeq2 tests for differential expression using negative binomial
+generalized linear models. DESeq2 (as edgeR) is based on the hypothesis
+that most genes are not differentially expressed. The package takes as
+an input raw counts (i.e. non normalized counts): the DESeq2 model
+internally corrects for library size, so giving as an input normalized
+count would be incorrect.</p>
 </div>
-<div id="trim-and-adapter-removal" class="section level1">
-<h1>Trim and adapter removal</h1>
-<p>After checking the initial sequence quality, we can determine any
-parameters change for <code>Trimmomatic</code>.</p>
-<pre><code>########################################
-# Snakefile rule
-########################################
-
-rule trim_adapt:
-    input:
-        read1 = OUTdir + &quot;/reads/{locust}_1.fastq.gz&quot;,
-        read2 = OUTdir + &quot;/reads/{locust}_2.fastq.gz&quot;,
-        adaptfile = OUTdir + &quot;/list/TruSeqNextera_PE.fa&quot;
-    output:
-        trimmedread1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
-        badread1 = OUTdir + &quot;/trimming/{locust}_trim1U_1.fastq.gz&quot;,
-        trimmedread2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;,
-        badread2 = OUTdir + &quot;/trimming/{locust}_trim2U_2.fastq.gz&quot;,
-    shell:
-        &quot;&quot;&quot;
-        module load Trimmomatic/0.39-Java-11
-        java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 2 -phred33 {input.read1} {input.read2} {output.trimmedread1} {output.badread1} {output.trimmedread2} {output.badread2} ILLUMINACLIP:{input.adaptfile}:2:30:10 LEADING:30 TRAILING:30 SLIDINGWINDOW:4:15 MINLEN:36 
-        &quot;&quot;&quot;
-        
-########################################
-# Parameters in the cluster.json file
-########################################
-
-    &quot;trim_adapt&quot;:
-    {
-        &quot;cpus-per-task&quot; : 2,
-        &quot;partition&quot; : &quot;medium&quot;,
-    &quot;ntasks&quot;: 2,
-        &quot;mem&quot; : &quot;1G&quot;,
-        &quot;time&quot;: &quot;0-04:00:00&quot;
-    },
-</code></pre>
+<div id="dge-analysis-with-star-input" class="section level1">
+<h1>DGE analysis with STAR input</h1>
+<div id="preparing-input-files" class="section level2">
+<h2>Preparing input files</h2>
+<div id="raw-count-matrices" class="section level3">
+<h3>Raw count matrices</h3>
+<p>We generated this in the precedent section.</p>
 </div>
-<div id="trim-quality-control" class="section level1">
-<h1>Trim quality control</h1>
-<p>We always QC after trimming to ensure fine-tuning that the sequences
-clipping and filtering were not unnecessarily harsh. Given the number of
-sequences we work with, we do not need to go through each file
-immediately for time purposes. Instead, sample randomly across species,
-rearing conditions, and tissues to see that the process worked well.</p>
-<pre><code>########################################
-# Snakefile rule
-########################################
+<div id="transcript-to-gene-annotation-file" class="section level3">
+<h3>Transcript-to-gene annotation file</h3>
+<p>Below is the example with <em>S. gregaria</em></p>
+<pre><code># Download annotation and place it into the folder refgenomes
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/897/955/GCF_023897955.1_iqSchGreg1.2/GCF_023897955.1_iqSchGreg1.2_genomic.gtf.gz
 
-#Quality control step after trimming: checked for adapter content in particular and quality scores
-rule trim_fastqc:
-    input:
-        read1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
-        read2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;,
-    output:
-        htmlqc1 = OUTdir + &quot;/trimming/{locust}_trim1P_1_fastqc.html&quot;,
-        htmlqc2 = OUTdir + &quot;/trimming/{locust}_trim2P_2_fastqc.html&quot;,
-    shell:
-        &quot;&quot;&quot;
-        module load FastQC/0.11.9-Java-11
-        fastqc {input.read1}
-        fastqc {input.read2}
-        &quot;&quot;&quot;
-        
-########################################
-# Parameters in the cluster.json file
-########################################
-
-    &quot;trim_fastqc&quot;:
-    {
-        &quot;cpus-per-task&quot; : 2,
-        &quot;partition&quot; : &quot;medium&quot;,
-        &quot;ntasks&quot;: 1,
-        &quot;mem&quot; : &quot;500M&quot;,
-        &quot;time&quot;: &quot;0-03:00:00&quot;
-    },
-</code></pre>
-<figure class="center">
-<p><strong>EXAMPLE OF READS QUALITY BEFORE TRIMMING</strong><br />
-<img src="img/FASTQC_before.png" alt="module_spider" width="800px"/><br />
-<strong>EXAMPLE OF READS QUALITY AFTER TRIMMING</strong><br />
-We can see that the sequence length has changed and that the 5’ and 3’
-end positions with lower quality have been removed.<br />
-<img src="img/FASTQC_after.png" alt="module_spider" width="800px"/></p>
-<strong>EXAMPLE OF READS QUALITY BEFORE TRIMMING</strong><br />
-<img src="img/FASTQC_before2.png" alt="module_spider" width="800px"/><br />
-<strong>EXAMPLE OF READS QUALITY AFTER TRIMMING</strong><br />
-We can see that most detected adapter sequences have been adequately
-removed after trimming.<br />
-<img src="img/FASTQC_after2.png" alt="module_spider" width="800px"/>
-</figure>
+# first column is the transcript ID, second column is the gene ID, third column is the gene symbol
+zcat GCF_023897955.1_iqSchGreg1.2_genomic.gtf.gz | awk -F &quot;\t&quot; &#39;BEGIN{OFS=&quot;\t&quot;}{if($3==&quot;transcript&quot;){split($9, a, &quot;\&quot;&quot;); print a[4],a[2],a[8]}}&#39; &gt; tx2gene.gregaria.csv</code></pre>
 </div>
-<div id="check-for-sequencing-data-contamination"
-class="section level1">
-<h1>Check for sequencing data contamination</h1>
-<p>Contamination is likely bound to happen during experiments, tissue
-acquisition, RNA extraction and library preparation. One can hope to
-reduces as much as possible its impact on the final sequencing data
-which can affect the mapping rate success.</p>
-<div id="screen-for-microbial-contamination" class="section level2">
-<h2>Screen for microbial contamination</h2>
-<p>We decided to screen for microbes sequences present in the trimmed
-paired end reads fastq.gz files using the tool <a
-href="https://kaiju.binf.ku.dk/"><code>Kaiju</code></a>.
-<code>Kaiju</code> translates metatranscriptomics sequencing reads into
-six possible reading frames and searches for maximum exact matches of
-amino acid sequences in a given annotation protein database.</p>
-<p>We used the most extensive microbial database <code>nr_euk</code>
-which encompass the subset of NCBI BLAST nr database containing all
-proteins belonging to Archaea, Bacteria, Viruses, Fungi and microbial
-Eukaryotes.</p>
-<pre><code>## Downloading the 2022-03-10 database from Kaiju webserver
-wget https://kaiju.binf.ku.dk/database/kaiju_db_nr_euk_2022-03-10.tgz</code></pre>
-<p>To run <code>Kaiju</code> we used the following
-<code>Snakemake</code> rule:</p>
-<pre><code>########################################
-# Snakefile rule
-########################################
-
-rule kaiju:
-        input:
-                read1 = OUTdir + &quot;/trimming/{locust}_trim1P_R1_001.fastq.gz&quot;,
-                read2 = OUTdir + &quot;/trimming/{locust}_trim2P_R2_001.fastq.gz&quot;,
-                database = KAIJUdir + &quot;/kaiju_db_nr_euk.fmi&quot;,
-                taxonid = KAIJUdir + &quot;/nodes.dmp&quot;,
-        output:
-                report = OUTdir + &quot;/kaiju/{locust}_kaiju.out&quot;,
-        shell:
-                &quot;&quot;&quot;
-                ml GCC/8.3.0  OpenMPI/3.1.4 Kaiju/1.7.3-Python-3.7.4
-                kaiju -z 12 -v -a greedy -f {input.database} -t {input.taxonid} -i {input.read1} -j {input.read2} -o {output.report}
-                &quot;&quot;&quot;
-                
-        
-########################################
-# Parameters in the cluster.json file
-########################################
-
-    &quot;kaiju&quot;:
-    {
-        &quot;cpus-per-task&quot; : 6,
-        &quot;partition&quot; : &quot;medium&quot;,
-        &quot;ntasks&quot;: 2,
-        &quot;mem&quot; : &quot;200G&quot;,
-        &quot;time&quot;: &quot;0-12:00:00&quot;
-    },
-</code></pre>
+<div id="sample-sheet" class="section level3">
+<h3>Sample sheet</h3>
+<p>DESeq2 needs a sample sheet that describes the samples
+characteristics: SampleName, FileName (…counts.txt), and subsequently
+anything that can be used for <strong>statistical design</strong> such
+as RearingCondition, replicates, tissue, time points, etc. in the
+form.</p>
+<p>The design indicates how to model the samples: in the model we need
+to specify what we want to measure and what we want to
+<strong>control</strong>.</p>
 </div>
-<div id="visualize-the-metatranscriptomics-result"
-class="section level2">
-<h2>Visualize the metatranscriptomics result</h2>
-<p><code>Kaiju</code> output can be exported to be view in a interactive
-and hierarchical multi-layered pie-charts using <a
-href="https://github.com/marbl/Krona/wiki"><code>Krona</code></a>. The
-results are generated by a .html page. We followed the <a
-href="https://github.com/bioinformatics-centre/kaiju">Kaiju tutorial</a>
-on the Github page:</p>
-<pre><code>## Need to have Kaiju loaded
-ml GCC/8.3.0  OpenMPI/3.1.4 Kaiju/1.7.3-Python-3.7.4
-kaiju2krona -t nodes.dmp -n names.dmp -i {locust}_kaiju.out -o {locust}_kaiju.out.krona
-
-## Need to use Krona functions
-ml GCCcore/8.2.0 KronaTools/2.7.1
-ktImportText -o {locust}_kaiju.out.html {locust}_kaiju.out.krona</code></pre>
 </div>
-<div id="filter-for-rrna" class="section level2">
-<h2>Filter for rRNA</h2>
+</div>
+<div id="differential-expression-analysis" class="section level1">
+<h1>Differential expression analysis</h1>
+<div id="import-input-count-data" class="section level2">
+<h2>Import input count data</h2>
+<p>We start by reading the sample sheet.</p>
+<pre class="r"><code>## import the sample sheet that indicates Rearing Conditions and Tissue origins
+sampletable &lt;- fread(&quot;data/piceifrons/list/HeadSPICE.txt&quot;)
+# add the sample names as row names (it is needed for some of the DESeq
+# functions)
+rownames(sampletable) &lt;- sampletable$SampleName
+
+# Make sure discriminant variables are factor
+sampletable$RearingCondition &lt;- as.factor(sampletable$RearingCondition)
+sampletable$Tissue &lt;- as.factor(sampletable$Tissue)
+dim(sampletable)</code></pre>
+<pre><code>FALSE [1] 10  4</code></pre>
+<p>Then we obtain the output from <code>STAR GeneCount</code> and import
+here individually using the sampletable as a reference to fetch them. We
+also filter the lowly expressed genes to avoid noisy data.</p>
+<pre class="r"><code># Read in the two-column data.frame linking transcript id (column 1) to gene id
+# (column 2)
+tx2gene &lt;- read.table(&quot;data/piceifrons/list/tx2gene.piceifrons.csv&quot;, sep = &quot;\t&quot;,
+    header = F)
+
+satoshi &lt;- DESeqDataSetFromHTSeqCount(sampleTable = sampletable, directory = &quot;data/piceifrons/STAR_counts_4thcol&quot;,
+    design = ~RearingCondition)
+
+satoshi</code></pre>
+<pre><code>FALSE class: DESeqDataSet 
+FALSE dim: 28731 10 
+FALSE metadata(1): version
+FALSE assays(1): counts
+FALSE rownames(28731): LOC124794980 LOC124795035 ... LOC124774866
+FALSE   LOC124774858
+FALSE rowData names(0):
+FALSE colnames(10): SPICE_G_Crd_SRR11815268 SPICE_G_Crd_SRR11815269 ...
+FALSE   SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815274
+FALSE colData names(2): Tissue RearingCondition</code></pre>
+<pre class="r"><code># keep genes for which sums of raw counts across experimental samples is &gt; 5
+satoshi &lt;- satoshi[rowSums(counts(satoshi)) &gt; 5, ]
+nrow(satoshi)</code></pre>
+<pre><code>FALSE [1] 14932</code></pre>
+<pre class="r"><code># set a standard to be compared to (hatchling) ONLY IF WE HAVE A CONTROL
+# satoshi$Tissue &lt;- relevel(satoshi$Tissue, ref = &#39;Whole_body&#39;)</code></pre>
+</div>
+<div id="run-the-model-fit-deseq2" class="section level2">
+<h2>Run the model Fit DESeq2</h2>
+<p>Run DESeq2 analysis using <code>DESeq</code>, which performs (1)
+estimation of size factors, (2) estimation of dispersion, then (3)
+Negative Binomial GLM fitting and Wald statistics. The results tables
+(log2 fold changes and p-values) can be generated using the results
+function (<a
+href="https://ycl6.gitbook.io/guide-to-rna-seq-analysis/differential-expression-analysis/differential-gene-expression/dge-analysis-with-star-input">copied
+from online chapter</a>)</p>
+<pre class="r"><code># Fit the statistical model
+shigeru &lt;- DESeq(satoshi)
+cbind(resultsNames(shigeru))</code></pre>
+<pre><code>FALSE      [,1]                                  
+FALSE [1,] &quot;Intercept&quot;                           
+FALSE [2,] &quot;RearingCondition_Isolated_vs_Crowded&quot;</code></pre>
+<pre class="r"><code># Here we plot the adjusted p-value means corrected for multiple testing (FDR
+# padj)
+res_shigeru &lt;- results(shigeru)
+
+# We only keep genes with an adjusted p-value cutoff &gt; 0.05 by changing the
+# default significance cut-off sum(res_shigeru$padj &lt; 0.05, na.rm = TRUE)
+
+brock &lt;- results(shigeru, name = &quot;RearingCondition_Isolated_vs_Crowded&quot;, alpha = 0.05)
+summary(brock)</code></pre>
+<pre><code>FALSE 
+FALSE out of 14932 with nonzero total read count
+FALSE adjusted p-value &lt; 0.05
+FALSE LFC &gt; 0 (up)       : 254, 1.7%
+FALSE LFC &lt; 0 (down)     : 404, 2.7%
+FALSE outliers [1]       : 497, 3.3%
+FALSE low counts [2]     : 1156, 7.7%
+FALSE (mean count &lt; 2)
+FALSE [1] see &#39;cooksCutoff&#39; argument of ?results
+FALSE [2] see &#39;independentFiltering&#39; argument of ?results</code></pre>
+<pre class="r"><code># Details of what is each column meaning in our final result
+mcols(brock)$description</code></pre>
+<pre><code>FALSE [1] &quot;mean of normalized counts for all samples&quot;                   
+FALSE [2] &quot;log2 fold change (MLE): RearingCondition Isolated vs Crowded&quot;
+FALSE [3] &quot;standard error: RearingCondition Isolated vs Crowded&quot;        
+FALSE [4] &quot;Wald statistic: RearingCondition Isolated vs Crowded&quot;        
+FALSE [5] &quot;Wald test p-value: RearingCondition Isolated vs Crowded&quot;     
+FALSE [6] &quot;BH adjusted p-values&quot;</code></pre>
+<pre class="r"><code>head(brock)</code></pre>
+<pre><code>FALSE log2 fold change (MLE): RearingCondition Isolated vs Crowded 
+FALSE Wald test p-value: RearingCondition Isolated vs Crowded 
+FALSE DataFrame with 6 rows and 6 columns
+FALSE               baseMean log2FoldChange     lfcSE      stat      pvalue
+FALSE              &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;
+FALSE LOC124796288   2.37306      -3.529621  1.337214 -2.639533 8.30204e-03
+FALSE LOC124796294   1.14866      -2.301130  2.134062 -1.078286 2.80906e-01
+FALSE LOC124796332   9.18581      -0.600937  0.715740 -0.839603 4.01131e-01
+FALSE LOC124793320 133.76396      -1.759458  0.613514 -2.867835 4.13290e-03
+FALSE LOC124712404  29.00252      -1.601387  1.002767 -1.596968          NA
+FALSE LOC124798649  11.86003       5.205485  0.872809  5.964059 2.46048e-09
+FALSE                     padj
+FALSE                &lt;numeric&gt;
+FALSE LOC124796288 1.10023e-01
+FALSE LOC124796294          NA
+FALSE LOC124796332 7.40311e-01
+FALSE LOC124793320 7.03370e-02
+FALSE LOC124712404          NA
+FALSE LOC124798649 6.40640e-07</code></pre>
+<p>For this data set after FDR filtering of 0.05, we have 254 genes
+up-regulates and 404 genes down-regulated in crowded versus solitary
+individuals.</p>
+</div>
+</div>
+<div id="visualizing-and-exploring-the-results" class="section level1">
+<h1>Visualizing and exploring the results</h1>
+<div id="pca-of-the-samples" class="section level2">
+<h2>PCA of the samples</h2>
+<p>We transformed the data for visualization by comparing both
+recommended <strong>rlog</strong> (Regularized log) or
+<strong>vst</strong> (Variance Stabilizing Transformation)
+transformations. Both options produce log2 scale data which has been
+normalized by the DESeq2 method with respect to library size.</p>
+<pre class="r"><code># Try with the vst transformation
+shigeru_vsd &lt;- vst(shigeru)
+shigeru_rlog &lt;- rlog(shigeru)</code></pre>
+<p>Plot the PCA rlog</p>
+<pre class="r"><code># Create the pca on the defined groups
+pcaData &lt;- plotPCA(object = shigeru_rlog, intgroup = c(&quot;RearingCondition&quot;, &quot;Tissue&quot;),
+    returnData = TRUE)
+
+# Store the information for each axis variance in %
+percentVar &lt;- round(100 * attr(pcaData, &quot;percentVar&quot;))
+
+# Make sure that the discriminant variable are in factor for using shape and
+# color later on
+pcaData$RearingCondition &lt;- factor(pcaData$RearingCondition, levels = c(&quot;Crowded&quot;,
+    &quot;Isolated&quot;), labels = c(&quot;crowded piceifrons&quot;, &quot;isolated piceifrons&quot;))
+levels(pcaData$RearingCondition)</code></pre>
+<pre><code>FALSE [1] &quot;crowded piceifrons&quot;  &quot;isolated piceifrons&quot;</code></pre>
+<pre class="r"><code># pcaData$Tissue&lt;-factor(pcaData1$Tissue,levels=c(&#39;Whole_body&#39;,&#39;Optical_lobes&#39;),
+# labels=c(&#39;Hatchling&#39;, &#39;OLB&#39;)) levels(pcaData$Tissue)
+
+
+ggplot(pcaData, aes(PC1, PC2, color = RearingCondition)) + geom_point(size = 4) +
+    xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) + ylab(paste0(&quot;PC2: &quot;, percentVar[2],
+    &quot;% variance&quot;)) + scale_color_manual(values = c(&quot;blue&quot;, &quot;red&quot;)) + geom_text_repel(aes(label = name),
+    nudge_x = -1, nudge_y = 0.2, size = 3) + coord_fixed() + theme_bw() + theme(legend.title = element_blank()) +
+    theme(legend.text = element_text(face = &quot;bold&quot;, size = 15)) + theme(axis.text = element_text(size = 15)) +
+    theme(axis.title = element_text(size = 16)) + ggtitle(&quot;PCA on S. piceifrons head tissues&quot;,
+    subtitle = &quot;rlog transformation&quot;) + xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) +
+    ylab(paste0(&quot;PC2: &quot;, percentVar[2], &quot;% variance&quot;))</code></pre>
+<p><img src="figure/deg-workflow.Rmd/DESeq2%20PCA%20rlog-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot the PCA vsd</p>
+<pre class="r"><code># Create the pca on the defined groups
+pcaData &lt;- plotPCA(object = shigeru_vsd, intgroup = c(&quot;RearingCondition&quot;, &quot;Tissue&quot;),
+    returnData = TRUE)
+
+# Store the information for each axis variance in %
+percentVar &lt;- round(100 * attr(pcaData, &quot;percentVar&quot;))
+
+# Make sure that the discriminant variable are in factor for using shape and
+# color later on
+pcaData$RearingCondition &lt;- factor(pcaData$RearingCondition, levels = c(&quot;Crowded&quot;,
+    &quot;Isolated&quot;), labels = c(&quot;crowded piceifrons&quot;, &quot;isolated piceifrons&quot;))
+levels(pcaData$RearingCondition)</code></pre>
+<pre><code>FALSE [1] &quot;crowded piceifrons&quot;  &quot;isolated piceifrons&quot;</code></pre>
+<pre class="r"><code># pcaData$Tissue&lt;-factor(pcaData1$Tissue,levels=c(&#39;Whole_body&#39;,&#39;Optical_lobes&#39;),
+# labels=c(&#39;Hatchling&#39;, &#39;OLB&#39;)) levels(pcaData$Tissue)
+
+
+ggplot(pcaData, aes(PC1, PC2, color = RearingCondition)) + geom_point(size = 4) +
+    xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) + ylab(paste0(&quot;PC2: &quot;, percentVar[2],
+    &quot;% variance&quot;)) + scale_color_manual(values = c(&quot;blue&quot;, &quot;red&quot;)) + geom_text_repel(aes(label = name),
+    nudge_x = -1, nudge_y = 0.2, size = 3) + coord_fixed() + theme_bw() + theme(legend.title = element_blank()) +
+    theme(legend.text = element_text(face = &quot;bold&quot;, size = 15)) + theme(axis.text = element_text(size = 15)) +
+    theme(axis.title = element_text(size = 16)) + ggtitle(&quot;PCA on S. piceifrons head tissues&quot;,
+    subtitle = &quot;vst transformation&quot;) + xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) +
+    ylab(paste0(&quot;PC2: &quot;, percentVar[2], &quot;% variance&quot;))</code></pre>
+<p><img src="figure/deg-workflow.Rmd/DESeq2%20PCA%20vsd-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ma-plot" class="section level2">
+<h2>MA-plot</h2>
+<p>This plot allows us to show the log2 fold changes over the mean of
+normalized counts for all the samples. Points will be colored in red if
+the adjusted p-value is less than 0.05 and the log2 fold change is
+bigger than 1. In blue, will be the reverse for the log2 fold
+change.</p>
+<pre class="r"><code># include the log2FoldChange shrinkage use to visualize gene ranking
+de_shrink &lt;- lfcShrink(dds = shigeru, coef = &quot;RearingCondition_Isolated_vs_Crowded&quot;,
+    type = &quot;apeglm&quot;)
+
+# Ma plot
+maplot &lt;- ggmaplot(de_shrink, fdr = 0.05, fc = 1, size = 1.5, palette = c(&quot;#B31B21&quot;,
+    &quot;#1465AC&quot;, &quot;darkgray&quot;), genenames = as.vector(rownames(de_shrink$name)), top = 0,
+    legend = &quot;top&quot;, label.select = NULL) + coord_cartesian(xlim = c(0, 18)) + scale_y_continuous(limits = c(-8,
+    8)) + theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 15),
+    axis.title.x = element_text(size = 17), axis.title.y = element_text(size = 17),
+    axis.line = element_line(size = 1, colour = &quot;gray20&quot;), axis.ticks = element_line(size = 1,
+        colour = &quot;gray20&quot;)) + guides(color = guide_legend(override.aes = list(size = c(3,
+    3, 3)))) + theme(legend.position = c(0.7, 0.12), legend.text = element_text(size = 14,
+    face = &quot;bold&quot;), legend.background = element_rect(fill = &quot;transparent&quot;)) + theme(plot.title = element_text(size = 18,
+    colour = &quot;gray30&quot;, face = &quot;bold&quot;, hjust = 0.06, vjust = -5)) + labs(title = &quot;MA-plot for the shrunken log2 fold changes in the head&quot;)
+maplot</code></pre>
+<p><img src="figure/deg-workflow.Rmd/DESeq2%20MA%20plot%20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The <code>EnhancedVolcano</code> helps visualise the resulst of
+differential expression analysis.</p>
+<pre class="r"><code>keyvals &lt;- ifelse(res_shigeru$log2FoldChange &gt;= 1 &amp; res_shigeru$padj &lt;= 0.05, &quot;red&quot;,
+    ifelse(res_shigeru$log2FoldChange &lt;= -1 &amp; res_shigeru$padj &lt;= 0.05, &quot;green&quot;,
+        &quot;black&quot;))
+
+keyvals[is.na(keyvals)] &lt;- &quot;black&quot;
+names(keyvals)[keyvals == &quot;red&quot;] &lt;- &quot;Upregulated&quot;
+names(keyvals)[keyvals == &quot;green&quot;] &lt;- &quot;Downregulated&quot;
+names(keyvals)[keyvals == &quot;black&quot;] &lt;- &quot;NS&quot;
+
+EnhancedVolcano(res_shigeru, lab = rownames(res_shigeru), x = &quot;log2FoldChange&quot;, y = &quot;padj&quot;,
+    pCutoff = 0.05, FCcutoff = 1, pointSize = 3, labSize = 3, colAlpha = 4/5, colCustom = keyvals,
+    drawConnectors = FALSE)</code></pre>
+<p><img src="figure/deg-workflow.Rmd/DESeq2%20Volcano%20plot%20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1029,40 +1022,68 @@ FALSE locale:
 FALSE [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 FALSE 
 FALSE attached base packages:
-FALSE [1] stats     graphics  grDevices utils     datasets  methods   base     
+FALSE [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+FALSE [8] base     
 FALSE 
 FALSE other attached packages:
-FALSE  [1] reshape2_1.4.4   ggthemes_4.2.4   plotly_4.10.0    DT_0.26         
-FALSE  [5] forcats_0.5.2    stringr_1.4.1    dplyr_1.0.10     purrr_0.3.5     
-FALSE  [9] readr_2.1.3      tidyr_1.2.1      tibble_3.1.8     ggplot2_3.3.6   
-FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40       workflowr_1.7.0 
+FALSE  [1] EnhancedVolcano_1.14.0      ggrepel_0.9.1              
+FALSE  [3] ggpubr_0.4.0                apeglm_1.18.0              
+FALSE  [5] data.table_1.14.4           DESeq2_1.36.0              
+FALSE  [7] SummarizedExperiment_1.26.1 Biobase_2.56.0             
+FALSE  [9] MatrixGenerics_1.8.1        matrixStats_0.62.0         
+FALSE [11] GenomicRanges_1.48.0        GenomeInfoDb_1.32.4        
+FALSE [13] IRanges_2.31.2              S4Vectors_0.34.0           
+FALSE [15] BiocGenerics_0.42.0         reshape2_1.4.4             
+FALSE [17] ggthemes_4.2.4              plotly_4.10.0              
+FALSE [19] DT_0.26                     forcats_0.5.2              
+FALSE [21] stringr_1.4.1               dplyr_1.0.10               
+FALSE [23] purrr_0.3.5                 readr_2.1.3                
+FALSE [25] tidyr_1.2.1                 tibble_3.1.8               
+FALSE [27] ggplot2_3.3.6               tidyverse_1.3.2            
+FALSE [29] rmdformats_1.0.4            knitr_1.40                 
+FALSE [31] workflowr_1.7.0            
 FALSE 
 FALSE loaded via a namespace (and not attached):
-FALSE  [1] httr_1.4.4          sass_0.4.2          viridisLite_0.4.1  
-FALSE  [4] jsonlite_1.8.3      modelr_0.1.9        bslib_0.4.0        
-FALSE  [7] assertthat_0.2.1    getPass_0.2-2       googlesheets4_1.0.1
-FALSE [10] cellranger_1.1.0    yaml_2.3.6          pillar_1.8.1       
-FALSE [13] backports_1.4.1     glue_1.6.2          digest_0.6.30      
-FALSE [16] promises_1.2.0.1    rvest_1.0.3         colorspace_2.0-3   
-FALSE [19] plyr_1.8.7          htmltools_0.5.3     httpuv_1.6.6       
-FALSE [22] pkgconfig_2.0.3     broom_1.0.1         haven_2.5.1        
-FALSE [25] bookdown_0.29       scales_1.2.1        processx_3.7.0     
-FALSE [28] whisker_0.4         later_1.3.0         tzdb_0.3.0         
-FALSE [31] git2r_0.30.1        googledrive_2.0.0   generics_0.1.3     
-FALSE [34] ellipsis_0.3.2      cachem_1.0.6        withr_2.5.0        
-FALSE [37] lazyeval_0.2.2      cli_3.4.1           magrittr_2.0.3     
-FALSE [40] crayon_1.5.2        readxl_1.4.1        evaluate_0.17      
-FALSE [43] ps_1.7.1            fs_1.5.2            fansi_1.0.3        
-FALSE [46] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
-FALSE [49] hms_1.1.2           formatR_1.12        gargle_1.2.1       
-FALSE [52] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
-FALSE [55] callr_3.7.2         compiler_4.2.1      jquerylib_0.1.4    
-FALSE [58] rlang_1.0.6         grid_4.2.1          rstudioapi_0.14    
-FALSE [61] htmlwidgets_1.5.4   rmarkdown_2.17      gtable_0.3.1       
-FALSE [64] DBI_1.1.3           R6_2.5.1            lubridate_1.8.0    
-FALSE [67] fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.3    
-FALSE [70] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
-FALSE [73] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
+FALSE   [1] readxl_1.4.1           backports_1.4.1        plyr_1.8.7            
+FALSE   [4] lazyeval_0.2.2         splines_4.2.1          BiocParallel_1.30.4   
+FALSE   [7] digest_0.6.30          htmltools_0.5.3        fansi_1.0.3           
+FALSE  [10] magrittr_2.0.3         memoise_2.0.1          googlesheets4_1.0.1   
+FALSE  [13] tzdb_0.3.0             Biostrings_2.64.1      annotate_1.74.0       
+FALSE  [16] modelr_0.1.9           bdsmatrix_1.3-6        colorspace_2.0-3      
+FALSE  [19] blob_1.2.3             rvest_1.0.3            haven_2.5.1           
+FALSE  [22] xfun_0.34              callr_3.7.2            crayon_1.5.2          
+FALSE  [25] RCurl_1.98-1.9         jsonlite_1.8.3         genefilter_1.78.0     
+FALSE  [28] survival_3.4-0         glue_1.6.2             gtable_0.3.1          
+FALSE  [31] gargle_1.2.1           zlibbioc_1.42.0        XVector_0.36.0        
+FALSE  [34] DelayedArray_0.22.0    car_3.1-1              abind_1.4-5           
+FALSE  [37] scales_1.2.1           mvtnorm_1.1-3          DBI_1.1.3             
+FALSE  [40] rstatix_0.7.0          Rcpp_1.0.9             viridisLite_0.4.1     
+FALSE  [43] xtable_1.8-4           emdbook_1.3.12         bit_4.0.4             
+FALSE  [46] htmlwidgets_1.5.4      httr_1.4.4             RColorBrewer_1.1-3    
+FALSE  [49] ellipsis_0.3.2         farver_2.1.1           pkgconfig_2.0.3       
+FALSE  [52] XML_3.99-0.11          sass_0.4.2             dbplyr_2.2.1          
+FALSE  [55] locfit_1.5-9.6         utf8_1.2.2             labeling_0.4.2        
+FALSE  [58] tidyselect_1.2.0       rlang_1.0.6            later_1.3.0           
+FALSE  [61] AnnotationDbi_1.58.0   munsell_0.5.0          cellranger_1.1.0      
+FALSE  [64] tools_4.2.1            cachem_1.0.6           cli_3.4.1             
+FALSE  [67] generics_0.1.3         RSQLite_2.2.18         broom_1.0.1           
+FALSE  [70] evaluate_0.17          fastmap_1.1.0          yaml_2.3.6            
+FALSE  [73] processx_3.7.0         bit64_4.0.5            fs_1.5.2              
+FALSE  [76] KEGGREST_1.36.3        whisker_0.4            formatR_1.12          
+FALSE  [79] xml2_1.3.3             compiler_4.2.1         rstudioapi_0.14       
+FALSE  [82] png_0.1-7              ggsignif_0.6.4         reprex_2.0.2          
+FALSE  [85] geneplotter_1.74.0     bslib_0.4.0            stringi_1.7.8         
+FALSE  [88] highr_0.9              ps_1.7.1               lattice_0.20-45       
+FALSE  [91] Matrix_1.5-1           vctrs_0.5.0            pillar_1.8.1          
+FALSE  [94] lifecycle_1.0.3        jquerylib_0.1.4        bitops_1.0-7          
+FALSE  [97] httpuv_1.6.6           R6_2.5.1               bookdown_0.29         
+FALSE [100] promises_1.2.0.1       codetools_0.2-18       MASS_7.3-58.1         
+FALSE [103] assertthat_0.2.1       rprojroot_2.0.3        withr_2.5.0           
+FALSE [106] GenomeInfoDbData_1.2.8 parallel_4.2.1         hms_1.1.2             
+FALSE [109] grid_4.2.1             coda_0.19-4            rmarkdown_2.17        
+FALSE [112] carData_3.0-5          googledrive_2.0.0      git2r_0.30.1          
+FALSE [115] getPass_0.2-2          bbmle_1.0.25           numDeriv_2016.8-1.1   
+FALSE [118] lubridate_1.8.0</code></pre>
 </div>
 </div>
 </div>
