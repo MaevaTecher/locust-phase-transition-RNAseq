@@ -27,7 +27,7 @@ navbar:
       - text: "DEG-EdgeR workflow"
         href: edgeR-workflow.html
       - text: "DEseq2-EdgeR overlap"
-        href: dge-overlap.html
+        href: deg-overlap.html
   - text: "Analysis & Results"
     menu:
       - text: Mapping success
