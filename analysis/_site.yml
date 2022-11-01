@@ -26,7 +26,7 @@ navbar:
         href: deseq-workflow.html
       - text: "DEG-EdgeR workflow"
         href: edgeR-workflow.html
-      - text: "DEseq23-EdgeR overlap"
+      - text: "DEseq2-EdgeR overlap"
         href: dge-overlap.html
   - text: "Analysis & Results"
     menu:
