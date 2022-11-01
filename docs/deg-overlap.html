@@ -625,15 +625,15 @@ data/piceifrons/DEseq2_SPICE_HEAD
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree25a2ba3f023fa73744c420d87d31aae63e8799e1targetblank25a2ba3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreec54652554d66860d9bdfb59c0c4b8025f132f54etargetblankc546525a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/25a2ba3f023fa73744c420d87d31aae63e8799e1" target="_blank">25a2ba3</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/c54652554d66860d9bdfb59c0c4b8025f132f54e" target="_blank">c546525</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree25a2ba3f023fa73744c420d87d31aae63e8799e1targetblank25a2ba3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreec54652554d66860d9bdfb59c0c4b8025f132f54etargetblankc546525a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -643,7 +643,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/25a2ba3f023fa73744c420d87d31aae63e8799e1" target="_blank">25a2ba3</a>.
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/c54652554d66860d9bdfb59c0c4b8025f132f54e" target="_blank">c546525</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -683,10 +683,6 @@ Untracked files:
     Untracked:  data/piceifrons/DE-genes_strict_[SPICE_HEAD]_[238_genes].txt
     Untracked:  data/piceifrons/DEseq2_SPICE_HEAD/DE-genes_[SPICE_HEAD_DEseq2]_[378_genes].txt
     Untracked:  data/piceifrons/edgeR_SPICE_HEAD/DE-genes_[SPICE_HEAD_edgeR]_[342_genes].txt
-
-Unstaged changes:
-    Deleted:    data/piceifrons/DEseq2_SPICE_HEAD/SPICE_HEAD_report.html
-    Modified:   data/piceifrons/edgeR_SPICE_HEAD/SPICE_HEAD_report.html
 
 </code></pre>
 <p>
@@ -737,6 +733,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/c54652554d66860d9bdfb59c0c4b8025f132f54e/analysis/deg-overlap.Rmd" target="_blank">c546525</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+workflowr::wflow_publish(c("../../analysis/deg-overlap.Rmd",
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/05f27e6e536e193fe3b1a228b9b03c443b6ee3bf/docs/deg-overlap.html" target="_blank">05f27e6</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/25a2ba3f023fa73744c420d87d31aae63e8799e1/analysis/deg-overlap.Rmd" target="_blank">25a2ba3</a>
 </td>
 <td>
@@ -776,6 +806,7 @@ library(&quot;ggrepel&quot;)
 library(&quot;EnhancedVolcano&quot;)
 library(&quot;SARTools&quot;)
 library(&quot;pheatmap&quot;)
+library(&quot;VennDiagram&quot;)
 
 ## Global options
 options(max.print=&quot;10000&quot;)
@@ -830,46 +861,76 @@ write.table(table_DEseq2_DE, file = Filename, row.names = FALSE, quote = FALSE, 
 class="section level1">
 <h1>Calculate similarities between DEseq2 and edgeR</h1>
 <pre class="r"><code>table_edgeR_DE$Coder &lt;- &quot;edgeR&quot;
-table_edgeR_DE &lt;- table_edgeR_DE[c(&quot;Coder&quot;, &quot;Id&quot;)]
+table_edgeR_DE  &lt;- table_edgeR_DE[c(&quot;Coder&quot;, &quot;Id&quot;)]
 table_DEseq2_DE$Coder &lt;- &quot;DEseq2&quot;
-table_DEseq2_DE &lt;- table_DEseq2_DE[c(&quot;Coder&quot;, &quot;Id&quot;)]
+table_DEseq2_DE  &lt;- table_DEseq2_DE[c(&quot;Coder&quot;, &quot;Id&quot;)]
 table5 &lt;- rbind(table_edgeR_DE, table_DEseq2_DE)
 
-dupsBetweenGroups &lt;- function(df, idcol) {
+dupsBetweenGroups &lt;- function (df, idcol) {
     datacols &lt;- setdiff(names(df), idcol)
     sortorder &lt;- do.call(order, df)
-    df &lt;- df[sortorder, ]
+    df &lt;- df[sortorder,]
     dupWithin &lt;- duplicated(df)
     dupBetween = rep(NA, nrow(df))
-    dupBetween[!dupWithin] &lt;- duplicated(df[!dupWithin, datacols])
-    dupBetween[!dupWithin] &lt;- duplicated(df[!dupWithin, datacols], fromLast = TRUE) |
-        dupBetween[!dupWithin]
+    dupBetween[!dupWithin] &lt;- duplicated(df[!dupWithin,datacols])
+    dupBetween[!dupWithin] &lt;- duplicated(df[!dupWithin,datacols], fromLast=TRUE) | dupBetween[!dupWithin]
     goodIdx &lt;- !is.na(dupBetween)
     goodVals &lt;- c(NA, dupBetween[goodIdx])
-    fillIdx &lt;- cumsum(goodIdx) + 1
+    fillIdx &lt;- cumsum(goodIdx)+1
     dupBetween &lt;- goodVals[fillIdx]
     dupBetween[sortorder] &lt;- dupBetween
-    return(dupBetween)
-}
+    return(dupBetween)}
 dupRows &lt;- dupsBetweenGroups(table5, &quot;Coder&quot;)
-table5 &lt;- cbind(table5, dup = dupRows)
-table5 &lt;- subset(table5, Coder == &quot;edgeR&quot; &amp; dup == TRUE, select = -Coder)
-setwd(&quot;..&quot;)
-Filename &lt;- paste(&quot;DE-genes_strict_[&quot;, projectName, &quot;]_[&quot;, length(table5[[1]]), &quot;_genes].txt&quot;,
-    sep = &quot;&quot;)
-write.table(table5, file = Filename, row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
+table5 &lt;- cbind(table5, dup=dupRows)
+table5 &lt;- subset(table5, Coder==&quot;edgeR&quot; &amp; dup==TRUE, select=-Coder)
+setwd(&#39;..&#39;)
+Filename &lt;- paste(&quot;DE-genes_strict_[&quot;, projectName, &quot;]_[&quot;, length(table5[[1]]), &quot;_genes].txt&quot;, sep = &quot;&quot;)
+write.table(table5, file = Filename, row.names = FALSE, quote = FALSE, sep=&quot;\t&quot;)
 
-# Print result statistics
+#Print result statistics
 cat(&quot;Amongst a total of&quot;, length(table_edgeR[[1]]), &quot;genes,
-DEseq2 found&quot;, length(table_DEseq2_DE[[1]]),
-    &quot;differentially expressed genes. 
-EdgeR found&quot;, length(table_edgeR_DE[[1]]),
-    &quot;differentially expressed genes.
+DEseq2 found&quot;, length(table_DEseq2_DE[[1]]), &quot;differentially expressed genes. 
+EdgeR found&quot;,  length(table_edgeR_DE[[1]]), &quot;differentially expressed genes.
 A total of&quot;, length(table5[[1]]), &quot;genes was found by both programs.&quot;)</code></pre>
 <pre><code>FALSE Amongst a total of 28731 genes,
 FALSE DEseq2 found 378 differentially expressed genes. 
 FALSE EdgeR found 342 differentially expressed genes.
 FALSE A total of 238 genes was found by both programs.</code></pre>
+<pre class="r"><code>test_a_vector &lt;- as.vector(unlist(table_DEseq2_DE$Id))
+test_b_vector &lt;- as.vector(unlist(table_edgeR_DE$Id))
+
+library(&quot;RColorBrewer&quot;)
+myCol &lt;- brewer.pal(2, &quot;Pastel2&quot;)
+
+venn.diagram(
+        x = list(test_a_vector, test_b_vector),
+        category.names = c(&quot;DEseq2&quot; , &quot;EdgeR&quot;),
+        filename = &#39;venn_diagramm.png&#39;,
+        output=TRUE,
+        
+        # Output features
+        imagetype=&quot;png&quot; ,
+        resolution = 300,
+        compression = &quot;lzw&quot;,
+        
+        # Circles
+        lwd = 2,
+        lty = &#39;blank&#39;,
+        fill = c(&quot;red&quot;, &quot;blue&quot;),
+        
+        # Numbers
+        cex = 3,
+        fontface = &quot;bold&quot;,
+        fontfamily = &quot;sans&quot;,
+        
+        # Set names
+        cat.cex = 1.5,
+        cat.fontface = &quot;bold&quot;,
+        cat.default.pos = &quot;outer&quot;,
+        cat.fontfamily = &quot;sans&quot;
+)</code></pre>
+<pre><code>FALSE [1] 1</code></pre>
+<p><img src="../data/piceifrons/venn_diagramm.png" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -891,28 +952,30 @@ FALSE locale:
 FALSE [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 FALSE 
 FALSE attached base packages:
-FALSE [1] stats4    stats     graphics  grDevices utils     datasets  methods  
-FALSE [8] base     
+FALSE [1] grid      stats4    stats     graphics  grDevices utils     datasets 
+FALSE [8] methods   base     
 FALSE 
 FALSE other attached packages:
-FALSE  [1] pheatmap_1.0.12             SARTools_1.8.1             
-FALSE  [3] kableExtra_1.3.4            edgeR_3.38.4               
-FALSE  [5] limma_3.52.4                ashr_2.2-54                
-FALSE  [7] EnhancedVolcano_1.14.0      ggrepel_0.9.1              
-FALSE  [9] ggpubr_0.4.0                apeglm_1.18.0              
-FALSE [11] data.table_1.14.4           DESeq2_1.36.0              
-FALSE [13] SummarizedExperiment_1.26.1 Biobase_2.56.0             
-FALSE [15] MatrixGenerics_1.8.1        matrixStats_0.62.0         
-FALSE [17] GenomicRanges_1.48.0        GenomeInfoDb_1.32.4        
-FALSE [19] IRanges_2.31.2              S4Vectors_0.34.0           
-FALSE [21] BiocGenerics_0.42.0         reshape2_1.4.4             
-FALSE [23] ggthemes_4.2.4              plotly_4.10.0              
-FALSE [25] DT_0.26                     forcats_0.5.2              
-FALSE [27] stringr_1.4.1               dplyr_1.0.10               
-FALSE [29] purrr_0.3.5                 readr_2.1.3                
-FALSE [31] tidyr_1.2.1                 tibble_3.1.8               
-FALSE [33] ggplot2_3.3.6               tidyverse_1.3.2            
-FALSE [35] rmdformats_1.0.4            knitr_1.40                 
+FALSE  [1] RColorBrewer_1.1-3          VennDiagram_1.7.3          
+FALSE  [3] futile.logger_1.4.3         pheatmap_1.0.12            
+FALSE  [5] SARTools_1.8.1              kableExtra_1.3.4           
+FALSE  [7] edgeR_3.38.4                limma_3.52.4               
+FALSE  [9] ashr_2.2-54                 EnhancedVolcano_1.14.0     
+FALSE [11] ggrepel_0.9.1               ggpubr_0.4.0               
+FALSE [13] apeglm_1.18.0               data.table_1.14.4          
+FALSE [15] DESeq2_1.36.0               SummarizedExperiment_1.26.1
+FALSE [17] Biobase_2.56.0              MatrixGenerics_1.8.1       
+FALSE [19] matrixStats_0.62.0          GenomicRanges_1.48.0       
+FALSE [21] GenomeInfoDb_1.32.4         IRanges_2.31.2             
+FALSE [23] S4Vectors_0.34.0            BiocGenerics_0.42.0        
+FALSE [25] reshape2_1.4.4              ggthemes_4.2.4             
+FALSE [27] plotly_4.10.0               DT_0.26                    
+FALSE [29] forcats_0.5.2               stringr_1.4.1              
+FALSE [31] dplyr_1.0.10                purrr_0.3.5                
+FALSE [33] readr_2.1.3                 tidyr_1.2.1                
+FALSE [35] tibble_3.1.8                ggplot2_3.3.6              
+FALSE [37] tidyverse_1.3.2             rmdformats_1.0.4           
+FALSE [39] knitr_1.40                 
 FALSE 
 FALSE loaded via a namespace (and not attached):
 FALSE   [1] readxl_1.4.1           backports_1.4.1        workflowr_1.7.0       
@@ -929,11 +992,11 @@ FALSE  [31] genefilter_1.78.0      survival_3.4-0         glue_1.6.2
 FALSE  [34] gtable_0.3.1           gargle_1.2.1           zlibbioc_1.42.0       
 FALSE  [37] XVector_0.36.0         webshot_0.5.4          DelayedArray_0.22.0   
 FALSE  [40] car_3.1-1              abind_1.4-5            scales_1.2.1          
-FALSE  [43] mvtnorm_1.1-3          GGally_2.1.2           DBI_1.1.3             
-FALSE  [46] rstatix_0.7.0          Rcpp_1.0.9             viridisLite_0.4.1     
-FALSE  [49] xtable_1.8-4           emdbook_1.3.12         bit_4.0.4             
-FALSE  [52] truncnorm_1.0-8        htmlwidgets_1.5.4      httr_1.4.4            
-FALSE  [55] RColorBrewer_1.1-3     ellipsis_0.3.2         reshape_0.8.9         
+FALSE  [43] futile.options_1.0.1   mvtnorm_1.1-3          GGally_2.1.2          
+FALSE  [46] DBI_1.1.3              rstatix_0.7.0          Rcpp_1.0.9            
+FALSE  [49] viridisLite_0.4.1      xtable_1.8-4           emdbook_1.3.12        
+FALSE  [52] bit_4.0.4              truncnorm_1.0-8        htmlwidgets_1.5.4     
+FALSE  [55] httr_1.4.4             ellipsis_0.3.2         reshape_0.8.9         
 FALSE  [58] pkgconfig_2.0.3        XML_3.99-0.11          sass_0.4.2            
 FALSE  [61] dbplyr_2.2.1           locfit_1.5-9.6         utf8_1.2.2            
 FALSE  [64] tidyselect_1.2.0       rlang_1.0.6            later_1.3.0           
@@ -951,9 +1014,9 @@ FALSE  [97] vctrs_0.5.0            pillar_1.8.1           lifecycle_1.0.3
 FALSE [100] jquerylib_0.1.4        irlba_2.3.5.1          bitops_1.0-7          
 FALSE [103] httpuv_1.6.6           R6_2.5.1               bookdown_0.29         
 FALSE [106] promises_1.2.0.1       gridExtra_2.3          codetools_0.2-18      
-FALSE [109] MASS_7.3-58.1          assertthat_0.2.1       rprojroot_2.0.3       
-FALSE [112] withr_2.5.0            GenomeInfoDbData_1.2.8 parallel_4.2.1        
-FALSE [115] hms_1.1.2              grid_4.2.1             coda_0.19-4           
+FALSE [109] lambda.r_1.2.4         MASS_7.3-58.1          assertthat_0.2.1      
+FALSE [112] rprojroot_2.0.3        withr_2.5.0            GenomeInfoDbData_1.2.8
+FALSE [115] parallel_4.2.1         hms_1.1.2              coda_0.19-4           
 FALSE [118] rmarkdown_2.17         carData_3.0-5          googledrive_2.0.0     
 FALSE [121] git2r_0.30.1           mixsqp_0.3-43          bbmle_1.0.25          
 FALSE [124] numDeriv_2016.8-1.1    lubridate_1.8.0</code></pre>
