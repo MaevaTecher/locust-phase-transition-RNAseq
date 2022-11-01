@@ -22,8 +22,10 @@ navbar:
       - text: Data post-processing and stats
       - text: "Indexing and stats on bam files"
         href: bam-stats.html
-      - text: "DEG workflow"
-        href: deg-workflow.html
+      - text: "DEG-DEseq2 workflow"
+        href: deseq-workflow.html
+      - text: "DEG-EdgeR workflow"
+        href: edgeR-workflow.html
   - text: "Analysis & Results"
     menu:
       - text: Mapping success
