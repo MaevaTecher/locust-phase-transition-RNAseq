@@ -193,15 +193,15 @@ EnhancedVolcano(sakura,
 
 ```{r EdgeR MAplot, message=FALSE, warning=FALSE}
 
-sakura <- plotMD(object = et, p.value = 0.05)
-sakura
+plotMD(object = et, p.value = 0.05)
+
 ```
 
 
 ## Create a html report with EdgeR
 
 ```{r EdgeR html report version , message=FALSE, warning=FALSE}
-
+setwd(workDir_edgeR)
 # description plots
 majSequences <- descriptionPlots(counts=counts, group=target[,varInt], col=colors)
 
