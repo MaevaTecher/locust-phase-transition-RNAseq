@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Maeva Techer" />
+
+<meta name="date" content="2022-10-31" />
+
+<title>Differential Gene Expression using DEseq2</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Locust Phase Transition RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Bioinformatics code
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Sequence data pre-processing</li>
+    <li>
+      <a href="workenvs-prep.html">Preparation for the analysis</a>
+    </li>
+    <li>
+      <a href="seqdata-prep.html">Download/obtain sequencing data</a>
+    </li>
+    <li>
+      <a href="seqdata-qc.html">Data quality control</a>
+    </li>
+    <li class="dropdown-header">Genome alignment and gene quantification</li>
+    <li>
+      <a href="map-refseq.html">Mapping reads to Schistocerca RefSeq</a>
+    </li>
+    <li class="dropdown-header">Data post-processing and stats</li>
+    <li>
+      <a href="bam-stats.html">Indexing and stats on bam files</a>
+    </li>
+    <li>
+      <a href="deseq-workflow.html">DEG-DEseq2 workflow</a>
+    </li>
+    <li>
+      <a href="edgeR-workflow.html">DEG-EdgeR workflow</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis &amp; Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Mapping success</li>
+    <li>
+      <a href="map-star.html">Using STAR</a>
+    </li>
+    <li>
+      <a href="map-hisat2.html">Using HISAT2</a>
+    </li>
+    <li class="dropdown-header">Differential Gene Expression</li>
+    <li>
+      <a href="deg-tissue.html">DEG per tissue</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Differential Gene Expression using
+DEseq2</h1>
+<h4 class="author">Maeva Techer</h4>
+<h4 class="date">2022-10-31</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-10-31
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong>
+<code>locust-phase-transition-RNAseq/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20221025code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20221025)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20221025code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20221025)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons
+</td>
+<td style="text-align:left;">
+data/piceifrons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/STAR_counts_4thcol
+</td>
+<td style="text-align:left;">
+data/piceifrons/STAR_counts_4thcol
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/list/HeadSPICE.txt
+</td>
+<td style="text-align:left;">
+data/piceifrons/list/HeadSPICE.txt
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree16e8705222ef4dbc0805845bd417d3df32a4b73atargetblank16e8705a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/16e8705222ef4dbc0805845bd417d3df32a4b73a" target="_blank">16e8705</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree16e8705222ef4dbc0805845bd417d3df32a4b73atargetblank16e8705a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/16e8705222ef4dbc0805845bd417d3df32a4b73a" target="_blank">16e8705</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    analysis/.DS_Store
+    Ignored:    data/.DS_Store
+    Ignored:    data/americana/.DS_Store
+    Ignored:    data/americana/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/cancellata/.DS_Store
+    Ignored:    data/cancellata/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/cubense/.DS_Store
+    Ignored:    data/cubense/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/gregaria/.DS_Store
+    Ignored:    data/gregaria/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/gregaria/list/.DS_Store
+    Ignored:    data/metadata/.DS_Store
+    Ignored:    data/nitens/.DS_Store
+    Ignored:    data/nitens/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/piceifrons/.DS_Store
+    Ignored:    data/piceifrons/DEseq2_SPICE_HEAD/
+    Ignored:    data/piceifrons/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/piceifrons/list/.DS_Store
+
+Untracked files:
+    Untracked:  analysis/deseq2-workflow.Rmd
+    Untracked:  analysis/edgeR-workflow.Rmd
+    Untracked:  data/piceifrons/SPICE_HEAD_report.html
+    Untracked:  data/piceifrons/edgeR_SPICE_HEAD/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Deleted:    analysis/deg-workflow.Rmd
+    Deleted:    data/piceifrons/piceifrons_DE.csv
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-required-r-libraries" class="section level1">
+<h1>Load required R libraries</h1>
+<pre class="r"><code>#(install first from CRAN or Bioconductor)
+library(&quot;knitr&quot;)
+library(&quot;rmdformats&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;DT&quot;)  # for making interactive search table
+library(&quot;plotly&quot;) # for interactive plots
+library(&quot;ggthemes&quot;) # for theme_calc
+library(&quot;reshape2&quot;)
+library(&quot;DESeq2&quot;)
+library(&quot;data.table&quot;)
+library(&quot;apeglm&quot;)
+library(&quot;ggpubr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggrepel&quot;)
+library(&quot;EnhancedVolcano&quot;)
+library(&quot;SARTools&quot;)
+library(&quot;pheatmap&quot;)
+
+## Global options
+options(max.print=&quot;10000&quot;)
+knitr::opts_chunk$set(
+    echo = TRUE,
+    message = FALSE,
+    warning = FALSE,
+    cache = FALSE,
+    comment = FALSE,
+    prompt = FALSE,
+    tidy = TRUE
+)
+opts_knit$set(width=75)</code></pre>
+<p>Here we present the workflow example with the head data from <em>S.
+piceifrons</em></p>
+<p>For the analysis of differentially expressed genes, we will follow
+some guidelines from an online RNA course <a
+href="https://biocorecrg.github.io/RNAseq_course_2019/differential_expression.html">tutorial</a>
+that uses either <code>DESeq2</code> or <code>edgeR</code> on STAR
+output. We also adapted some script lines from Foquet et al. 2021
+code.</p>
+<p>DESeq2 tests for differential expression using negative binomial
+generalized linear models. DESeq2 (as edgeR) is based on the hypothesis
+that most genes are not differentially expressed. The package takes as
+an input raw counts (i.e. non normalized counts): the DESeq2 model
+internally corrects for library size, so giving as an input normalized
+count would be incorrect.</p>
+</div>
+<div id="deseq2-analysis-using-star-input" class="section level1">
+<h1>DESeq2 analysis using STAR input</h1>
+<div id="preparing-input-files" class="section level2">
+<h2>Preparing input files</h2>
+<div id="raw-count-matrices" class="section level4">
+<h4>Raw count matrices</h4>
+<p>We generated this in the precedent section.</p>
+</div>
+<div id="transcript-to-gene-annotation-file" class="section level3">
+<h3>Transcript-to-gene annotation file</h3>
+<p>Below is the example with <em>S. piceifrons</em></p>
+<pre><code># Download annotation and place it into the folder refgenomes
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/461/385/GCF_021461385.2_iqSchPice1.1/GCF_021461385.2_iqSchPice1.1_genomic.gtf.gz
+
+# first column is the transcript ID, second column is the gene ID, third column is the gene symbol
+zcat GCF_021461385.2_iqSchPice1.1_genomic.gtf.gz | awk -F &quot;\t&quot; &#39;BEGIN{OFS=&quot;\t&quot;}{if($3==&quot;transcript&quot;){split($9, a, &quot;\&quot;&quot;); print a[4],a[2],a[8]}}&#39; &gt; tx2gene.piceifrons.csv</code></pre>
+</div>
+<div id="sample-sheet" class="section level3">
+<h3>Sample sheet</h3>
+<p>DESeq2 needs a sample sheet that describes the samples
+characteristics: SampleName, FileName (…counts.txt), and subsequently
+anything that can be used for <strong>statistical design</strong> such
+as RearingCondition, replicates, tissue, time points, etc. in the
+form.</p>
+<p>The design indicates how to model the samples: in the model we need
+to specify what we want to measure and what we want to
+<strong>control</strong>.</p>
+</div>
+</div>
+<div id="differential-expression-analysis" class="section level2">
+<h2>Differential expression analysis</h2>
+<div id="import-input-count-data" class="section level3">
+<h3>Import input count data</h3>
+<p>We start by reading the sample sheet.</p>
+<pre class="r"><code>############################### MOSTLY FOR THE HMTL REPORT PARAMETERS for
+############################### running the script
+homeDir &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq&quot;
+workDir &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons&quot;  # Working directory
+projectName &lt;- &quot;SPICE_HEAD&quot;  # name of the project
+author &lt;- &quot;Maeva TECHER&quot;  # author of the statistical analysis/report
+
+## Create all the needed directories
+setwd(workDir)
+Dirname &lt;- paste(&quot;DEseq2_&quot;, projectName, sep = &quot;&quot;)
+dir.create(Dirname)
+setwd(Dirname)
+workDir_DEseq2 &lt;- getwd()
+# path to the directory containing raw counts files
+rawDir &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/STAR_counts_4thcol&quot;
+
+## PARAMETERS for running DEseq2
+tresh_logfold &lt;- 1  # Treshold for log2(foldchange) in final DE-files
+tresh_padj &lt;- 0.05  # Treshold for adjusted p-valued in final DE-files
+alpha_DEseq2 &lt;- 0.05  # threshold of statistical significance
+pAdjustMethod_DEseq2 &lt;- &quot;BH&quot;  # p-value adjustment method: &#39;BH&#39; (default) or &#39;BY&#39;
+featuresToRemove &lt;- c(NULL)  # names of the features to be removed, NULL if none or if using Idxstats
+varInt &lt;- &quot;RearingCondition&quot;  # factor of interest
+condRef &lt;- &quot;Isolated&quot;  # reference biological condition
+batch &lt;- NULL  # blocking factor: NULL (default) or &#39;batch&#39; for example  
+fitType &lt;- &quot;parametric&quot;  # mean-variance relationship: &#39;parametric&#39; (default) or &#39;local&#39;
+cooksCutoff &lt;- TRUE  # TRUE/FALSE to perform the outliers detection (default is TRUE)
+independentFiltering &lt;- TRUE  # TRUE/FALSE to perform independent filtering (default is TRUE)
+typeTrans &lt;- &quot;VST&quot;  # transformation for PCA/clustering: &#39;VST&#39; or &#39;rlog&#39;
+locfunc &lt;- &quot;median&quot;
+
+# Path and name of targetfile containing conditions and file names
+targetFile &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/list/HeadSPICE.txt&quot;
+colors &lt;- c(&quot;#B31B21&quot;, &quot;#1465AC&quot;)
+
+# checking parameters
+setwd(workDir_DEseq2)
+checkParameters.DESeq2(projectName = projectName, author = author, targetFile = targetFile,
+    rawDir = rawDir, featuresToRemove = featuresToRemove, varInt = varInt, condRef = condRef,
+    batch = batch, fitType = fitType, cooksCutoff = cooksCutoff, independentFiltering = independentFiltering,
+    alpha = alpha, pAdjustMethod = pAdjustMethod_DEseq2, typeTrans = typeTrans, locfunc = locfunc,
+    colors = colors)
+
+
+
+###############################
+
+setwd(homeDir)
+sampletable &lt;- fread(&quot;data/piceifrons/list/HeadSPICE.txt&quot;)
+## add the sample names as row names (it is needed for some of the DESeq
+## functions)
+rownames(sampletable) &lt;- sampletable$SampleName
+
+## Make sure discriminant variables are factor
+sampletable$RearingCondition &lt;- as.factor(sampletable$RearingCondition)
+sampletable$Tissue &lt;- as.factor(sampletable$Tissue)
+dim(sampletable)</code></pre>
+<pre><code>FALSE [1] 10  4</code></pre>
+<p>Then we obtain the output from <code>STAR GeneCount</code> and import
+here individually using the sampletable as a reference to fetch them. We
+also filter the lowly expressed genes to avoid noisy data.</p>
+<pre class="r"><code>## Import count files
+satoshi &lt;- DESeqDataSetFromHTSeqCount(sampleTable = sampletable, directory = &quot;data/piceifrons/STAR_counts_4thcol&quot;,
+    design = ~RearingCondition)
+satoshi</code></pre>
+<pre><code>FALSE class: DESeqDataSet 
+FALSE dim: 28731 10 
+FALSE metadata(1): version
+FALSE assays(1): counts
+FALSE rownames(28731): LOC124794980 LOC124795035 ... LOC124774866
+FALSE   LOC124774858
+FALSE rowData names(0):
+FALSE colnames(10): SPICE_G_Crd_SRR11815268 SPICE_G_Crd_SRR11815269 ...
+FALSE   SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815274
+FALSE colData names(2): Tissue RearingCondition</code></pre>
+<pre class="r"><code># keep genes for which sums of raw counts across experimental samples is &gt; 5
+satoshi &lt;- satoshi[rowSums(counts(satoshi)) &gt; 5, ]
+nrow(satoshi)</code></pre>
+<pre><code>FALSE [1] 14932</code></pre>
+<pre class="r"><code># set a standard to be compared to (hatchling) ONLY IF WE HAVE A CONTROL
+# satoshi$Tissue &lt;- relevel(satoshi$Tissue, ref = &#39;Whole_body&#39;)</code></pre>
+</div>
+<div id="run-the-model-fit-deseq2" class="section level3">
+<h3>Run the model Fit DESeq2</h3>
+<p>Run DESeq2 analysis using <code>DESeq</code>, which performs (1)
+estimation of size factors, (2) estimation of dispersion, then (3)
+Negative Binomial GLM fitting and Wald statistics. The results tables
+(log2 fold changes and p-values) can be generated using the results
+function (<a
+href="https://ycl6.gitbook.io/guide-to-rna-seq-analysis/differential-expression-analysis/differential-gene-expression/dge-analysis-with-star-input">copied
+from online chapter</a>)</p>
+<pre class="r"><code># Fit the statistical model
+shigeru &lt;- DESeq(satoshi)
+cbind(resultsNames(shigeru))</code></pre>
+<pre><code>FALSE      [,1]                                  
+FALSE [1,] &quot;Intercept&quot;                           
+FALSE [2,] &quot;RearingCondition_Isolated_vs_Crowded&quot;</code></pre>
+<pre class="r"><code># Here we plot the adjusted p-value means corrected for multiple testing (FDR
+# padj)
+res_shigeru &lt;- results(shigeru)
+
+# We only keep genes with an adjusted p-value cutoff &gt; 0.05 by changing the
+# default significance cut-off
+sum(res_shigeru$padj &lt; tresh_padj, na.rm = TRUE)</code></pre>
+<pre><code>FALSE [1] 648</code></pre>
+<pre class="r"><code>brock &lt;- results(shigeru, name = &quot;RearingCondition_Isolated_vs_Crowded&quot;, alpha = alpha_DEseq2)
+summary(brock)</code></pre>
+<pre><code>FALSE 
+FALSE out of 14932 with nonzero total read count
+FALSE adjusted p-value &lt; 0.05
+FALSE LFC &gt; 0 (up)       : 254, 1.7%
+FALSE LFC &lt; 0 (down)     : 404, 2.7%
+FALSE outliers [1]       : 497, 3.3%
+FALSE low counts [2]     : 1156, 7.7%
+FALSE (mean count &lt; 2)
+FALSE [1] see &#39;cooksCutoff&#39; argument of ?results
+FALSE [2] see &#39;independentFiltering&#39; argument of ?results</code></pre>
+<pre class="r"><code># Details of what is each column meaning in our final result
+mcols(brock)$description</code></pre>
+<pre><code>FALSE [1] &quot;mean of normalized counts for all samples&quot;                   
+FALSE [2] &quot;log2 fold change (MLE): RearingCondition Isolated vs Crowded&quot;
+FALSE [3] &quot;standard error: RearingCondition Isolated vs Crowded&quot;        
+FALSE [4] &quot;Wald statistic: RearingCondition Isolated vs Crowded&quot;        
+FALSE [5] &quot;Wald test p-value: RearingCondition Isolated vs Crowded&quot;     
+FALSE [6] &quot;BH adjusted p-values&quot;</code></pre>
+<pre class="r"><code>head(brock)</code></pre>
+<pre><code>FALSE log2 fold change (MLE): RearingCondition Isolated vs Crowded 
+FALSE Wald test p-value: RearingCondition Isolated vs Crowded 
+FALSE DataFrame with 6 rows and 6 columns
+FALSE               baseMean log2FoldChange     lfcSE      stat      pvalue
+FALSE              &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;
+FALSE LOC124796288   2.37306      -3.529621  1.337214 -2.639533 8.30204e-03
+FALSE LOC124796294   1.14866      -2.301130  2.134062 -1.078286 2.80906e-01
+FALSE LOC124796332   9.18581      -0.600937  0.715740 -0.839603 4.01131e-01
+FALSE LOC124793320 133.76396      -1.759458  0.613514 -2.867835 4.13290e-03
+FALSE LOC124712404  29.00252      -1.601387  1.002767 -1.596968          NA
+FALSE LOC124798649  11.86003       5.205485  0.872809  5.964059 2.46048e-09
+FALSE                     padj
+FALSE                &lt;numeric&gt;
+FALSE LOC124796288 1.10023e-01
+FALSE LOC124796294          NA
+FALSE LOC124796332 7.40311e-01
+FALSE LOC124793320 7.03370e-02
+FALSE LOC124712404          NA
+FALSE LOC124798649 6.40640e-07</code></pre>
+<p>For this data set after FDR filtering of 0.05, we have 254 genes
+up-regulates and 404 genes down-regulated in crowded versus solitary
+individuals.</p>
+</div>
+</div>
+<div id="visualizing-and-exploring-the-results" class="section level2">
+<h2>Visualizing and exploring the results</h2>
+<div id="pca-of-the-samples" class="section level3">
+<h3>PCA of the samples</h3>
+<p>We transformed the data for visualization by comparing both
+recommended <strong>rlog</strong> (Regularized log) or
+<strong>vst</strong> (Variance Stabilizing Transformation)
+transformations. Both options produce log2 scale data which has been
+normalized by the DESeq2 method with respect to library size.</p>
+<pre class="r"><code># Try with the vst transformation
+shigeru_vst &lt;- vst(shigeru)
+shigeru_rlog &lt;- rlog(shigeru)</code></pre>
+<p>Plot the PCA rlog</p>
+<pre class="r"><code># Create the pca on the defined groups
+pcaData &lt;- plotPCA(object = shigeru_rlog, intgroup = c(&quot;RearingCondition&quot;, &quot;Tissue&quot;),
+    returnData = TRUE)
+
+# Store the information for each axis variance in %
+percentVar &lt;- round(100 * attr(pcaData, &quot;percentVar&quot;))
+
+# Make sure that the discriminant variable are in factor for using shape and
+# color later on
+pcaData$RearingCondition &lt;- factor(pcaData$RearingCondition, levels = c(&quot;Crowded&quot;,
+    &quot;Isolated&quot;), labels = c(&quot;crowded piceifrons&quot;, &quot;isolated piceifrons&quot;))
+levels(pcaData$RearingCondition)</code></pre>
+<pre><code>FALSE [1] &quot;crowded piceifrons&quot;  &quot;isolated piceifrons&quot;</code></pre>
+<pre class="r"><code># pcaData$Tissue&lt;-factor(pcaData1$Tissue,levels=c(&#39;Whole_body&#39;,&#39;Optical_lobes&#39;),
+# labels=c(&#39;Hatchling&#39;, &#39;OLB&#39;)) levels(pcaData$Tissue)
+
+
+ggplot(pcaData, aes(PC1, PC2, color = RearingCondition)) + geom_point(size = 4) +
+    xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) + ylab(paste0(&quot;PC2: &quot;, percentVar[2],
+    &quot;% variance&quot;)) + scale_color_manual(values = c(&quot;blue&quot;, &quot;red&quot;)) + geom_text_repel(aes(label = name),
+    nudge_x = -1, nudge_y = 0.2, size = 3) + coord_fixed() + theme_bw() + theme(legend.title = element_blank()) +
+    theme(legend.text = element_text(face = &quot;bold&quot;, size = 15)) + theme(axis.text = element_text(size = 15)) +
+    theme(axis.title = element_text(size = 16)) + ggtitle(&quot;PCA on S. piceifrons head tissues&quot;,
+    subtitle = &quot;rlog transformation&quot;) + xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) +
+    ylab(paste0(&quot;PC2: &quot;, percentVar[2], &quot;% variance&quot;))</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20PCA%20rlog-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot the PCA vsd</p>
+<pre class="r"><code># Create the pca on the defined groups
+pcaData &lt;- plotPCA(object = shigeru_vst, intgroup = c(&quot;RearingCondition&quot;, &quot;Tissue&quot;),
+    returnData = TRUE)
+
+# Store the information for each axis variance in %
+percentVar &lt;- round(100 * attr(pcaData, &quot;percentVar&quot;))
+
+# Make sure that the discriminant variable are in factor for using shape and
+# color later on
+pcaData$RearingCondition &lt;- factor(pcaData$RearingCondition, levels = c(&quot;Crowded&quot;,
+    &quot;Isolated&quot;), labels = c(&quot;crowded piceifrons&quot;, &quot;isolated piceifrons&quot;))
+levels(pcaData$RearingCondition)</code></pre>
+<pre><code>FALSE [1] &quot;crowded piceifrons&quot;  &quot;isolated piceifrons&quot;</code></pre>
+<pre class="r"><code># pcaData$Tissue&lt;-factor(pcaData1$Tissue,levels=c(&#39;Whole_body&#39;,&#39;Optical_lobes&#39;),
+# labels=c(&#39;Hatchling&#39;, &#39;OLB&#39;)) levels(pcaData$Tissue)
+
+
+ggplot(pcaData, aes(PC1, PC2, color = RearingCondition)) + geom_point(size = 4) +
+    xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) + ylab(paste0(&quot;PC2: &quot;, percentVar[2],
+    &quot;% variance&quot;)) + scale_color_manual(values = c(&quot;blue&quot;, &quot;red&quot;)) + geom_text_repel(aes(label = name),
+    nudge_x = -1, nudge_y = 0.2, size = 3) + coord_fixed() + theme_bw() + theme(legend.title = element_blank()) +
+    theme(legend.text = element_text(face = &quot;bold&quot;, size = 15)) + theme(axis.text = element_text(size = 15)) +
+    theme(axis.title = element_text(size = 16)) + ggtitle(&quot;PCA on S. piceifrons head tissues&quot;,
+    subtitle = &quot;vst transformation&quot;) + xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) +
+    ylab(paste0(&quot;PC2: &quot;, percentVar[2], &quot;% variance&quot;))</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20PCA%20vsd-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="sample-matrix-distance" class="section level3">
+<h3>Sample Matrix Distance</h3>
+<p>Using also the transformed data, we check the distance between
+samples and see how they correlate to each others.</p>
+<p>Heatmap using rlog</p>
+<pre class="r"><code># calculate between-sample distance matrix
+sampleDistMatrix.rlog &lt;- as.matrix(dist(t(assay(shigeru_rlog))))
+
+metadata &lt;- sampletable[, c(&quot;RearingCondition&quot;, &quot;Tissue&quot;)]
+rownames(metadata) &lt;- sampletable$SampleName
+
+
+pheatmap(sampleDistMatrix.rlog, annotation_col = metadata, main = &quot;Head tissue heatmap, rlog transformation&quot;)</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20distance%20samples-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Heatmap using vst</p>
+<pre class="r"><code># calculate between-sample distance matrix
+sampleDistMatrix.vst &lt;- as.matrix(dist(t(assay(shigeru_vst))))
+
+pheatmap(sampleDistMatrix.vst, annotation_col = metadata, main = &quot;Head tissue heatmap, vst transformation&quot;)</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20distance%20samples2-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ma-plot" class="section level3">
+<h3>MA-plot</h3>
+<p>This plot allows us to show the log2 fold changes over the mean of
+normalized counts for all the samples. Points will be colored in red if
+the adjusted p-value is less than 0.05 and the log2 fold change is
+bigger than 1. In blue, will be the reverse for the log2 fold
+change.</p>
+<p>To generate more accurate log2 foldchange estimates, DESeq2 allows
+(and recommends) the shrinkage of the LFC estimates toward zero when the
+information for a gene is low, which could include:</p>
+<p>-Low counts<br />
+-High dispersion values</p>
+<pre class="r"><code># include the log2FoldChange shrinkage use to visualize gene ranking
+de_shrink &lt;- lfcShrink(dds = shigeru, coef = &quot;RearingCondition_Isolated_vs_Crowded&quot;,
+    type = &quot;apeglm&quot;)
+head(de_shrink)</code></pre>
+<pre><code>FALSE log2 fold change (MAP): RearingCondition Isolated vs Crowded 
+FALSE Wald test p-value: RearingCondition Isolated vs Crowded 
+FALSE DataFrame with 6 rows and 5 columns
+FALSE               baseMean log2FoldChange     lfcSE      pvalue        padj
+FALSE              &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+FALSE LOC124796288   2.37306     -0.1187124  0.276337 8.30204e-03 1.12401e-01
+FALSE LOC124796294   1.14866     -0.0248082  0.234004 2.80906e-01          NA
+FALSE LOC124796332   9.18581     -0.0578750  0.231375 4.01131e-01 7.41676e-01
+FALSE LOC124793320 133.76396     -1.1354854  0.865692 4.13290e-03 7.18571e-02
+FALSE LOC124712404  29.00252     -0.0797187  0.248051          NA          NA
+FALSE LOC124798649  11.86003      4.9350149  0.866991 2.46048e-09 6.54487e-07</code></pre>
+<pre class="r"><code># Ma plot
+maplot &lt;- ggmaplot(de_shrink, fdr = 0.05, fc = tresh_logfold, size = 2, palette = c(&quot;#B31B21&quot;,
+    &quot;#1465AC&quot;, &quot;darkgray&quot;), genenames = as.vector(rownames(de_shrink$name)), top = 0,
+    legend = &quot;top&quot;, label.select = NULL) + coord_cartesian(xlim = c(0, 20)) + scale_y_continuous(limits = c(-12,
+    12)) + theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 15),
+    axis.title.x = element_text(size = 17), axis.title.y = element_text(size = 17),
+    axis.line = element_line(size = 1, colour = &quot;gray20&quot;), axis.ticks = element_line(size = 1,
+        colour = &quot;gray20&quot;)) + guides(color = guide_legend(override.aes = list(size = c(3,
+    3, 3)))) + theme(legend.position = c(0.7, 0.12), legend.text = element_text(size = 14,
+    face = &quot;bold&quot;), legend.background = element_rect(fill = &quot;transparent&quot;)) + theme(plot.title = element_text(size = 18,
+    colour = &quot;gray30&quot;, face = &quot;bold&quot;, hjust = 0.06, vjust = -5)) + labs(title = &quot;MA-plot for the shrunken log2 fold changes in the head&quot;)
+maplot</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20MA%20plot%20-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="volcano-plot" class="section level3">
+<h3>Volcano Plot</h3>
+<p>The <code>EnhancedVolcano</code> helps visualise the resulst of
+differential expression analysis.</p>
+<pre class="r"><code>keyvals &lt;- ifelse(res_shigeru$log2FoldChange &gt;= tresh_logfold &amp; res_shigeru$padj &lt;=
+    tresh_padj, &quot;red&quot;, ifelse(res_shigeru$log2FoldChange &lt;= -tresh_logfold &amp; res_shigeru$padj &lt;=
+    tresh_padj, &quot;green&quot;, &quot;black&quot;))
+
+keyvals[is.na(keyvals)] &lt;- &quot;black&quot;
+names(keyvals)[keyvals == &quot;#B31B21&quot;] &lt;- &quot;Upregulated&quot;
+names(keyvals)[keyvals == &quot;#1465AC&quot;] &lt;- &quot;Downregulated&quot;
+names(keyvals)[keyvals == &quot;darkgray&quot;] &lt;- &quot;NS&quot;
+
+EnhancedVolcano(res_shigeru, lab = rownames(res_shigeru), x = &quot;log2FoldChange&quot;, y = &quot;padj&quot;,
+    pCutoff = alpha_DEseq2, FCcutoff = tresh_logfold, pointSize = 3, labSize = 3,
+    colAlpha = 4/5, colCustom = keyvals, drawConnectors = FALSE)</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20Volcano%20plot%20-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="normalized-matrix-distance" class="section level3">
+<h3>Normalized Matrix distance</h3>
+<p>We then normalize the result by extracting only significant genes
+with a fold change of 1.</p>
+<pre class="r"><code>resorted_deresults &lt;- res_shigeru[order(res_shigeru$padj), ]
+
+## Select only the genes that have a padj &gt; 0.05 and with minimum
+## log2FoldChange of 1
+sig &lt;- resorted_deresults[!is.na(resorted_deresults$padj) &amp; resorted_deresults$padj &lt;
+    tresh_padj &amp; abs(resorted_deresults$log2FoldChange) &gt;= tresh_logfold, ]
+selected &lt;- rownames(sig)
+selected</code></pre>
+<pre><code>FALSE   [1] &quot;LOC124798514&quot; &quot;LOC124788222&quot; &quot;LOC124722326&quot; &quot;LOC124798525&quot; &quot;LOC124712031&quot;
+FALSE   [6] &quot;LOC124802700&quot; &quot;LOC124775105&quot; &quot;LOC124777333&quot; &quot;LOC124720060&quot; &quot;LOC124805215&quot;
+FALSE  [11] &quot;LOC124804802&quot; &quot;LOC124804688&quot; &quot;LOC124789136&quot; &quot;LOC124804691&quot; &quot;LOC124789002&quot;
+FALSE  [16] &quot;LOC124804687&quot; &quot;LOC124789650&quot; &quot;LOC124805172&quot; &quot;LOC124791362&quot; &quot;LOC124788242&quot;
+FALSE  [21] &quot;LOC124777599&quot; &quot;LOC124712054&quot; &quot;LOC124799270&quot; &quot;LOC124789762&quot; &quot;LOC124711568&quot;
+FALSE  [26] &quot;LOC124805478&quot; &quot;LOC124717267&quot; &quot;LOC124795556&quot; &quot;LOC124789780&quot; &quot;LOC124803056&quot;
+FALSE  [31] &quot;LOC124802724&quot; &quot;LOC124789001&quot; &quot;LOC124795919&quot; &quot;LOC124802921&quot; &quot;LOC124795391&quot;
+FALSE  [36] &quot;LOC124802814&quot; &quot;LOC124722943&quot; &quot;LOC124717096&quot; &quot;LOC124798455&quot; &quot;LOC124795472&quot;
+FALSE  [41] &quot;LOC124718860&quot; &quot;LOC124717260&quot; &quot;LOC124721974&quot; &quot;LOC124800984&quot; &quot;LOC124720306&quot;
+FALSE  [46] &quot;LOC124791378&quot; &quot;LOC124717148&quot; &quot;LOC124789749&quot; &quot;LOC124798547&quot; &quot;LOC124798649&quot;
+FALSE  [51] &quot;LOC124777064&quot; &quot;LOC124720432&quot; &quot;LOC124798603&quot; &quot;LOC124798323&quot; &quot;LOC124788214&quot;
+FALSE  [56] &quot;LOC124789786&quot; &quot;LOC124777258&quot; &quot;LOC124776394&quot; &quot;LOC124777143&quot; &quot;LOC124711857&quot;
+FALSE  [61] &quot;LOC124787799&quot; &quot;LOC124801935&quot; &quot;LOC124777235&quot; &quot;LOC124803027&quot; &quot;LOC124805241&quot;
+FALSE  [66] &quot;LOC124718938&quot; &quot;LOC124717283&quot; &quot;LOC124805195&quot; &quot;LOC124799019&quot; &quot;LOC124717389&quot;
+FALSE  [71] &quot;LOC124720174&quot; &quot;LOC124799061&quot; &quot;LOC124777956&quot; &quot;LOC124795373&quot; &quot;LOC124719983&quot;
+FALSE  [76] &quot;LOC124712530&quot; &quot;LOC124711778&quot; &quot;LOC124791394&quot; &quot;LOC124721693&quot; &quot;LOC124709245&quot;
+FALSE  [81] &quot;LOC124718981&quot; &quot;LOC124789632&quot; &quot;LOC124754463&quot; &quot;LOC124719099&quot; &quot;LOC124777576&quot;
+FALSE  [86] &quot;LOC124721130&quot; &quot;LOC124795430&quot; &quot;LOC124795620&quot; &quot;LOC124803439&quot; &quot;LOC124789548&quot;
+FALSE  [91] &quot;LOC124712464&quot; &quot;LOC124775601&quot; &quot;LOC124789546&quot; &quot;LOC124796352&quot; &quot;LOC124804686&quot;
+FALSE  [96] &quot;LOC124789268&quot; &quot;LOC124791708&quot; &quot;LOC124776485&quot; &quot;LOC124720521&quot; &quot;LOC124789741&quot;
+FALSE [101] &quot;LOC124805560&quot; &quot;LOC124803748&quot; &quot;LOC124788015&quot; &quot;LOC124803358&quot; &quot;LOC124777671&quot;
+FALSE [106] &quot;LOC124797805&quot; &quot;LOC124804656&quot; &quot;LOC124721228&quot; &quot;LOC124795445&quot; &quot;LOC124796321&quot;
+FALSE [111] &quot;LOC124777858&quot; &quot;LOC124804813&quot; &quot;LOC124720137&quot; &quot;LOC124795417&quot; &quot;LOC124712047&quot;
+FALSE [116] &quot;LOC124712022&quot; &quot;LOC124804598&quot; &quot;LOC124798520&quot; &quot;LOC124710724&quot; &quot;LOC124788290&quot;
+FALSE [121] &quot;LOC124797889&quot; &quot;LOC124798208&quot; &quot;LOC124711290&quot; &quot;LOC124795236&quot; &quot;LOC124711697&quot;
+FALSE [126] &quot;LOC124711278&quot; &quot;LOC124802776&quot; &quot;LOC124789719&quot; &quot;LOC124711866&quot; &quot;LOC124716714&quot;
+FALSE [131] &quot;LOC124776658&quot; &quot;LOC124798509&quot; &quot;LOC124789846&quot; &quot;LOC124712226&quot; &quot;LOC124711548&quot;
+FALSE [136] &quot;LOC124798601&quot; &quot;LOC124805162&quot; &quot;LOC124789667&quot; &quot;LOC124719741&quot; &quot;LOC124789397&quot;
+FALSE [141] &quot;LOC124777946&quot; &quot;LOC124788119&quot; &quot;LOC124789506&quot; &quot;LOC124795555&quot; &quot;LOC124805313&quot;
+FALSE [146] &quot;LOC124805138&quot; &quot;LOC124742380&quot; &quot;LOC124720047&quot; &quot;LOC124716732&quot; &quot;LOC124776026&quot;
+FALSE [151] &quot;LOC124802550&quot; &quot;LOC124712519&quot; &quot;LOC124795471&quot; &quot;LOC124795446&quot; &quot;LOC124805178&quot;
+FALSE [156] &quot;LOC124787797&quot; &quot;LOC124760025&quot; &quot;LOC124777043&quot; &quot;LOC124712543&quot; &quot;LOC124788266&quot;
+FALSE [161] &quot;LOC124711907&quot; &quot;LOC124720355&quot; &quot;LOC124777551&quot; &quot;LOC124795456&quot; &quot;LOC124795184&quot;
+FALSE [166] &quot;LOC124794930&quot; &quot;LOC124805680&quot; &quot;LOC124777389&quot; &quot;LOC124789889&quot; &quot;LOC124720076&quot;
+FALSE [171] &quot;LOC124711893&quot; &quot;LOC124713151&quot; &quot;LOC124787768&quot; &quot;LOC124790591&quot; &quot;LOC124717061&quot;
+FALSE [176] &quot;LOC124722982&quot; &quot;LOC124718923&quot; &quot;LOC124805240&quot; &quot;LOC124773612&quot; &quot;LOC124789965&quot;
+FALSE [181] &quot;LOC124802817&quot; &quot;LOC124789336&quot; &quot;LOC124711771&quot; &quot;LOC124719708&quot; &quot;LOC124802707&quot;
+FALSE [186] &quot;LOC124777415&quot; &quot;LOC124711951&quot; &quot;LOC124789584&quot; &quot;LOC124719691&quot; &quot;LOC124777491&quot;
+FALSE [191] &quot;LOC124789508&quot; &quot;LOC124804665&quot; &quot;LOC124776733&quot; &quot;LOC124711965&quot; &quot;LOC124777770&quot;
+FALSE [196] &quot;LOC124776084&quot; &quot;LOC124795141&quot; &quot;LOC124805192&quot; &quot;LOC124798582&quot; &quot;LOC124777662&quot;
+FALSE [201] &quot;LOC124798572&quot; &quot;LOC124777899&quot; &quot;LOC124720033&quot; &quot;LOC124776089&quot; &quot;LOC124718862&quot;
+FALSE [206] &quot;LOC124805250&quot; &quot;LOC124775969&quot; &quot;LOC124788165&quot; &quot;LOC124742890&quot; &quot;LOC124719815&quot;
+FALSE [211] &quot;LOC124797990&quot; &quot;LOC124803348&quot; &quot;LOC124711250&quot; &quot;LOC124775444&quot; &quot;LOC124798698&quot;
+FALSE [216] &quot;LOC124799953&quot; &quot;LOC124789795&quot; &quot;LOC124777558&quot; &quot;LOC124803281&quot; &quot;LOC124795918&quot;
+FALSE [221] &quot;LOC124711364&quot; &quot;LOC124717265&quot; &quot;LOC124805104&quot; &quot;LOC124777400&quot; &quot;LOC124804991&quot;
+FALSE [226] &quot;LOC124794920&quot; &quot;LOC124776202&quot; &quot;LOC124780415&quot; &quot;LOC124794821&quot; &quot;LOC124788012&quot;
+FALSE [231] &quot;LOC124776484&quot; &quot;LOC124776648&quot; &quot;LOC124789669&quot; &quot;LOC124719891&quot; &quot;LOC124788914&quot;
+FALSE [236] &quot;LOC124802574&quot; &quot;LOC124777923&quot; &quot;LOC124712002&quot; &quot;LOC124777831&quot; &quot;LOC124788538&quot;
+FALSE [241] &quot;LOC124787892&quot; &quot;LOC124712552&quot; &quot;LOC124789606&quot; &quot;LOC124798287&quot; &quot;LOC124805339&quot;
+FALSE [246] &quot;LOC124777872&quot; &quot;LOC124795640&quot; &quot;LOC124805407&quot; &quot;LOC124718922&quot; &quot;LOC124720476&quot;
+FALSE [251] &quot;LOC124722186&quot; &quot;LOC124711793&quot; &quot;LOC124777611&quot; &quot;LOC124722715&quot; &quot;LOC124719969&quot;
+FALSE [256] &quot;LOC124798583&quot; &quot;LOC124777594&quot; &quot;LOC124788138&quot; &quot;LOC124722208&quot; &quot;LOC124771028&quot;
+FALSE [261] &quot;LOC124790081&quot; &quot;LOC124775415&quot; &quot;LOC124804631&quot; &quot;LOC124719062&quot; &quot;LOC124805532&quot;
+FALSE [266] &quot;LOC124787932&quot; &quot;LOC124711752&quot; &quot;LOC124797903&quot; &quot;LOC124711286&quot; &quot;LOC124711861&quot;
+FALSE [271] &quot;LOC124789703&quot; &quot;LOC124777762&quot; &quot;LOC124796285&quot; &quot;LOC124789856&quot; &quot;LOC124711994&quot;
+FALSE [276] &quot;LOC124777754&quot; &quot;LOC124789687&quot; &quot;LOC124777219&quot; &quot;LOC124776646&quot; &quot;LOC124711943&quot;
+FALSE [281] &quot;LOC124777625&quot; &quot;LOC124789886&quot; &quot;LOC124794670&quot; &quot;LOC124777463&quot; &quot;LOC124723001&quot;
+FALSE [286] &quot;LOC124804986&quot; &quot;LOC124775213&quot; &quot;LOC124776325&quot; &quot;LOC124776322&quot; &quot;LOC124722471&quot;
+FALSE [291] &quot;LOC124777637&quot; &quot;LOC124796310&quot; &quot;LOC124805331&quot; &quot;LOC124717082&quot; &quot;LOC124771313&quot;
+FALSE [296] &quot;LOC124776287&quot; &quot;LOC124802884&quot; &quot;LOC124805187&quot; &quot;LOC124800801&quot; &quot;LOC124777187&quot;
+FALSE [301] &quot;LOC124718949&quot; &quot;LOC124788080&quot; &quot;LOC124777672&quot; &quot;LOC124776850&quot; &quot;LOC124720168&quot;
+FALSE [306] &quot;LOC124722004&quot; &quot;LOC124789575&quot; &quot;LOC124795844&quot; &quot;LOC124799255&quot; &quot;LOC124711859&quot;
+FALSE [311] &quot;LOC124711876&quot; &quot;LOC124795649&quot; &quot;LOC124777002&quot; &quot;LOC124720123&quot; &quot;LOC124776707&quot;
+FALSE [316] &quot;LOC124796020&quot; &quot;LOC124795457&quot; &quot;LOC124795499&quot; &quot;LOC124789775&quot; &quot;LOC124803230&quot;
+FALSE [321] &quot;LOC124802811&quot; &quot;LOC124802970&quot; &quot;LOC124720487&quot; &quot;LOC124716304&quot; &quot;LOC124711910&quot;
+FALSE [326] &quot;LOC124776215&quot; &quot;LOC124789613&quot; &quot;LOC124711479&quot; &quot;LOC124795045&quot; &quot;LOC124712049&quot;
+FALSE [331] &quot;LOC124779545&quot; &quot;LOC124776760&quot; &quot;LOC124798344&quot; &quot;LOC124794744&quot; &quot;LOC124800634&quot;
+FALSE [336] &quot;LOC124798939&quot; &quot;LOC124787813&quot; &quot;LOC124805148&quot; &quot;LOC124795378&quot; &quot;LOC124717171&quot;
+FALSE [341] &quot;LOC124805136&quot; &quot;LOC124711197&quot; &quot;LOC124775080&quot; &quot;LOC124795738&quot; &quot;LOC124777512&quot;
+FALSE [346] &quot;LOC124795106&quot; &quot;LOC124721091&quot; &quot;LOC124723038&quot; &quot;LOC124803052&quot; &quot;LOC124788368&quot;
+FALSE [351] &quot;LOC124777085&quot; &quot;LOC124717333&quot; &quot;LOC124795140&quot; &quot;LOC124795427&quot; &quot;LOC124775853&quot;
+FALSE [356] &quot;LOC124796540&quot; &quot;LOC124798392&quot; &quot;LOC124775214&quot; &quot;LOC124717035&quot; &quot;LOC124805664&quot;
+FALSE [361] &quot;LOC124795034&quot; &quot;LOC124721604&quot; &quot;LOC124720442&quot; &quot;LOC124796240&quot; &quot;LOC124722978&quot;
+FALSE [366] &quot;LOC124789963&quot; &quot;LOC124775408&quot; &quot;LOC124721705&quot; &quot;LOC124722044&quot; &quot;LOC124719056&quot;
+FALSE [371] &quot;LOC124738352&quot; &quot;LOC124794714&quot; &quot;LOC124775790&quot; &quot;LOC124777254&quot; &quot;LOC124712021&quot;
+FALSE [376] &quot;LOC124787699&quot; &quot;LOC124712088&quot; &quot;LOC124712421&quot; &quot;LOC124717276&quot; &quot;LOC124776630&quot;
+FALSE [381] &quot;LOC124788421&quot; &quot;LOC124798325&quot; &quot;LOC124777169&quot; &quot;LOC124789467&quot; &quot;LOC124777204&quot;
+FALSE [386] &quot;LOC124718636&quot; &quot;LOC124777722&quot; &quot;LOC124795460&quot; &quot;LOC124789661&quot; &quot;LOC124776010&quot;
+FALSE [391] &quot;LOC124711963&quot; &quot;LOC124798334&quot; &quot;LOC124777456&quot; &quot;LOC124717028&quot; &quot;LOC124789869&quot;
+FALSE [396] &quot;LOC124723088&quot; &quot;LOC124789858&quot; &quot;LOC124789968&quot; &quot;LOC124711957&quot; &quot;LOC124727296&quot;
+FALSE [401] &quot;LOC124718759&quot; &quot;LOC124720170&quot; &quot;LOC124796276&quot; &quot;LOC124775081&quot; &quot;LOC124719067&quot;
+FALSE [406] &quot;LOC124798809&quot; &quot;LOC124805413&quot; &quot;LOC124802965&quot; &quot;LOC124716826&quot; &quot;LOC124720038&quot;
+FALSE [411] &quot;LOC124711682&quot; &quot;LOC124795954&quot; &quot;LOC124777619&quot; &quot;LOC124777925&quot; &quot;LOC124788526&quot;
+FALSE [416] &quot;LOC124711150&quot; &quot;LOC124780975&quot; &quot;LOC124794933&quot; &quot;LOC124720246&quot; &quot;LOC124777364&quot;
+FALSE [421] &quot;LOC124770914&quot; &quot;LOC124716906&quot; &quot;LOC124777855&quot; &quot;LOC124777474&quot; &quot;LOC124788385&quot;
+FALSE [426] &quot;LOC124788415&quot; &quot;LOC124719754&quot; &quot;LOC124777963&quot; &quot;LOC124789564&quot; &quot;LOC124777771&quot;
+FALSE [431] &quot;LOC124776877&quot; &quot;LOC124716851&quot; &quot;LOC124711660&quot; &quot;LOC124777181&quot; &quot;LOC124787635&quot;
+FALSE [436] &quot;LOC124795348&quot; &quot;LOC124798671&quot; &quot;LOC124774946&quot; &quot;LOC124717288&quot; &quot;LOC124789692&quot;
+FALSE [441] &quot;LOC124802648&quot; &quot;LOC124794839&quot; &quot;LOC124777878&quot; &quot;LOC124788654&quot; &quot;LOC124709336&quot;
+FALSE [446] &quot;LOC124798629&quot; &quot;LOC124717160&quot; &quot;LOC124777023&quot; &quot;LOC124791229&quot; &quot;LOC124719813&quot;
+FALSE [451] &quot;LOC124780139&quot; &quot;LOC124711754&quot; &quot;LOC124712350&quot; &quot;LOC124803040&quot; &quot;LOC124777097&quot;
+FALSE [456] &quot;LOC124798158&quot; &quot;LOC124798250&quot; &quot;LOC124711968&quot; &quot;LOC124790115&quot; &quot;LOC124790046&quot;
+FALSE [461] &quot;LOC124776506&quot; &quot;LOC124794873&quot; &quot;LOC124776028&quot; &quot;LOC124777528&quot; &quot;LOC124722901&quot;
+FALSE [466] &quot;LOC124805744&quot; &quot;LOC124805010&quot; &quot;LOC124711507&quot; &quot;LOC124711554&quot; &quot;LOC124718598&quot;
+FALSE [471] &quot;LOC124777240&quot; &quot;LOC124795583&quot; &quot;LOC124789209&quot; &quot;LOC124802880&quot; &quot;LOC124777757&quot;
+FALSE [476] &quot;LOC124789523&quot; &quot;LOC124790095&quot; &quot;LOC124799220&quot; &quot;LOC124787658&quot; &quot;LOC124796406&quot;
+FALSE [481] &quot;LOC124711829&quot; &quot;LOC124805064&quot; &quot;LOC124781286&quot; &quot;LOC124722421&quot; &quot;LOC124802832&quot;
+FALSE [486] &quot;LOC124709142&quot; &quot;LOC124721844&quot;</code></pre>
+<pre class="r"><code>## Norm transform the data from DEseq2 run
+ntd &lt;- normTransform(satoshi)
+
+## Plot the relation among samples considering only the significant genes
+pheatmap(assay(ntd)[selected, ], cluster_rows = TRUE, show_rownames = TRUE, cluster_cols = TRUE,
+    cutree_rows = 4, cutree_cols = 3, labels_col = colData(satoshi)$SampleName)</code></pre>
+<p><img src="figure/deseq2-workflow.Rmd/DESeq2%20norm%20heatmap-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="create-a-hmtl-report-with-deseq2" class="section level2">
+<h2>Create a hmtl report with DEseq2</h2>
+<pre class="r"><code>## import the sample sheet that indicates Rearing Conditions and Tissue origins
+setwd(workDir_DEseq2)
+# loading target file
+target &lt;- loadTargetFile(targetFile = targetFile, varInt = varInt, condRef = condRef,
+    batch = batch)</code></pre>
+<pre><code>FALSE Target file:
+FALSE                                      SampleName
+FALSE SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815240
+FALSE SPICE_S_Iso_SRR11815251 SPICE_S_Iso_SRR11815251
+FALSE SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815261
+FALSE SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815273
+FALSE SPICE_S_Iso_SRR11815274 SPICE_S_Iso_SRR11815274
+FALSE SPICE_G_Crd_SRR11815268 SPICE_G_Crd_SRR11815268
+FALSE SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815269
+FALSE SPICE_G_Crd_SRR11815270 SPICE_G_Crd_SRR11815270
+FALSE SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815271
+FALSE SPICE_G_Crd_SRR11815272 SPICE_G_Crd_SRR11815272
+FALSE                                                   FileName Tissue
+FALSE SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815240_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815251 SPICE_S_Iso_SRR11815251_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815261_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815273_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815274 SPICE_S_Iso_SRR11815274_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815268 SPICE_G_Crd_SRR11815268_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815269_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815270 SPICE_G_Crd_SRR11815270_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815271_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815272 SPICE_G_Crd_SRR11815272_counts.txt   Head
+FALSE                         RearingCondition
+FALSE SPICE_S_Iso_SRR11815240         Isolated
+FALSE SPICE_S_Iso_SRR11815251         Isolated
+FALSE SPICE_S_Iso_SRR11815261         Isolated
+FALSE SPICE_S_Iso_SRR11815273         Isolated
+FALSE SPICE_S_Iso_SRR11815274         Isolated
+FALSE SPICE_G_Crd_SRR11815268          Crowded
+FALSE SPICE_G_Crd_SRR11815269          Crowded
+FALSE SPICE_G_Crd_SRR11815270          Crowded
+FALSE SPICE_G_Crd_SRR11815271          Crowded
+FALSE SPICE_G_Crd_SRR11815272          Crowded</code></pre>
+<pre class="r"><code># loading counts
+counts &lt;- loadCountData(target = target, rawDir = rawDir, featuresToRemove = featuresToRemove)</code></pre>
+<pre><code>FALSE Loading files:
+FALSE SPICE_S_Iso_SRR11815240_counts.txt: 28731 rows and 14531 null count(s)
+FALSE SPICE_S_Iso_SRR11815251_counts.txt: 28731 rows and 14513 null count(s)
+FALSE SPICE_S_Iso_SRR11815261_counts.txt: 28731 rows and 14392 null count(s)
+FALSE SPICE_S_Iso_SRR11815273_counts.txt: 28731 rows and 14221 null count(s)
+FALSE SPICE_S_Iso_SRR11815274_counts.txt: 28731 rows and 14424 null count(s)
+FALSE SPICE_G_Crd_SRR11815268_counts.txt: 28731 rows and 14657 null count(s)
+FALSE SPICE_G_Crd_SRR11815269_counts.txt: 28731 rows and 14521 null count(s)
+FALSE SPICE_G_Crd_SRR11815270_counts.txt: 28731 rows and 14504 null count(s)
+FALSE SPICE_G_Crd_SRR11815271_counts.txt: 28731 rows and 14059 null count(s)
+FALSE SPICE_G_Crd_SRR11815272_counts.txt: 28731 rows and 15232 null count(s)
+FALSE 
+FALSE Features removed:
+FALSE 
+FALSE Top of the counts matrix:
+FALSE              SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251
+FALSE LOC124708997                     610                     562
+FALSE LOC124708998                     510                     407
+FALSE LOC124708999                       0                       1
+FALSE LOC124709000                       2                       0
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       0
+FALSE              SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815273
+FALSE LOC124708997                    3346                    8876
+FALSE LOC124708998                     891                     692
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       2                       4
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       0
+FALSE              SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268
+FALSE LOC124708997                    4341                     343
+FALSE LOC124708998                     773                     439
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       4                       2
+FALSE LOC124709001                       1                       0
+FALSE LOC124709003                       0                       0
+FALSE              SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270
+FALSE LOC124708997                     314                     463
+FALSE LOC124708998                     461                     799
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       0                       0
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       2
+FALSE              SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815272
+FALSE LOC124708997                     638                    3170
+FALSE LOC124708998                     936                     496
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       0                       0
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       0
+FALSE 
+FALSE Bottom of the counts matrix:
+FALSE           SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815273
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815272
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0</code></pre>
+<pre class="r"><code># description plots
+majSequences &lt;- descriptionPlots(counts = counts, group = target[, varInt], col = colors)</code></pre>
+<pre><code>FALSE Matrix of SERE statistics:
+FALSE                         SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251
+FALSE SPICE_S_Iso_SRR11815240                   0.000                   7.681
+FALSE SPICE_S_Iso_SRR11815251                   7.681                   0.000
+FALSE SPICE_S_Iso_SRR11815261                   8.278                   7.525
+FALSE SPICE_S_Iso_SRR11815273                   8.073                   8.239
+FALSE SPICE_S_Iso_SRR11815274                   7.342                   8.961
+FALSE SPICE_G_Crd_SRR11815268                   8.750                   5.271
+FALSE SPICE_G_Crd_SRR11815269                  10.462                   6.957
+FALSE SPICE_G_Crd_SRR11815270                  11.375                   8.585
+FALSE SPICE_G_Crd_SRR11815271                  10.225                   7.865
+FALSE SPICE_G_Crd_SRR11815272                  21.111                  20.214
+FALSE                         SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815273
+FALSE SPICE_S_Iso_SRR11815240                   8.278                   8.073
+FALSE SPICE_S_Iso_SRR11815251                   7.525                   8.239
+FALSE SPICE_S_Iso_SRR11815261                   0.000                   6.150
+FALSE SPICE_S_Iso_SRR11815273                   6.150                   0.000
+FALSE SPICE_S_Iso_SRR11815274                   7.051                   6.487
+FALSE SPICE_G_Crd_SRR11815268                   8.817                   9.755
+FALSE SPICE_G_Crd_SRR11815269                  11.514                  11.846
+FALSE SPICE_G_Crd_SRR11815270                  11.274                  11.696
+FALSE SPICE_G_Crd_SRR11815271                   9.681                  10.195
+FALSE SPICE_G_Crd_SRR11815272                  21.701                  21.430
+FALSE                         SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268
+FALSE SPICE_S_Iso_SRR11815240                   7.342                   8.750
+FALSE SPICE_S_Iso_SRR11815251                   8.961                   5.271
+FALSE SPICE_S_Iso_SRR11815261                   7.051                   8.817
+FALSE SPICE_S_Iso_SRR11815273                   6.487                   9.755
+FALSE SPICE_S_Iso_SRR11815274                   0.000                  10.433
+FALSE SPICE_G_Crd_SRR11815268                  10.433                   0.000
+FALSE SPICE_G_Crd_SRR11815269                  12.567                   5.995
+FALSE SPICE_G_Crd_SRR11815270                  12.590                   6.881
+FALSE SPICE_G_Crd_SRR11815271                  10.910                   7.054
+FALSE SPICE_G_Crd_SRR11815272                  20.887                  19.749
+FALSE                         SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270
+FALSE SPICE_S_Iso_SRR11815240                  10.462                  11.375
+FALSE SPICE_S_Iso_SRR11815251                   6.957                   8.585
+FALSE SPICE_S_Iso_SRR11815261                  11.514                  11.274
+FALSE SPICE_S_Iso_SRR11815273                  11.846                  11.696
+FALSE SPICE_S_Iso_SRR11815274                  12.567                  12.590
+FALSE SPICE_G_Crd_SRR11815268                   5.995                   6.881
+FALSE SPICE_G_Crd_SRR11815269                   0.000                   8.480
+FALSE SPICE_G_Crd_SRR11815270                   8.480                   0.000
+FALSE SPICE_G_Crd_SRR11815271                   8.659                   6.828
+FALSE SPICE_G_Crd_SRR11815272                  20.361                  20.568
+FALSE                         SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815272
+FALSE SPICE_S_Iso_SRR11815240                  10.225                  21.111
+FALSE SPICE_S_Iso_SRR11815251                   7.865                  20.214
+FALSE SPICE_S_Iso_SRR11815261                   9.681                  21.701
+FALSE SPICE_S_Iso_SRR11815273                  10.195                  21.430
+FALSE SPICE_S_Iso_SRR11815274                  10.910                  20.887
+FALSE SPICE_G_Crd_SRR11815268                   7.054                  19.749
+FALSE SPICE_G_Crd_SRR11815269                   8.659                  20.361
+FALSE SPICE_G_Crd_SRR11815270                   6.828                  20.568
+FALSE SPICE_G_Crd_SRR11815271                   0.000                  20.397
+FALSE SPICE_G_Crd_SRR11815272                  20.397                   0.000</code></pre>
+<pre class="r"><code># analysis with DESeq2
+out.DESeq2 &lt;- run.DESeq2(counts = counts, target = target, varInt = varInt, batch = batch,
+    locfunc = locfunc, fitType = fitType, pAdjustMethod = pAdjustMethod_DEseq2, cooksCutoff = cooksCutoff,
+    independentFiltering = independentFiltering, alpha = alpha_DEseq2)</code></pre>
+<pre><code>FALSE Design of the statistical model:
+FALSE ~ RearingCondition 
+FALSE 
+FALSE Normalization factors:
+FALSE SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251 SPICE_S_Iso_SRR11815261 
+FALSE               0.9298497               0.9129101               1.4552040 
+FALSE SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268 
+FALSE               1.3328683               1.1726994               0.8242531 
+FALSE SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270 SPICE_G_Crd_SRR11815271 
+FALSE               0.9639351               1.1943765               1.3987534 
+FALSE SPICE_G_Crd_SRR11815272 
+FALSE               0.4421667 
+FALSE Comparison Crowded vs Isolated done</code></pre>
+<pre class="r"><code># PCA + Clustering
+exploreCounts(object = out.DESeq2$dds, group = target[, varInt], typeTrans = typeTrans,
+    col = colors)</code></pre>
+<pre><code>FALSE quartz_off_screen 
+FALSE                 2</code></pre>
+<pre class="r"><code># summary of the analysis (boxplots, dispersions, diag size factors, export
+# table, nDiffTotal, histograms, MA plot)
+summaryResults &lt;- summarizeResults.DESeq2(out.DESeq2, group = target[, varInt], col = colors,
+    independentFiltering = independentFiltering, cooksCutoff = cooksCutoff, alpha = alpha_DEseq2)</code></pre>
+<pre><code>FALSE Number of features discarded by the independent filtering:
+FALSE      Test vs Ref         BaseMean Threshold # discarded
+FALSE [1,] Crowded vs Isolated 1.79               14994      
+FALSE 
+FALSE Number of features down/up and total:
+FALSE      Test vs Ref         # down # up # total
+FALSE [1,] Crowded vs Isolated 248    394  642</code></pre>
+<pre class="r"><code># generating HTML report
+writeReport.DESeq2(target = target, counts = counts, out.DESeq2 = out.DESeq2, summaryResults = summaryResults,
+    majSequences = majSequences, workDir = workDir_DEseq2, projectName = projectName,
+    author = author, targetFile = targetFile, rawDir = rawDir, featuresToRemove = featuresToRemove,
+    varInt = varInt, condRef = condRef, batch = batch, fitType = fitType, cooksCutoff = cooksCutoff,
+    independentFiltering = independentFiltering, alpha = alpha_DEseq2, pAdjustMethod = pAdjustMethod_DEseq2,
+    typeTrans = typeTrans, locfunc = locfunc, colors = colors)</code></pre>
+<pre><code>FALSE HTML report created</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>FALSE R version 4.2.1 (2022-06-23)
+FALSE Platform: x86_64-apple-darwin17.0 (64-bit)
+FALSE Running under: macOS Big Sur ... 10.16
+FALSE 
+FALSE Matrix products: default
+FALSE BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
+FALSE LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+FALSE 
+FALSE locale:
+FALSE [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+FALSE 
+FALSE attached base packages:
+FALSE [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+FALSE [8] base     
+FALSE 
+FALSE other attached packages:
+FALSE  [1] pheatmap_1.0.12             SARTools_1.8.1             
+FALSE  [3] kableExtra_1.3.4            edgeR_3.38.4               
+FALSE  [5] limma_3.52.4                ashr_2.2-54                
+FALSE  [7] EnhancedVolcano_1.14.0      ggrepel_0.9.1              
+FALSE  [9] ggpubr_0.4.0                apeglm_1.18.0              
+FALSE [11] data.table_1.14.4           DESeq2_1.36.0              
+FALSE [13] SummarizedExperiment_1.26.1 Biobase_2.56.0             
+FALSE [15] MatrixGenerics_1.8.1        matrixStats_0.62.0         
+FALSE [17] GenomicRanges_1.48.0        GenomeInfoDb_1.32.4        
+FALSE [19] IRanges_2.31.2              S4Vectors_0.34.0           
+FALSE [21] BiocGenerics_0.42.0         reshape2_1.4.4             
+FALSE [23] ggthemes_4.2.4              plotly_4.10.0              
+FALSE [25] DT_0.26                     forcats_0.5.2              
+FALSE [27] stringr_1.4.1               dplyr_1.0.10               
+FALSE [29] purrr_0.3.5                 readr_2.1.3                
+FALSE [31] tidyr_1.2.1                 tibble_3.1.8               
+FALSE [33] ggplot2_3.3.6               tidyverse_1.3.2            
+FALSE [35] rmdformats_1.0.4            knitr_1.40                 
+FALSE 
+FALSE loaded via a namespace (and not attached):
+FALSE   [1] readxl_1.4.1           backports_1.4.1        workflowr_1.7.0       
+FALSE   [4] systemfonts_1.0.4      plyr_1.8.7             lazyeval_0.2.2        
+FALSE   [7] splines_4.2.1          BiocParallel_1.30.4    digest_0.6.30         
+FALSE  [10] invgamma_1.1           htmltools_0.5.3        SQUAREM_2021.1        
+FALSE  [13] fansi_1.0.3            magrittr_2.0.3         memoise_2.0.1         
+FALSE  [16] googlesheets4_1.0.1    tzdb_0.3.0             Biostrings_2.64.1     
+FALSE  [19] annotate_1.74.0        modelr_0.1.9           svglite_2.1.0         
+FALSE  [22] bdsmatrix_1.3-6        colorspace_2.0-3       blob_1.2.3            
+FALSE  [25] rvest_1.0.3            haven_2.5.1            xfun_0.34             
+FALSE  [28] crayon_1.5.2           RCurl_1.98-1.9         jsonlite_1.8.3        
+FALSE  [31] genefilter_1.78.0      survival_3.4-0         glue_1.6.2            
+FALSE  [34] gtable_0.3.1           gargle_1.2.1           zlibbioc_1.42.0       
+FALSE  [37] XVector_0.36.0         webshot_0.5.4          DelayedArray_0.22.0   
+FALSE  [40] car_3.1-1              abind_1.4-5            scales_1.2.1          
+FALSE  [43] mvtnorm_1.1-3          GGally_2.1.2           DBI_1.1.3             
+FALSE  [46] rstatix_0.7.0          Rcpp_1.0.9             viridisLite_0.4.1     
+FALSE  [49] xtable_1.8-4           emdbook_1.3.12         bit_4.0.4             
+FALSE  [52] truncnorm_1.0-8        htmlwidgets_1.5.4      httr_1.4.4            
+FALSE  [55] RColorBrewer_1.1-3     ellipsis_0.3.2         farver_2.1.1          
+FALSE  [58] reshape_0.8.9          pkgconfig_2.0.3        XML_3.99-0.11         
+FALSE  [61] sass_0.4.2             dbplyr_2.2.1           locfit_1.5-9.6        
+FALSE  [64] utf8_1.2.2             labeling_0.4.2         tidyselect_1.2.0      
+FALSE  [67] rlang_1.0.6            later_1.3.0            AnnotationDbi_1.58.0  
+FALSE  [70] munsell_0.5.0          cellranger_1.1.0       tools_4.2.1           
+FALSE  [73] cachem_1.0.6           cli_3.4.1              generics_0.1.3        
+FALSE  [76] RSQLite_2.2.18         broom_1.0.1            ggdendro_0.1.23       
+FALSE  [79] evaluate_0.17          fastmap_1.1.0          yaml_2.3.6            
+FALSE  [82] bit64_4.0.5            fs_1.5.2               KEGGREST_1.36.3       
+FALSE  [85] formatR_1.12           xml2_1.3.3             compiler_4.2.1        
+FALSE  [88] rstudioapi_0.14        png_0.1-7              ggsignif_0.6.4        
+FALSE  [91] reprex_2.0.2           geneplotter_1.74.0     bslib_0.4.0           
+FALSE  [94] stringi_1.7.8          highr_0.9              lattice_0.20-45       
+FALSE  [97] Matrix_1.5-1           vctrs_0.5.0            pillar_1.8.1          
+FALSE [100] lifecycle_1.0.3        jquerylib_0.1.4        irlba_2.3.5.1         
+FALSE [103] bitops_1.0-7           httpuv_1.6.6           R6_2.5.1              
+FALSE [106] bookdown_0.29          promises_1.2.0.1       gridExtra_2.3         
+FALSE [109] codetools_0.2-18       MASS_7.3-58.1          assertthat_0.2.1      
+FALSE [112] rprojroot_2.0.3        withr_2.5.0            GenomeInfoDbData_1.2.8
+FALSE [115] parallel_4.2.1         hms_1.1.2              grid_4.2.1            
+FALSE [118] coda_0.19-4            rmarkdown_2.17         carData_3.0-5         
+FALSE [121] googledrive_2.0.0      git2r_0.30.1           mixsqp_0.3-43         
+FALSE [124] bbmle_1.0.25           numDeriv_2016.8-1.1    lubridate_1.8.0</code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

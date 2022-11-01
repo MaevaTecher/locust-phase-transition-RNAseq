@@ -431,7 +431,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -442,8 +442,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -456,9 +456,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 2
 </p>
 <p>
 <strong>Knit directory:</strong>
@@ -482,18 +482,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -569,30 +572,72 @@ run.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons
+</td>
+<td style="text-align:left;">
+data/piceifrons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/STAR_counts_4thcol
+</td>
+<td style="text-align:left;">
+data/piceifrons/STAR_counts_4thcol
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/list/HeadSPICE.txt
+</td>
+<td style="text-align:left;">
+data/piceifrons/list/HeadSPICE.txt
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2ccb4bc5e57b273db98e89c4b87c580ee510cd67targetblank2ccb4bca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree16e8705222ef4dbc0805845bd417d3df32a4b73atargetblank16e8705a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2ccb4bc5e57b273db98e89c4b87c580ee510cd67" target="_blank">2ccb4bc</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/16e8705222ef4dbc0805845bd417d3df32a4b73a" target="_blank">16e8705</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2ccb4bc5e57b273db98e89c4b87c580ee510cd67targetblank2ccb4bca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree16e8705222ef4dbc0805845bd417d3df32a4b73atargetblank16e8705a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -602,7 +647,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2ccb4bc5e57b273db98e89c4b87c580ee510cd67" target="_blank">2ccb4bc</a>.
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/16e8705222ef4dbc0805845bd417d3df32a4b73a" target="_blank">16e8705</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -636,9 +681,12 @@ Ignored files:
     Ignored:    data/piceifrons/STAR_counts_4thcol/.DS_Store
     Ignored:    data/piceifrons/list/.DS_Store
 
+Untracked files:
+    Untracked:  data/piceifrons/DEseq2_SPICE_HEAD/
+
 Unstaged changes:
-    Deleted:    analysis/gene-quant.Rmd
-    Deleted:    analysis/own-refseq.Rmd
+    Modified:   analysis/deg-workflow.Rmd
+    Deleted:    data/piceifrons/piceifrons_DE.csv
 
 </code></pre>
 <p>
@@ -686,6 +734,23 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/834088cdafcd35398d7a71b0c6b8b2ac92130779/docs/deg-workflow.html" target="_blank">834088c</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
@@ -726,6 +791,7 @@ library(&quot;ggpubr&quot;)
 library(&quot;ggplot2&quot;)
 library(&quot;ggrepel&quot;)
 library(&quot;EnhancedVolcano&quot;)
+library(&quot;SARTools&quot;)
 
 ## Global options
 options(max.print=&quot;10000&quot;)
@@ -753,12 +819,13 @@ an input raw counts (i.e. non normalized counts): the DESeq2 model
 internally corrects for library size, so giving as an input normalized
 count would be incorrect.</p>
 </div>
-<div id="dge-analysis-with-star-input" class="section level1">
-<h1>DGE analysis with STAR input</h1>
+<div id="dge-analysis-with-deseq2-and-star-input"
+class="section level1">
+<h1>DGE analysis with DESeq2 and STAR input</h1>
 <div id="preparing-input-files" class="section level2">
 <h2>Preparing input files</h2>
-<div id="raw-count-matrices" class="section level3">
-<h3>Raw count matrices</h3>
+<div id="raw-count-matrices" class="section level4">
+<h4>Raw count matrices</h4>
 <p>We generated this in the precedent section.</p>
 </div>
 <div id="transcript-to-gene-annotation-file" class="section level3">
@@ -782,19 +849,17 @@ to specify what we want to measure and what we want to
 <strong>control</strong>.</p>
 </div>
 </div>
-</div>
-<div id="differential-expression-analysis" class="section level1">
-<h1>Differential expression analysis</h1>
-<div id="import-input-count-data" class="section level2">
-<h2>Import input count data</h2>
+<div id="differential-expression-analysis" class="section level2">
+<h2>Differential expression analysis</h2>
+<div id="import-input-count-data" class="section level3">
+<h3>Import input count data</h3>
 <p>We start by reading the sample sheet.</p>
-<pre class="r"><code>## import the sample sheet that indicates Rearing Conditions and Tissue origins
-sampletable &lt;- fread(&quot;data/piceifrons/list/HeadSPICE.txt&quot;)
-# add the sample names as row names (it is needed for some of the DESeq
-# functions)
+<pre class="r"><code>sampletable &lt;- fread(&quot;data/piceifrons/list/HeadSPICE.txt&quot;)
+## add the sample names as row names (it is needed for some of the DESeq
+## functions)
 rownames(sampletable) &lt;- sampletable$SampleName
 
-# Make sure discriminant variables are factor
+## Make sure discriminant variables are factor
 sampletable$RearingCondition &lt;- as.factor(sampletable$RearingCondition)
 sampletable$Tissue &lt;- as.factor(sampletable$Tissue)
 dim(sampletable)</code></pre>
@@ -802,14 +867,9 @@ dim(sampletable)</code></pre>
 <p>Then we obtain the output from <code>STAR GeneCount</code> and import
 here individually using the sampletable as a reference to fetch them. We
 also filter the lowly expressed genes to avoid noisy data.</p>
-<pre class="r"><code># Read in the two-column data.frame linking transcript id (column 1) to gene id
-# (column 2)
-tx2gene &lt;- read.table(&quot;data/piceifrons/list/tx2gene.piceifrons.csv&quot;, sep = &quot;\t&quot;,
-    header = F)
-
+<pre class="r"><code>## Import count files
 satoshi &lt;- DESeqDataSetFromHTSeqCount(sampleTable = sampletable, directory = &quot;data/piceifrons/STAR_counts_4thcol&quot;,
     design = ~RearingCondition)
-
 satoshi</code></pre>
 <pre><code>FALSE class: DESeqDataSet 
 FALSE dim: 28731 10 
@@ -828,8 +888,8 @@ nrow(satoshi)</code></pre>
 <pre class="r"><code># set a standard to be compared to (hatchling) ONLY IF WE HAVE A CONTROL
 # satoshi$Tissue &lt;- relevel(satoshi$Tissue, ref = &#39;Whole_body&#39;)</code></pre>
 </div>
-<div id="run-the-model-fit-deseq2" class="section level2">
-<h2>Run the model Fit DESeq2</h2>
+<div id="run-the-model-fit-deseq2" class="section level3">
+<h3>Run the model Fit DESeq2</h3>
 <p>Run DESeq2 analysis using <code>DESeq</code>, which performs (1)
 estimation of size factors, (2) estimation of dispersion, then (3)
 Negative Binomial GLM fitting and Wald statistics. The results tables
@@ -895,10 +955,10 @@ up-regulates and 404 genes down-regulated in crowded versus solitary
 individuals.</p>
 </div>
 </div>
-<div id="visualizing-and-exploring-the-results" class="section level1">
-<h1>Visualizing and exploring the results</h1>
-<div id="pca-of-the-samples" class="section level2">
-<h2>PCA of the samples</h2>
+<div id="visualizing-and-exploring-the-results" class="section level2">
+<h2>Visualizing and exploring the results</h2>
+<div id="pca-of-the-samples" class="section level3">
+<h3>PCA of the samples</h3>
 <p>We transformed the data for visualization by comparing both
 recommended <strong>rlog</strong> (Regularized log) or
 <strong>vst</strong> (Variance Stabilizing Transformation)
@@ -934,6 +994,43 @@ ggplot(pcaData, aes(PC1, PC2, color = RearingCondition)) + geom_point(size = 4) 
     subtitle = &quot;rlog transformation&quot;) + xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) +
     ylab(paste0(&quot;PC2: &quot;, percentVar[2], &quot;% variance&quot;))</code></pre>
 <p><img src="figure/deg-workflow.Rmd/DESeq2%20PCA%20rlog-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-DESeq2-PCA-rlog-1">
+Past versions of "DESeq2 PCA rlog-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-DESeq2-PCA-rlog-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/834088cdafcd35398d7a71b0c6b8b2ac92130779/docs/figure/deg-workflow.Rmd/DESeq2 PCA rlog-1.png" target="_blank">834088c</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Plot the PCA vsd</p>
 <pre class="r"><code># Create the pca on the defined groups
 pcaData &lt;- plotPCA(object = shigeru_vsd, intgroup = c(&quot;RearingCondition&quot;, &quot;Tissue&quot;),
@@ -961,19 +1058,72 @@ ggplot(pcaData, aes(PC1, PC2, color = RearingCondition)) + geom_point(size = 4) 
     subtitle = &quot;vst transformation&quot;) + xlab(paste0(&quot;PC1: &quot;, percentVar[1], &quot;% variance&quot;)) +
     ylab(paste0(&quot;PC2: &quot;, percentVar[2], &quot;% variance&quot;))</code></pre>
 <p><img src="figure/deg-workflow.Rmd/DESeq2%20PCA%20vsd-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-DESeq2-PCA-vsd-1">
+Past versions of "DESeq2 PCA vsd-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-DESeq2-PCA-vsd-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/834088cdafcd35398d7a71b0c6b8b2ac92130779/docs/figure/deg-workflow.Rmd/DESeq2 PCA vsd-1.png" target="_blank">834088c</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="ma-plot" class="section level2">
-<h2>MA-plot</h2>
+</div>
+</div>
+<div id="ma-plot" class="section level3">
+<h3>MA-plot</h3>
 <p>This plot allows us to show the log2 fold changes over the mean of
 normalized counts for all the samples. Points will be colored in red if
 the adjusted p-value is less than 0.05 and the log2 fold change is
 bigger than 1. In blue, will be the reverse for the log2 fold
 change.</p>
+<p>To generate more accurate log2 foldchange estimates, DESeq2 allows
+(and recommends) the shrinkage of the LFC estimates toward zero when the
+information for a gene is low, which could include:</p>
+<p>-Low counts<br />
+-High dispersion values</p>
 <pre class="r"><code># include the log2FoldChange shrinkage use to visualize gene ranking
 de_shrink &lt;- lfcShrink(dds = shigeru, coef = &quot;RearingCondition_Isolated_vs_Crowded&quot;,
     type = &quot;apeglm&quot;)
-
-# Ma plot
+head(de_shrink)</code></pre>
+<pre><code>FALSE log2 fold change (MAP): RearingCondition Isolated vs Crowded 
+FALSE Wald test p-value: RearingCondition Isolated vs Crowded 
+FALSE DataFrame with 6 rows and 5 columns
+FALSE               baseMean log2FoldChange     lfcSE      pvalue        padj
+FALSE              &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+FALSE LOC124796288   2.37306     -0.1187124  0.276337 8.30204e-03 1.12401e-01
+FALSE LOC124796294   1.14866     -0.0248082  0.234004 2.80906e-01          NA
+FALSE LOC124796332   9.18581     -0.0578750  0.231375 4.01131e-01 7.41676e-01
+FALSE LOC124793320 133.76396     -1.1354854  0.865692 4.13290e-03 7.18571e-02
+FALSE LOC124712404  29.00252     -0.0797187  0.248051          NA          NA
+FALSE LOC124798649  11.86003      4.9350149  0.866991 2.46048e-09 6.54487e-07</code></pre>
+<pre class="r"><code># Ma plot
 maplot &lt;- ggmaplot(de_shrink, fdr = 0.05, fc = 1, size = 1.5, palette = c(&quot;#B31B21&quot;,
     &quot;#1465AC&quot;, &quot;darkgray&quot;), genenames = as.vector(rownames(de_shrink$name)), top = 0,
     legend = &quot;top&quot;, label.select = NULL) + coord_cartesian(xlim = c(0, 18)) + scale_y_continuous(limits = c(-8,
@@ -986,6 +1136,46 @@ maplot &lt;- ggmaplot(de_shrink, fdr = 0.05, fc = 1, size = 1.5, palette = c(&qu
     colour = &quot;gray30&quot;, face = &quot;bold&quot;, hjust = 0.06, vjust = -5)) + labs(title = &quot;MA-plot for the shrunken log2 fold changes in the head&quot;)
 maplot</code></pre>
 <p><img src="figure/deg-workflow.Rmd/DESeq2%20MA%20plot%20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-DESeq2-MA-plot--1">
+Past versions of "DESeq2 MA plot -1.png"
+</button>
+</p>
+<div id="fig-no-spaces-DESeq2-MA-plot--1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/834088cdafcd35398d7a71b0c6b8b2ac92130779/docs/figure/deg-workflow.Rmd/DESeq2 MA plot -1.png" target="_blank">834088c</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="volcano-plot" class="section level3">
+<h3>Volcano Plot</h3>
 <p>The <code>EnhancedVolcano</code> helps visualise the resulst of
 differential expression analysis.</p>
 <pre class="r"><code>keyvals &lt;- ifelse(res_shigeru$log2FoldChange &gt;= 1 &amp; res_shigeru$padj &lt;= 0.05, &quot;red&quot;,
@@ -993,14 +1183,319 @@ differential expression analysis.</p>
         &quot;black&quot;))
 
 keyvals[is.na(keyvals)] &lt;- &quot;black&quot;
-names(keyvals)[keyvals == &quot;red&quot;] &lt;- &quot;Upregulated&quot;
-names(keyvals)[keyvals == &quot;green&quot;] &lt;- &quot;Downregulated&quot;
-names(keyvals)[keyvals == &quot;black&quot;] &lt;- &quot;NS&quot;
+names(keyvals)[keyvals == &quot;#B31B21&quot;] &lt;- &quot;Upregulated&quot;
+names(keyvals)[keyvals == &quot;#1465AC&quot;] &lt;- &quot;Downregulated&quot;
+names(keyvals)[keyvals == &quot;darkgray&quot;] &lt;- &quot;NS&quot;
 
 EnhancedVolcano(res_shigeru, lab = rownames(res_shigeru), x = &quot;log2FoldChange&quot;, y = &quot;padj&quot;,
     pCutoff = 0.05, FCcutoff = 1, pointSize = 3, labSize = 3, colAlpha = 4/5, colCustom = keyvals,
     drawConnectors = FALSE)</code></pre>
 <p><img src="figure/deg-workflow.Rmd/DESeq2%20Volcano%20plot%20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-DESeq2-Volcano-plot--1">
+Past versions of "DESeq2 Volcano plot -1.png"
+</button>
+</p>
+<div id="fig-no-spaces-DESeq2-Volcano-plot--1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/834088cdafcd35398d7a71b0c6b8b2ac92130779/docs/figure/deg-workflow.Rmd/DESeq2 Volcano plot -1.png" target="_blank">834088c</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="samples-correlation" class="section level3">
+<h3>Samples Correlation</h3>
+</div>
+<div id="create-a-hmtl-report" class="section level3">
+<h3>Create a hmtl report</h3>
+<pre class="r"><code>## PARAMETERS for running the script
+workDir &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons&quot;  # Working directory
+projectName &lt;- &quot;SPICE_HEAD&quot;  # name of the project
+author &lt;- &quot;Maeva TECHER&quot;  # author of the statistical analysis/report
+
+## Create all the needed directories
+setwd(workDir)
+Dirname &lt;- paste(&quot;DEseq2_&quot;, projectName, sep = &quot;&quot;)
+dir.create(Dirname)
+setwd(Dirname)
+workDir_DEseq2 &lt;- getwd()
+dir.create(&quot;raw&quot;)
+
+## PARAMETERS for running DEseq2
+workDir &lt;- workDir_DEseq2  # path tho the workdirectory
+rawDir &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/STAR_counts_4thcol&quot;  # path to the directory containing raw counts files
+alpha &lt;- 0.05  # threshold of statistical significance
+pAdjustMethod &lt;- &quot;BH&quot;  # p-value adjustment method: &#39;BH&#39; (default) or &#39;BY&#39;
+featuresToRemove &lt;- c(NULL)  # names of the features to be removed, NULL if none or if using Idxstats
+targetFile &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/list/HeadSPICE.txt&quot;  # name of targetfile
+varInt &lt;- &quot;RearingCondition&quot;  # factor of interest
+condRef &lt;- &quot;Isolated&quot;  # reference biological condition
+batch &lt;- NULL  # blocking factor: NULL (default) or &#39;batch&#39; for example  
+fitType &lt;- &quot;parametric&quot;  # mean-variance relationship: &#39;parametric&#39; (default) or &#39;local&#39;
+cooksCutoff &lt;- TRUE  # TRUE/FALSE to perform the outliers detection (default is TRUE)
+independentFiltering &lt;- TRUE  # TRUE/FALSE to perform independent filtering (default is TRUE)
+typeTrans &lt;- &quot;VST&quot;  # transformation for PCA/clustering: &#39;VST&#39; or &#39;rlog&#39;
+locfunc &lt;- &quot;median&quot;
+colors &lt;- c(&quot;#B31B21&quot;, &quot;#1465AC&quot;)
+
+## import the sample sheet that indicates Rearing Conditions and Tissue origins
+setwd(workDir)
+# loading target file
+target &lt;- loadTargetFile(targetFile = targetFile, varInt = varInt, condRef = condRef,
+    batch = batch)</code></pre>
+<pre><code>FALSE Target file:
+FALSE                                      SampleName
+FALSE SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815240
+FALSE SPICE_S_Iso_SRR11815251 SPICE_S_Iso_SRR11815251
+FALSE SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815261
+FALSE SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815273
+FALSE SPICE_S_Iso_SRR11815274 SPICE_S_Iso_SRR11815274
+FALSE SPICE_G_Crd_SRR11815268 SPICE_G_Crd_SRR11815268
+FALSE SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815269
+FALSE SPICE_G_Crd_SRR11815270 SPICE_G_Crd_SRR11815270
+FALSE SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815271
+FALSE SPICE_G_Crd_SRR11815272 SPICE_G_Crd_SRR11815272
+FALSE                                                   FileName Tissue
+FALSE SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815240_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815251 SPICE_S_Iso_SRR11815251_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815261_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815273_counts.txt   Head
+FALSE SPICE_S_Iso_SRR11815274 SPICE_S_Iso_SRR11815274_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815268 SPICE_G_Crd_SRR11815268_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815269_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815270 SPICE_G_Crd_SRR11815270_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815271_counts.txt   Head
+FALSE SPICE_G_Crd_SRR11815272 SPICE_G_Crd_SRR11815272_counts.txt   Head
+FALSE                         RearingCondition
+FALSE SPICE_S_Iso_SRR11815240         Isolated
+FALSE SPICE_S_Iso_SRR11815251         Isolated
+FALSE SPICE_S_Iso_SRR11815261         Isolated
+FALSE SPICE_S_Iso_SRR11815273         Isolated
+FALSE SPICE_S_Iso_SRR11815274         Isolated
+FALSE SPICE_G_Crd_SRR11815268          Crowded
+FALSE SPICE_G_Crd_SRR11815269          Crowded
+FALSE SPICE_G_Crd_SRR11815270          Crowded
+FALSE SPICE_G_Crd_SRR11815271          Crowded
+FALSE SPICE_G_Crd_SRR11815272          Crowded</code></pre>
+<pre class="r"><code># loading counts
+counts &lt;- loadCountData(target = target, rawDir = rawDir, featuresToRemove = featuresToRemove)</code></pre>
+<pre><code>FALSE Loading files:
+FALSE SPICE_S_Iso_SRR11815240_counts.txt: 28731 rows and 14531 null count(s)
+FALSE SPICE_S_Iso_SRR11815251_counts.txt: 28731 rows and 14513 null count(s)
+FALSE SPICE_S_Iso_SRR11815261_counts.txt: 28731 rows and 14392 null count(s)
+FALSE SPICE_S_Iso_SRR11815273_counts.txt: 28731 rows and 14221 null count(s)
+FALSE SPICE_S_Iso_SRR11815274_counts.txt: 28731 rows and 14424 null count(s)
+FALSE SPICE_G_Crd_SRR11815268_counts.txt: 28731 rows and 14657 null count(s)
+FALSE SPICE_G_Crd_SRR11815269_counts.txt: 28731 rows and 14521 null count(s)
+FALSE SPICE_G_Crd_SRR11815270_counts.txt: 28731 rows and 14504 null count(s)
+FALSE SPICE_G_Crd_SRR11815271_counts.txt: 28731 rows and 14059 null count(s)
+FALSE SPICE_G_Crd_SRR11815272_counts.txt: 28731 rows and 15232 null count(s)
+FALSE 
+FALSE Features removed:
+FALSE 
+FALSE Top of the counts matrix:
+FALSE              SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251
+FALSE LOC124708997                     610                     562
+FALSE LOC124708998                     510                     407
+FALSE LOC124708999                       0                       1
+FALSE LOC124709000                       2                       0
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       0
+FALSE              SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815273
+FALSE LOC124708997                    3346                    8876
+FALSE LOC124708998                     891                     692
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       2                       4
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       0
+FALSE              SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268
+FALSE LOC124708997                    4341                     343
+FALSE LOC124708998                     773                     439
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       4                       2
+FALSE LOC124709001                       1                       0
+FALSE LOC124709003                       0                       0
+FALSE              SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270
+FALSE LOC124708997                     314                     463
+FALSE LOC124708998                     461                     799
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       0                       0
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       2
+FALSE              SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815272
+FALSE LOC124708997                     638                    3170
+FALSE LOC124708998                     936                     496
+FALSE LOC124708999                       0                       0
+FALSE LOC124709000                       0                       0
+FALSE LOC124709001                       0                       0
+FALSE LOC124709003                       0                       0
+FALSE 
+FALSE Bottom of the counts matrix:
+FALSE           SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815273
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0
+FALSE           SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815272
+FALSE Trnav-cac                       0                       0
+FALSE Trnav-gac                       0                       0
+FALSE Trnav-uac                       0                       0
+FALSE Trnaw-cca                       0                       0
+FALSE Trnay-aua                       0                       0
+FALSE Trnay-gua                       0                       0</code></pre>
+<pre class="r"><code># description plots
+majSequences &lt;- descriptionPlots(counts = counts, group = target[, varInt], col = colors)</code></pre>
+<pre><code>FALSE Matrix of SERE statistics:
+FALSE                         SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251
+FALSE SPICE_S_Iso_SRR11815240                   0.000                   7.681
+FALSE SPICE_S_Iso_SRR11815251                   7.681                   0.000
+FALSE SPICE_S_Iso_SRR11815261                   8.278                   7.525
+FALSE SPICE_S_Iso_SRR11815273                   8.073                   8.239
+FALSE SPICE_S_Iso_SRR11815274                   7.342                   8.961
+FALSE SPICE_G_Crd_SRR11815268                   8.750                   5.271
+FALSE SPICE_G_Crd_SRR11815269                  10.462                   6.957
+FALSE SPICE_G_Crd_SRR11815270                  11.375                   8.585
+FALSE SPICE_G_Crd_SRR11815271                  10.225                   7.865
+FALSE SPICE_G_Crd_SRR11815272                  21.111                  20.214
+FALSE                         SPICE_S_Iso_SRR11815261 SPICE_S_Iso_SRR11815273
+FALSE SPICE_S_Iso_SRR11815240                   8.278                   8.073
+FALSE SPICE_S_Iso_SRR11815251                   7.525                   8.239
+FALSE SPICE_S_Iso_SRR11815261                   0.000                   6.150
+FALSE SPICE_S_Iso_SRR11815273                   6.150                   0.000
+FALSE SPICE_S_Iso_SRR11815274                   7.051                   6.487
+FALSE SPICE_G_Crd_SRR11815268                   8.817                   9.755
+FALSE SPICE_G_Crd_SRR11815269                  11.514                  11.846
+FALSE SPICE_G_Crd_SRR11815270                  11.274                  11.696
+FALSE SPICE_G_Crd_SRR11815271                   9.681                  10.195
+FALSE SPICE_G_Crd_SRR11815272                  21.701                  21.430
+FALSE                         SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268
+FALSE SPICE_S_Iso_SRR11815240                   7.342                   8.750
+FALSE SPICE_S_Iso_SRR11815251                   8.961                   5.271
+FALSE SPICE_S_Iso_SRR11815261                   7.051                   8.817
+FALSE SPICE_S_Iso_SRR11815273                   6.487                   9.755
+FALSE SPICE_S_Iso_SRR11815274                   0.000                  10.433
+FALSE SPICE_G_Crd_SRR11815268                  10.433                   0.000
+FALSE SPICE_G_Crd_SRR11815269                  12.567                   5.995
+FALSE SPICE_G_Crd_SRR11815270                  12.590                   6.881
+FALSE SPICE_G_Crd_SRR11815271                  10.910                   7.054
+FALSE SPICE_G_Crd_SRR11815272                  20.887                  19.749
+FALSE                         SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270
+FALSE SPICE_S_Iso_SRR11815240                  10.462                  11.375
+FALSE SPICE_S_Iso_SRR11815251                   6.957                   8.585
+FALSE SPICE_S_Iso_SRR11815261                  11.514                  11.274
+FALSE SPICE_S_Iso_SRR11815273                  11.846                  11.696
+FALSE SPICE_S_Iso_SRR11815274                  12.567                  12.590
+FALSE SPICE_G_Crd_SRR11815268                   5.995                   6.881
+FALSE SPICE_G_Crd_SRR11815269                   0.000                   8.480
+FALSE SPICE_G_Crd_SRR11815270                   8.480                   0.000
+FALSE SPICE_G_Crd_SRR11815271                   8.659                   6.828
+FALSE SPICE_G_Crd_SRR11815272                  20.361                  20.568
+FALSE                         SPICE_G_Crd_SRR11815271 SPICE_G_Crd_SRR11815272
+FALSE SPICE_S_Iso_SRR11815240                  10.225                  21.111
+FALSE SPICE_S_Iso_SRR11815251                   7.865                  20.214
+FALSE SPICE_S_Iso_SRR11815261                   9.681                  21.701
+FALSE SPICE_S_Iso_SRR11815273                  10.195                  21.430
+FALSE SPICE_S_Iso_SRR11815274                  10.910                  20.887
+FALSE SPICE_G_Crd_SRR11815268                   7.054                  19.749
+FALSE SPICE_G_Crd_SRR11815269                   8.659                  20.361
+FALSE SPICE_G_Crd_SRR11815270                   6.828                  20.568
+FALSE SPICE_G_Crd_SRR11815271                   0.000                  20.397
+FALSE SPICE_G_Crd_SRR11815272                  20.397                   0.000</code></pre>
+<pre class="r"><code># analysis with DESeq2
+out.DESeq2 &lt;- run.DESeq2(counts = counts, target = target, varInt = varInt, batch = batch,
+    locfunc = locfunc, fitType = fitType, pAdjustMethod = pAdjustMethod, cooksCutoff = cooksCutoff,
+    independentFiltering = independentFiltering, alpha = alpha)</code></pre>
+<pre><code>FALSE Design of the statistical model:
+FALSE ~ RearingCondition 
+FALSE 
+FALSE Normalization factors:
+FALSE SPICE_S_Iso_SRR11815240 SPICE_S_Iso_SRR11815251 SPICE_S_Iso_SRR11815261 
+FALSE               0.9298497               0.9129101               1.4552040 
+FALSE SPICE_S_Iso_SRR11815273 SPICE_S_Iso_SRR11815274 SPICE_G_Crd_SRR11815268 
+FALSE               1.3328683               1.1726994               0.8242531 
+FALSE SPICE_G_Crd_SRR11815269 SPICE_G_Crd_SRR11815270 SPICE_G_Crd_SRR11815271 
+FALSE               0.9639351               1.1943765               1.3987534 
+FALSE SPICE_G_Crd_SRR11815272 
+FALSE               0.4421667 
+FALSE Comparison Crowded vs Isolated done</code></pre>
+<pre class="r"><code># PCA + Clustering
+exploreCounts(object = out.DESeq2$dds, group = target[, varInt], typeTrans = typeTrans,
+    col = colors)</code></pre>
+<pre><code>FALSE quartz_off_screen 
+FALSE                 2</code></pre>
+<pre class="r"><code># summary of the analysis (boxplots, dispersions, diag size factors, export
+# table, nDiffTotal, histograms, MA plot)
+summaryResults &lt;- summarizeResults.DESeq2(out.DESeq2, group = target[, varInt], col = colors,
+    independentFiltering = independentFiltering, cooksCutoff = cooksCutoff, alpha = alpha)</code></pre>
+<pre><code>FALSE Number of features discarded by the independent filtering:
+FALSE      Test vs Ref         BaseMean Threshold # discarded
+FALSE [1,] Crowded vs Isolated 1.79               14994      
+FALSE 
+FALSE Number of features down/up and total:
+FALSE      Test vs Ref         # down # up # total
+FALSE [1,] Crowded vs Isolated 248    394  642</code></pre>
+<pre class="r"><code># generating HTML report
+writeReport.DESeq2(target = target, counts = counts, out.DESeq2 = out.DESeq2, summaryResults = summaryResults,
+    majSequences = majSequences, workDir = workDir, projectName = projectName, author = author,
+    targetFile = targetFile, rawDir = rawDir, featuresToRemove = featuresToRemove,
+    varInt = varInt, condRef = condRef, batch = batch, fitType = fitType, cooksCutoff = cooksCutoff,
+    independentFiltering = independentFiltering, alpha = alpha, pAdjustMethod = pAdjustMethod,
+    typeTrans = typeTrans, locfunc = locfunc, colors = colors)</code></pre>
+<pre><code>FALSE HTML report created</code></pre>
+</div>
+</div>
+</div>
+<div id="dge-analysis-with-edger-and-star-input" class="section level1">
+<h1>DGE analysis with EdgeR and STAR input</h1>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1026,65 +1521,69 @@ FALSE [1] stats4    stats     graphics  grDevices utils     datasets  methods
 FALSE [8] base     
 FALSE 
 FALSE other attached packages:
-FALSE  [1] EnhancedVolcano_1.14.0      ggrepel_0.9.1              
-FALSE  [3] ggpubr_0.4.0                apeglm_1.18.0              
-FALSE  [5] data.table_1.14.4           DESeq2_1.36.0              
-FALSE  [7] SummarizedExperiment_1.26.1 Biobase_2.56.0             
-FALSE  [9] MatrixGenerics_1.8.1        matrixStats_0.62.0         
-FALSE [11] GenomicRanges_1.48.0        GenomeInfoDb_1.32.4        
-FALSE [13] IRanges_2.31.2              S4Vectors_0.34.0           
-FALSE [15] BiocGenerics_0.42.0         reshape2_1.4.4             
-FALSE [17] ggthemes_4.2.4              plotly_4.10.0              
-FALSE [19] DT_0.26                     forcats_0.5.2              
-FALSE [21] stringr_1.4.1               dplyr_1.0.10               
-FALSE [23] purrr_0.3.5                 readr_2.1.3                
-FALSE [25] tidyr_1.2.1                 tibble_3.1.8               
-FALSE [27] ggplot2_3.3.6               tidyverse_1.3.2            
-FALSE [29] rmdformats_1.0.4            knitr_1.40                 
-FALSE [31] workflowr_1.7.0            
+FALSE  [1] SARTools_1.8.1              kableExtra_1.3.4           
+FALSE  [3] edgeR_3.38.4                limma_3.52.4               
+FALSE  [5] ashr_2.2-54                 EnhancedVolcano_1.14.0     
+FALSE  [7] ggrepel_0.9.1               ggpubr_0.4.0               
+FALSE  [9] apeglm_1.18.0               data.table_1.14.4          
+FALSE [11] DESeq2_1.36.0               SummarizedExperiment_1.26.1
+FALSE [13] Biobase_2.56.0              MatrixGenerics_1.8.1       
+FALSE [15] matrixStats_0.62.0          GenomicRanges_1.48.0       
+FALSE [17] GenomeInfoDb_1.32.4         IRanges_2.31.2             
+FALSE [19] S4Vectors_0.34.0            BiocGenerics_0.42.0        
+FALSE [21] reshape2_1.4.4              ggthemes_4.2.4             
+FALSE [23] plotly_4.10.0               DT_0.26                    
+FALSE [25] forcats_0.5.2               stringr_1.4.1              
+FALSE [27] dplyr_1.0.10                purrr_0.3.5                
+FALSE [29] readr_2.1.3                 tidyr_1.2.1                
+FALSE [31] tibble_3.1.8                ggplot2_3.3.6              
+FALSE [33] tidyverse_1.3.2             rmdformats_1.0.4           
+FALSE [35] knitr_1.40                 
 FALSE 
 FALSE loaded via a namespace (and not attached):
-FALSE   [1] readxl_1.4.1           backports_1.4.1        plyr_1.8.7            
-FALSE   [4] lazyeval_0.2.2         splines_4.2.1          BiocParallel_1.30.4   
-FALSE   [7] digest_0.6.30          htmltools_0.5.3        fansi_1.0.3           
-FALSE  [10] magrittr_2.0.3         memoise_2.0.1          googlesheets4_1.0.1   
-FALSE  [13] tzdb_0.3.0             Biostrings_2.64.1      annotate_1.74.0       
-FALSE  [16] modelr_0.1.9           bdsmatrix_1.3-6        colorspace_2.0-3      
-FALSE  [19] blob_1.2.3             rvest_1.0.3            haven_2.5.1           
-FALSE  [22] xfun_0.34              callr_3.7.2            crayon_1.5.2          
-FALSE  [25] RCurl_1.98-1.9         jsonlite_1.8.3         genefilter_1.78.0     
-FALSE  [28] survival_3.4-0         glue_1.6.2             gtable_0.3.1          
-FALSE  [31] gargle_1.2.1           zlibbioc_1.42.0        XVector_0.36.0        
-FALSE  [34] DelayedArray_0.22.0    car_3.1-1              abind_1.4-5           
-FALSE  [37] scales_1.2.1           mvtnorm_1.1-3          DBI_1.1.3             
-FALSE  [40] rstatix_0.7.0          Rcpp_1.0.9             viridisLite_0.4.1     
-FALSE  [43] xtable_1.8-4           emdbook_1.3.12         bit_4.0.4             
-FALSE  [46] htmlwidgets_1.5.4      httr_1.4.4             RColorBrewer_1.1-3    
-FALSE  [49] ellipsis_0.3.2         farver_2.1.1           pkgconfig_2.0.3       
-FALSE  [52] XML_3.99-0.11          sass_0.4.2             dbplyr_2.2.1          
-FALSE  [55] locfit_1.5-9.6         utf8_1.2.2             labeling_0.4.2        
-FALSE  [58] tidyselect_1.2.0       rlang_1.0.6            later_1.3.0           
-FALSE  [61] AnnotationDbi_1.58.0   munsell_0.5.0          cellranger_1.1.0      
-FALSE  [64] tools_4.2.1            cachem_1.0.6           cli_3.4.1             
-FALSE  [67] generics_0.1.3         RSQLite_2.2.18         broom_1.0.1           
-FALSE  [70] evaluate_0.17          fastmap_1.1.0          yaml_2.3.6            
-FALSE  [73] processx_3.7.0         bit64_4.0.5            fs_1.5.2              
-FALSE  [76] KEGGREST_1.36.3        whisker_0.4            formatR_1.12          
-FALSE  [79] xml2_1.3.3             compiler_4.2.1         rstudioapi_0.14       
-FALSE  [82] png_0.1-7              ggsignif_0.6.4         reprex_2.0.2          
-FALSE  [85] geneplotter_1.74.0     bslib_0.4.0            stringi_1.7.8         
-FALSE  [88] highr_0.9              ps_1.7.1               lattice_0.20-45       
-FALSE  [91] Matrix_1.5-1           vctrs_0.5.0            pillar_1.8.1          
-FALSE  [94] lifecycle_1.0.3        jquerylib_0.1.4        bitops_1.0-7          
-FALSE  [97] httpuv_1.6.6           R6_2.5.1               bookdown_0.29         
-FALSE [100] promises_1.2.0.1       codetools_0.2-18       MASS_7.3-58.1         
-FALSE [103] assertthat_0.2.1       rprojroot_2.0.3        withr_2.5.0           
-FALSE [106] GenomeInfoDbData_1.2.8 parallel_4.2.1         hms_1.1.2             
-FALSE [109] grid_4.2.1             coda_0.19-4            rmarkdown_2.17        
-FALSE [112] carData_3.0-5          googledrive_2.0.0      git2r_0.30.1          
-FALSE [115] getPass_0.2-2          bbmle_1.0.25           numDeriv_2016.8-1.1   
-FALSE [118] lubridate_1.8.0</code></pre>
-</div>
+FALSE   [1] readxl_1.4.1           backports_1.4.1        workflowr_1.7.0       
+FALSE   [4] systemfonts_1.0.4      plyr_1.8.7             lazyeval_0.2.2        
+FALSE   [7] splines_4.2.1          BiocParallel_1.30.4    digest_0.6.30         
+FALSE  [10] invgamma_1.1           htmltools_0.5.3        SQUAREM_2021.1        
+FALSE  [13] fansi_1.0.3            magrittr_2.0.3         memoise_2.0.1         
+FALSE  [16] googlesheets4_1.0.1    tzdb_0.3.0             Biostrings_2.64.1     
+FALSE  [19] annotate_1.74.0        modelr_0.1.9           svglite_2.1.0         
+FALSE  [22] bdsmatrix_1.3-6        colorspace_2.0-3       blob_1.2.3            
+FALSE  [25] rvest_1.0.3            haven_2.5.1            xfun_0.34             
+FALSE  [28] crayon_1.5.2           RCurl_1.98-1.9         jsonlite_1.8.3        
+FALSE  [31] genefilter_1.78.0      survival_3.4-0         glue_1.6.2            
+FALSE  [34] gtable_0.3.1           gargle_1.2.1           zlibbioc_1.42.0       
+FALSE  [37] XVector_0.36.0         webshot_0.5.4          DelayedArray_0.22.0   
+FALSE  [40] car_3.1-1              abind_1.4-5            scales_1.2.1          
+FALSE  [43] mvtnorm_1.1-3          GGally_2.1.2           DBI_1.1.3             
+FALSE  [46] rstatix_0.7.0          Rcpp_1.0.9             viridisLite_0.4.1     
+FALSE  [49] xtable_1.8-4           emdbook_1.3.12         bit_4.0.4             
+FALSE  [52] truncnorm_1.0-8        htmlwidgets_1.5.4      httr_1.4.4            
+FALSE  [55] RColorBrewer_1.1-3     ellipsis_0.3.2         farver_2.1.1          
+FALSE  [58] reshape_0.8.9          pkgconfig_2.0.3        XML_3.99-0.11         
+FALSE  [61] sass_0.4.2             dbplyr_2.2.1           locfit_1.5-9.6        
+FALSE  [64] utf8_1.2.2             labeling_0.4.2         tidyselect_1.2.0      
+FALSE  [67] rlang_1.0.6            later_1.3.0            AnnotationDbi_1.58.0  
+FALSE  [70] munsell_0.5.0          cellranger_1.1.0       tools_4.2.1           
+FALSE  [73] cachem_1.0.6           cli_3.4.1              generics_0.1.3        
+FALSE  [76] RSQLite_2.2.18         broom_1.0.1            ggdendro_0.1.23       
+FALSE  [79] evaluate_0.17          fastmap_1.1.0          yaml_2.3.6            
+FALSE  [82] bit64_4.0.5            fs_1.5.2               KEGGREST_1.36.3       
+FALSE  [85] whisker_0.4            formatR_1.12           xml2_1.3.3            
+FALSE  [88] compiler_4.2.1         rstudioapi_0.14        png_0.1-7             
+FALSE  [91] ggsignif_0.6.4         reprex_2.0.2           geneplotter_1.74.0    
+FALSE  [94] bslib_0.4.0            stringi_1.7.8          highr_0.9             
+FALSE  [97] lattice_0.20-45        Matrix_1.5-1           vctrs_0.5.0           
+FALSE [100] pillar_1.8.1           lifecycle_1.0.3        jquerylib_0.1.4       
+FALSE [103] irlba_2.3.5.1          bitops_1.0-7           httpuv_1.6.6          
+FALSE [106] R6_2.5.1               bookdown_0.29          promises_1.2.0.1      
+FALSE [109] gridExtra_2.3          codetools_0.2-18       MASS_7.3-58.1         
+FALSE [112] assertthat_0.2.1       rprojroot_2.0.3        withr_2.5.0           
+FALSE [115] GenomeInfoDbData_1.2.8 parallel_4.2.1         hms_1.1.2             
+FALSE [118] grid_4.2.1             coda_0.19-4            rmarkdown_2.17        
+FALSE [121] carData_3.0-5          googledrive_2.0.0      git2r_0.30.1          
+FALSE [124] mixsqp_0.3-43          bbmle_1.0.25           numDeriv_2016.8-1.1   
+FALSE [127] lubridate_1.8.0</code></pre>
 </div>
 </div>
 
