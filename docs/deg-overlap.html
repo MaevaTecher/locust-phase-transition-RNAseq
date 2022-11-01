@@ -625,15 +625,15 @@ data/piceifrons/DEseq2_SPICE_HEAD
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree4743cf7eac882ad1b0aa92e1ab1b8bee37fa8d8ctargetblank4743cf7a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree447a2e12d654a007c2fa953fc6db5e513b322cf6targetblank447a2e1a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/4743cf7eac882ad1b0aa92e1ab1b8bee37fa8d8c" target="_blank">4743cf7</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/447a2e12d654a007c2fa953fc6db5e513b322cf6" target="_blank">447a2e1</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree4743cf7eac882ad1b0aa92e1ab1b8bee37fa8d8ctargetblank4743cf7a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree447a2e12d654a007c2fa953fc6db5e513b322cf6targetblank447a2e1a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -643,7 +643,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/4743cf7eac882ad1b0aa92e1ab1b8bee37fa8d8c" target="_blank">4743cf7</a>.
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/447a2e12d654a007c2fa953fc6db5e513b322cf6" target="_blank">447a2e1</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -683,6 +683,9 @@ Untracked files:
     Untracked:  data/piceifrons/DE-genes_strict_[SPICE_HEAD]_[238_genes].txt
     Untracked:  data/piceifrons/DEseq2_SPICE_HEAD/DE-genes_[SPICE_HEAD_DEseq2]_[378_genes].txt
     Untracked:  data/piceifrons/edgeR_SPICE_HEAD/DE-genes_[SPICE_HEAD_edgeR]_[342_genes].txt
+
+Unstaged changes:
+    Deleted:    data/piceifrons/venn_diagramm.png
 
 </code></pre>
 <p>
@@ -728,6 +731,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/447a2e12d654a007c2fa953fc6db5e513b322cf6/analysis/deg-overlap.Rmd" target="_blank">447a2e1</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+workflowr::wflow_publish("../../analysis/deg-overlap.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/d1a755e4bba14faebb66ab56202b5aa8e55ab409/docs/deg-overlap.html" target="_blank">d1a755e</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1002,7 +1039,7 @@ FALSE A total of 238 genes was found by both programs.</code></pre>
 test_b_vector &lt;- as.vector(unlist(table_edgeR_DE$Id))
 
 library(&quot;RColorBrewer&quot;)
-myCol &lt;- brewer.pal(2, &quot;Pastel2&quot;)
+myCol &lt;- brewer.pal(3, &quot;Pastel2&quot;)
 
 venn.plot &lt;- venn.diagram(
         x = list(test_a_vector, test_b_vector),
@@ -1031,9 +1068,7 @@ venn.plot &lt;- venn.diagram(
         cat.default.pos = &quot;outer&quot;,
         cat.fontfamily = &quot;sans&quot;
 )</code></pre>
-<p><img
-src="/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNA/data/piceifrons/venn_diagramm.png"
-title="Venn" /></p>
+<p><img src="assets/venn_diagramm.png" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
