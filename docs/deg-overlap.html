@@ -13,7 +13,7 @@
 
 <meta name="date" content="2022-11-01" />
 
-<title>Mapping reads to Schistocerca RefSeq genome</title>
+<title>Overlap of the DEG detected by DEseq2 and edgeR</title>
 
 <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -427,8 +427,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Mapping reads to Schistocerca RefSeq
-genome</h1>
+<h1 class="title toc-ignore">Overlap of the DEG detected by DEseq2 and
+edgeR</h1>
 <h4 class="author">Maeva Techer</h4>
 <h4 class="date">2022-11-01</h4>
 
@@ -438,7 +438,7 @@ genome</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -449,8 +449,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -463,9 +463,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong>
@@ -576,15 +576,49 @@ run.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/edgeR_SPICE_HEAD
+</td>
+<td style="text-align:left;">
+data/piceifrons/edgeR_SPICE_HEAD
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/DEseq2_SPICE_HEAD
+</td>
+<td style="text-align:left;">
+data/piceifrons/DEseq2_SPICE_HEAD
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -651,7 +685,7 @@ Untracked files:
     Untracked:  data/piceifrons/edgeR_SPICE_HEAD/DE-genes_[SPICE_HEAD_edgeR]_[342_genes].txt
 
 Unstaged changes:
-    Modified:   data/piceifrons/DEseq2_SPICE_HEAD/SPICE_HEAD_report.html
+    Deleted:    data/piceifrons/DEseq2_SPICE_HEAD/SPICE_HEAD_report.html
     Modified:   data/piceifrons/edgeR_SPICE_HEAD/SPICE_HEAD_report.html
 
 </code></pre>
@@ -670,9 +704,9 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/map-refseq.Rmd</code>) and HTML
-(<code>docs/map-refseq.html</code>) files. If you’ve configured a remote
-Git repository (see <code>?wflow_git_remote</code>), click on the
+made to the R Markdown (<code>analysis/deg-overlap.Rmd</code>) and HTML
+(<code>docs/deg-overlap.html</code>) files. If you’ve configured a
+remote Git repository (see <code>?wflow_git_remote</code>), click on the
 hyperlinks in the table below to view the files as they were in that
 past version.
 </p>
@@ -700,10 +734,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
+Rmd
 </td>
 <td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/ec837789f2bf57a44726be47dc108043c8461e37/docs/map-refseq.html" target="_blank">ec83778</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/25a2ba3f023fa73744c420d87d31aae63e8799e1/analysis/deg-overlap.Rmd" target="_blank">25a2ba3</a>
 </td>
 <td>
 MaevaTecher
@@ -712,143 +746,8 @@ MaevaTecher
 2022-11-01
 </td>
 <td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/834088cdafcd35398d7a71b0c6b8b2ac92130779/docs/map-refseq.html" target="_blank">834088c</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/8481823d9015b1cc26ecb64e487d74f829d2643f/docs/map-refseq.html" target="_blank">8481823</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/ea70380071caa0d86932413a6c0120d766a79768/docs/map-refseq.html" target="_blank">ea70380</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/de64b6bfd0f4a47e2f2cae212c8eb07a05a30c10/analysis/map-refseq.Rmd" target="_blank">de64b6b</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-31
-</td>
-<td>
-wflow_publish(c("analysis/_site.yml", "analysis/map-refseq.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/8b34f19e548dccf41714638a6e5862030e68bfae/docs/map-refseq.html" target="_blank">8b34f19</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/bd04bb56b25f982ed729cec095ff5ada3eb61535/docs/map-refseq.html" target="_blank">bd04bb5</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/61f4b75dd51dd84ad06beaa4a5701c0e58c0c22a/docs/map-refseq.html" target="_blank">61f4b75</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/f65c630ff5f9a5de44bcfdfb29dfbf01e606946a/analysis/map-refseq.Rmd" target="_blank">f65c630</a>
-</td>
-<td>
-MaevaTecher
-</td>
-<td>
-2022-10-30
-</td>
-<td>
-wflow_publish(c("analysis/_site.yml", "analysis/gene-quant.Rmd",
+workflowr::wflow_publish(c("../../analysis/_site.yml",
+"../../analysis/edgeR-workflow.Rmd",
 </td>
 </tr>
 </tbody>
@@ -858,16 +757,25 @@ wflow_publish(c("analysis/_site.yml", "analysis/gene-quant.Rmd",
 </div>
 </div>
 </div>
-<div id="load-r-libraries-install-first-from-cran-or-bioconductor"
-class="section level3">
-<h3>Load R libraries (install first from CRAN or Bioconductor)</h3>
-<pre class="r"><code>library(&quot;knitr&quot;)
+<div id="load-required-r-libraries" class="section level1">
+<h1>Load required R libraries</h1>
+<pre class="r"><code>#(install first from CRAN or Bioconductor)
+library(&quot;knitr&quot;)
 library(&quot;rmdformats&quot;)
 library(&quot;tidyverse&quot;)
 library(&quot;DT&quot;)  # for making interactive search table
 library(&quot;plotly&quot;) # for interactive plots
 library(&quot;ggthemes&quot;) # for theme_calc
 library(&quot;reshape2&quot;)
+library(&quot;DESeq2&quot;)
+library(&quot;data.table&quot;)
+library(&quot;apeglm&quot;)
+library(&quot;ggpubr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggrepel&quot;)
+library(&quot;EnhancedVolcano&quot;)
+library(&quot;SARTools&quot;)
+library(&quot;pheatmap&quot;)
 
 ## Global options
 options(max.print=&quot;10000&quot;)
@@ -882,122 +790,86 @@ knitr::opts_chunk$set(
 )
 opts_knit$set(width=75)</code></pre>
 </div>
-<div id="short-reads-mapping-and-gene-quantification"
+<div id="import-the-final-files-from-deseq2-and-edger"
 class="section level1">
-<h1>Short Reads mapping and Gene Quantification</h1>
-<div id="star-only" class="section level2">
-<h2>STAR only</h2>
-<p>We used <code>STAR</code> for mapping reads to either 1) their own
-species reference genome or 2) an alternate sister reference genome. The
-pipeline is the same, except that the code will change index.</p>
-<pre><code>########################################
-# Snakefile rule
-########################################
+<h1>Import the final files from DEseq2 and edgeR</h1>
+<pre class="r"><code>projectName &lt;- &quot;SPICE_HEAD&quot;  # name of the project
+author &lt;- &quot;Maeva TECHER&quot;  # author of the statistical analysis/report
 
-#Ahead of the alignment I will build independently the index for STAR, HiSat2 and Segemehl
+# Import output from edgeR/DEseq2
+workDir_edgeR &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/edgeR_SPICE_HEAD&quot;
+setwd(workDir_edgeR)
+table_edgeR &lt;- read.table(&quot;tables/CrowdedvsIsolated.complete.txt&quot;, header = TRUE)
 
-rule STAR_align:
-    input:
-        index = REFdir + &quot;/locusts_complete/index_GCF_021461395.2_iqSchAmer2.1_genomic/STAR&quot;,
-        read1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
-        read2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;
-    params:
-        prefix = OUTdir + &quot;/alignment/STAR/{locust}_&quot;
-    output:
-        OUTdir + &quot;/alignment/STAR/{locust}_Aligned.sortedByCoord.out.bam&quot;
-    shell:
-        &quot;&quot;&quot;
-        module load GCC/11.2.0 STAR/2.7.9a
-        STAR --runThreadN 8 --genomeDir {input.index} --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts --outFileNamePrefix {params.prefix} --readFilesCommand zcat --readFilesIn {input.read1} {input.read2} 
-        &quot;&quot;&quot;
-        
-########################################
-# Parameters in the cluster.json file
-########################################
+workDir_DEseq2 &lt;- &quot;/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/DEseq2_SPICE_HEAD&quot;
+setwd(workDir_DEseq2)
+table_DEseq2 &lt;- read.table(&quot;tables/CrowdedvsIsolated.complete.txt&quot;, header = TRUE)
 
-    &quot;STAR_align&quot;:
-    {
-        &quot;cpus-per-task&quot; : 12,
-        &quot;partition&quot; : &quot;medium&quot;,
-        &quot;ntasks&quot;: 1,
-        &quot;mem&quot; : &quot;100G&quot;,
-        &quot;time&quot;: &quot;0-08:00:00&quot;
-    }</code></pre>
-<p>After mapping, we obtained alignment statistics from the
-<code>*_Log.final.out</code> file and filled out the metadata table with
-it.</p>
-<pre><code>grep &#39;Number of input reads&#39; *_Log.final.out
-grep &#39;Average input read length&#39; *_Log.final.out
-grep &#39;Uniquely mapped reads number&#39; *_Log.final.out
-grep &#39;Number of reads mapped to multiple loci&#39; *_Log.final.out
-grep &#39;Number of reads mapped to too many loci&#39; *_Log.final.out
-grep &#39;Number of reads unmapped: too many mismatches&#39; *Log.final.out
-grep &#39;Number of reads unmapped: too short&#39; *Log.final.out
-grep &#39;Number of reads unmapped: other&#39; *Log.final.out</code></pre>
+tresh_logfold &lt;- 1
+tresh_padj &lt;- 0.05
+
+# Select DE genes
+table_edgeR_DE &lt;- subset(table_edgeR, table_edgeR$padj &lt;= tresh_padj &amp; (table_edgeR$log2FoldChange &gt;=
+    tresh_logfold | table_edgeR$log2FoldChange &lt;= -tresh_logfold), select = Id:trended.dispersion)
+
+table_DEseq2_DE &lt;- subset(table_DEseq2, table_DEseq2$padj &lt;= tresh_padj &amp; (table_DEseq2$log2FoldChange &gt;=
+    tresh_logfold | table_DEseq2$log2FoldChange &lt;= -tresh_logfold), select = Id:maxCooks)
+
+# Write output file
+setwd(workDir_edgeR)
+Filename &lt;- paste(&quot;DE-genes_[&quot;, projectName, &quot;_edgeR]_[&quot;, length(table_edgeR_DE[[1]]),
+    &quot;_genes].txt&quot;, sep = &quot;&quot;)
+write.table(table_edgeR_DE, file = Filename, row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
+
+setwd(workDir_DEseq2)
+Filename &lt;- paste(&quot;DE-genes_[&quot;, projectName, &quot;_DEseq2]_[&quot;, length(table_DEseq2_DE[[1]]),
+    &quot;_genes].txt&quot;, sep = &quot;&quot;)
+write.table(table_DEseq2_DE, file = Filename, row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)</code></pre>
 </div>
-<div id="star-only-1" class="section level2">
-<h2>STAR only</h2>
-</div>
-<div id="quantification-using-genecount" class="section level2">
-<h2>Quantification using <code>GeneCount</code></h2>
-<p>We can note that the option <code>--quantMode GeneCounts</code> from
-STAR produces the same output as the htseq-count tool if we used the
-<code>–-sjdbGTFfile</code> option.</p>
-<p>In the output file <code>{locust}_ReadsPerGene.out.tab</code> we can
-obtain the read counts per gene depending if our data is
-<strong>unstranded</strong> (column 2) or <strong>stranded</strong>
-(columns 3 and 4).</p>
-<p>column 1: gene ID<br />
-column 2: counts for unstranded RNA-seq.<br />
-column 3: counts for the 1st read strand aligned with RNA<br />
-column 4: counts for the 2nd read strand aligned with RNA (the most
-common protocol nowadays)</p>
-<p>For our pilot <em>S. gregaria</em> project, we know we used Illumina
-stranded kit but to check we can with the following code:</p>
-<pre><code>grep -v &quot;N_&quot; {locust}_ReadsPerGene.out.tab | awk &#39;{unst+=$2;forw+=$3;rev+=$4}END{print unst,forw,rev}&#39;
+<div id="calculate-similarities-between-deseq2-and-edger"
+class="section level1">
+<h1>Calculate similarities between DEseq2 and edgeR</h1>
+<pre class="r"><code>table_edgeR_DE$Coder &lt;- &quot;edgeR&quot;
+table_edgeR_DE &lt;- table_edgeR_DE[c(&quot;Coder&quot;, &quot;Id&quot;)]
+table_DEseq2_DE$Coder &lt;- &quot;DEseq2&quot;
+table_DEseq2_DE &lt;- table_DEseq2_DE[c(&quot;Coder&quot;, &quot;Id&quot;)]
+table5 &lt;- rbind(table_edgeR_DE, table_DEseq2_DE)
 
-#or as a loop
-for i in *_ReadsPerGene.out.tab; do echo $i; grep -v &quot;N_&quot; $i | awk &#39;{unst+=$2;forw+=$3;rev+=$4}END{print unst,forw,rev}&#39;; done</code></pre>
-<p>In a stranded library preparation protocol, there should be a strong
-imbalance between number of reads mapped to known genes in forward
-versus reverse strands. This is what we observe for example on <em>S.
-cancellata</em> libraries here.</p>
-<figure class="center">
-<img src="img/ReadPerGene.png" alt="module_spider" width="800px"/>
-</figure>
-<p><strong>PREFERRED OPTION:</strong> We need to extract in our case the
-1st and 4th columns for each file.</p>
-<pre><code>########################################
-# Snakefile rule
-########################################
+dupsBetweenGroups &lt;- function(df, idcol) {
+    datacols &lt;- setdiff(names(df), idcol)
+    sortorder &lt;- do.call(order, df)
+    df &lt;- df[sortorder, ]
+    dupWithin &lt;- duplicated(df)
+    dupBetween = rep(NA, nrow(df))
+    dupBetween[!dupWithin] &lt;- duplicated(df[!dupWithin, datacols])
+    dupBetween[!dupWithin] &lt;- duplicated(df[!dupWithin, datacols], fromLast = TRUE) |
+        dupBetween[!dupWithin]
+    goodIdx &lt;- !is.na(dupBetween)
+    goodVals &lt;- c(NA, dupBetween[goodIdx])
+    fillIdx &lt;- cumsum(goodIdx) + 1
+    dupBetween &lt;- goodVals[fillIdx]
+    dupBetween[sortorder] &lt;- dupBetween
+    return(dupBetween)
+}
+dupRows &lt;- dupsBetweenGroups(table5, &quot;Coder&quot;)
+table5 &lt;- cbind(table5, dup = dupRows)
+table5 &lt;- subset(table5, Coder == &quot;edgeR&quot; &amp; dup == TRUE, select = -Coder)
+setwd(&quot;..&quot;)
+Filename &lt;- paste(&quot;DE-genes_strict_[&quot;, projectName, &quot;]_[&quot;, length(table5[[1]]), &quot;_genes].txt&quot;,
+    sep = &quot;&quot;)
+write.table(table5, file = Filename, row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
 
-#either ran the following rule
-rule reads_count:
-        input:
-                readtable = OUTdir + &quot;/alignment/STAR2/{locust}_ReadsPerGene.out.tab&quot;,
-        output:
-                OUTdir + &quot;/DESeq2/counts_4thcol/{locust}_counts.txt&quot;
-        shell:
-                &quot;&quot;&quot;
-                cut -f1,4 {input.readtable} | grep -v &quot;_&quot; &gt; {output}  
-                &quot;&quot;&quot;
-
-#or simply this loop for less core usage
-# for i in $SCRATCH/locust_phase/data/alignment/STAR/*ReadsPerGene.out.tab; do echo $i; cut -f1,4 $i | grep -v &quot;_&quot; &gt; $SCRATCH/locust_phase/data/DESeq2/counts_4thcol/`basename $i ReadsPerGene.out.tab`counts.txt; done</code></pre>
-<p><strong>ALTERNATIVE OPTION:</strong> We can also build a single
-matrix of expression with all individuals targeted. Below is the example
-for <em>S. piceifrons</em>:</p>
-<pre><code>paste SPICE_*_ReadsPerGene.out.tab | grep -v &quot;_&quot; | awk &#39;{printf &quot;%s\t&quot;, $1}{for (i=4;i&lt;=NF;i+=4) printf &quot;%s\t&quot;, $i; printf &quot;\n&quot; }&#39; &gt; tmp
-sed -e &quot;1igene_name\t$(ls SPICE_*ReadsPerGene.out.tab | tr &#39;\n&#39; &#39;\t&#39; | sed &#39;s/_ReadsPerGene.out.tab//g&#39;)&quot; tmp &gt; raw_counts_piceifrons_matrix.txt</code></pre>
-</div>
-<div id="star-and-rsem" class="section level2">
-<h2>STAR and RSEM</h2>
-</div>
-<div id="star-and-salmon" class="section level2">
-<h2>STAR and Salmon</h2>
-</div>
-<div id="hisat2" class="section level2">
-<h2>HISAT2</h2>
+# Print result statistics
+cat(&quot;Amongst a total of&quot;, length(table_edgeR[[1]]), &quot;genes,
+DEseq2 found&quot;, length(table_DEseq2_DE[[1]]),
+    &quot;differentially expressed genes. 
+EdgeR found&quot;, length(table_edgeR_DE[[1]]),
+    &quot;differentially expressed genes.
+A total of&quot;, length(table5[[1]]), &quot;genes was found by both programs.&quot;)</code></pre>
+<pre><code>FALSE Amongst a total of 28731 genes,
+FALSE DEseq2 found 378 differentially expressed genes. 
+FALSE EdgeR found 342 differentially expressed genes.
+FALSE A total of 238 genes was found by both programs.</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1019,40 +891,72 @@ FALSE locale:
 FALSE [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 FALSE 
 FALSE attached base packages:
-FALSE [1] stats     graphics  grDevices utils     datasets  methods   base     
+FALSE [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+FALSE [8] base     
 FALSE 
 FALSE other attached packages:
-FALSE  [1] reshape2_1.4.4   ggthemes_4.2.4   plotly_4.10.0    DT_0.26         
-FALSE  [5] forcats_0.5.2    stringr_1.4.1    dplyr_1.0.10     purrr_0.3.5     
-FALSE  [9] readr_2.1.3      tidyr_1.2.1      tibble_3.1.8     ggplot2_3.3.6   
-FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40      
+FALSE  [1] pheatmap_1.0.12             SARTools_1.8.1             
+FALSE  [3] kableExtra_1.3.4            edgeR_3.38.4               
+FALSE  [5] limma_3.52.4                ashr_2.2-54                
+FALSE  [7] EnhancedVolcano_1.14.0      ggrepel_0.9.1              
+FALSE  [9] ggpubr_0.4.0                apeglm_1.18.0              
+FALSE [11] data.table_1.14.4           DESeq2_1.36.0              
+FALSE [13] SummarizedExperiment_1.26.1 Biobase_2.56.0             
+FALSE [15] MatrixGenerics_1.8.1        matrixStats_0.62.0         
+FALSE [17] GenomicRanges_1.48.0        GenomeInfoDb_1.32.4        
+FALSE [19] IRanges_2.31.2              S4Vectors_0.34.0           
+FALSE [21] BiocGenerics_0.42.0         reshape2_1.4.4             
+FALSE [23] ggthemes_4.2.4              plotly_4.10.0              
+FALSE [25] DT_0.26                     forcats_0.5.2              
+FALSE [27] stringr_1.4.1               dplyr_1.0.10               
+FALSE [29] purrr_0.3.5                 readr_2.1.3                
+FALSE [31] tidyr_1.2.1                 tibble_3.1.8               
+FALSE [33] ggplot2_3.3.6               tidyverse_1.3.2            
+FALSE [35] rmdformats_1.0.4            knitr_1.40                 
 FALSE 
 FALSE loaded via a namespace (and not attached):
-FALSE  [1] httr_1.4.4          sass_0.4.2          jsonlite_1.8.3     
-FALSE  [4] viridisLite_0.4.1   modelr_0.1.9        bslib_0.4.0        
-FALSE  [7] assertthat_0.2.1    googlesheets4_1.0.1 cellranger_1.1.0   
-FALSE [10] yaml_2.3.6          pillar_1.8.1        backports_1.4.1    
-FALSE [13] glue_1.6.2          digest_0.6.30       promises_1.2.0.1   
-FALSE [16] rvest_1.0.3         colorspace_2.0-3    htmltools_0.5.3    
-FALSE [19] httpuv_1.6.6        plyr_1.8.7          pkgconfig_2.0.3    
-FALSE [22] broom_1.0.1         haven_2.5.1         bookdown_0.29      
-FALSE [25] scales_1.2.1        whisker_0.4         later_1.3.0        
-FALSE [28] tzdb_0.3.0          git2r_0.30.1        googledrive_2.0.0  
-FALSE [31] generics_0.1.3      ellipsis_0.3.2      cachem_1.0.6       
-FALSE [34] withr_2.5.0         lazyeval_0.2.2      cli_3.4.1          
-FALSE [37] magrittr_2.0.3      crayon_1.5.2        readxl_1.4.1       
-FALSE [40] evaluate_0.17       fs_1.5.2            fansi_1.0.3        
-FALSE [43] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
-FALSE [46] hms_1.1.2           formatR_1.12        gargle_1.2.1       
-FALSE [49] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
-FALSE [52] compiler_4.2.1      jquerylib_0.1.4     rlang_1.0.6        
-FALSE [55] grid_4.2.1          rstudioapi_0.14     htmlwidgets_1.5.4  
-FALSE [58] rmarkdown_2.17      gtable_0.3.1        DBI_1.1.3          
-FALSE [61] R6_2.5.1            lubridate_1.8.0     fastmap_1.1.0      
-FALSE [64] utf8_1.2.2          workflowr_1.7.0     rprojroot_2.0.3    
-FALSE [67] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
-FALSE [70] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
-</div>
+FALSE   [1] readxl_1.4.1           backports_1.4.1        workflowr_1.7.0       
+FALSE   [4] systemfonts_1.0.4      plyr_1.8.7             lazyeval_0.2.2        
+FALSE   [7] splines_4.2.1          BiocParallel_1.30.4    digest_0.6.30         
+FALSE  [10] invgamma_1.1           htmltools_0.5.3        SQUAREM_2021.1        
+FALSE  [13] fansi_1.0.3            magrittr_2.0.3         memoise_2.0.1         
+FALSE  [16] googlesheets4_1.0.1    tzdb_0.3.0             Biostrings_2.64.1     
+FALSE  [19] annotate_1.74.0        modelr_0.1.9           svglite_2.1.0         
+FALSE  [22] bdsmatrix_1.3-6        colorspace_2.0-3       blob_1.2.3            
+FALSE  [25] rvest_1.0.3            haven_2.5.1            xfun_0.34             
+FALSE  [28] crayon_1.5.2           RCurl_1.98-1.9         jsonlite_1.8.3        
+FALSE  [31] genefilter_1.78.0      survival_3.4-0         glue_1.6.2            
+FALSE  [34] gtable_0.3.1           gargle_1.2.1           zlibbioc_1.42.0       
+FALSE  [37] XVector_0.36.0         webshot_0.5.4          DelayedArray_0.22.0   
+FALSE  [40] car_3.1-1              abind_1.4-5            scales_1.2.1          
+FALSE  [43] mvtnorm_1.1-3          GGally_2.1.2           DBI_1.1.3             
+FALSE  [46] rstatix_0.7.0          Rcpp_1.0.9             viridisLite_0.4.1     
+FALSE  [49] xtable_1.8-4           emdbook_1.3.12         bit_4.0.4             
+FALSE  [52] truncnorm_1.0-8        htmlwidgets_1.5.4      httr_1.4.4            
+FALSE  [55] RColorBrewer_1.1-3     ellipsis_0.3.2         reshape_0.8.9         
+FALSE  [58] pkgconfig_2.0.3        XML_3.99-0.11          sass_0.4.2            
+FALSE  [61] dbplyr_2.2.1           locfit_1.5-9.6         utf8_1.2.2            
+FALSE  [64] tidyselect_1.2.0       rlang_1.0.6            later_1.3.0           
+FALSE  [67] AnnotationDbi_1.58.0   munsell_0.5.0          cellranger_1.1.0      
+FALSE  [70] tools_4.2.1            cachem_1.0.6           cli_3.4.1             
+FALSE  [73] generics_0.1.3         RSQLite_2.2.18         broom_1.0.1           
+FALSE  [76] ggdendro_0.1.23        evaluate_0.17          fastmap_1.1.0         
+FALSE  [79] yaml_2.3.6             bit64_4.0.5            fs_1.5.2              
+FALSE  [82] KEGGREST_1.36.3        whisker_0.4            formatR_1.12          
+FALSE  [85] xml2_1.3.3             compiler_4.2.1         rstudioapi_0.14       
+FALSE  [88] png_0.1-7              ggsignif_0.6.4         reprex_2.0.2          
+FALSE  [91] geneplotter_1.74.0     bslib_0.4.0            stringi_1.7.8         
+FALSE  [94] highr_0.9              lattice_0.20-45        Matrix_1.5-1          
+FALSE  [97] vctrs_0.5.0            pillar_1.8.1           lifecycle_1.0.3       
+FALSE [100] jquerylib_0.1.4        irlba_2.3.5.1          bitops_1.0-7          
+FALSE [103] httpuv_1.6.6           R6_2.5.1               bookdown_0.29         
+FALSE [106] promises_1.2.0.1       gridExtra_2.3          codetools_0.2-18      
+FALSE [109] MASS_7.3-58.1          assertthat_0.2.1       rprojroot_2.0.3       
+FALSE [112] withr_2.5.0            GenomeInfoDbData_1.2.8 parallel_4.2.1        
+FALSE [115] hms_1.1.2              grid_4.2.1             coda_0.19-4           
+FALSE [118] rmarkdown_2.17         carData_3.0-5          googledrive_2.0.0     
+FALSE [121] git2r_0.30.1           mixsqp_0.3-43          bbmle_1.0.25          
+FALSE [124] numDeriv_2016.8-1.1    lubridate_1.8.0</code></pre>
 </div>
 </div>
 
