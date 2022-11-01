@@ -118,7 +118,7 @@ test_b_vector <- as.vector(unlist(table_edgeR_DE$Id))
 library("RColorBrewer")
 myCol <- brewer.pal(2, "Pastel2")
 
-venn.diagram(
+venn.plot <- venn.diagram(
         x = list(test_a_vector, test_b_vector),
         category.names = c("DEseq2" , "EdgeR"),
         filename = 'venn_diagramm.png',
@@ -147,4 +147,4 @@ venn.diagram(
 )
 ```
 
-![](locust-phase-transition-RNASeq/data/piceifrons/venn_diagramm.png)
+![](/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNA/data/piceifrons/venn_diagramm.png "Venn")
