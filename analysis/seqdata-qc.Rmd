@@ -127,18 +127,18 @@ rule trim_fastqc:
   
 <figure class="center">
 **EXAMPLE OF READS QUALITY BEFORE TRIMMING**  
-<img src="img/FASTQC_before.png" alt="module_spider" width="800px"/>  
+<img src="assets/FASTQC_before.png" alt="module_spider" width="800px"/>  
 **EXAMPLE OF READS QUALITY AFTER TRIMMING**   
 We can see that the sequence length has changed and that the 5' and 3' end positions with lower quality have been removed.  
-<img src="img/FASTQC_after.png" alt="module_spider" width="800px"/>  
+<img src="assets/FASTQC_after.png" alt="module_spider" width="800px"/>  
   
    
    
 **EXAMPLE OF READS QUALITY BEFORE TRIMMING**   
-<img src="img/FASTQC_before2.png" alt="module_spider" width="800px"/>  
+<img src="assets/FASTQC_before2.png" alt="module_spider" width="800px"/>  
 **EXAMPLE OF READS QUALITY AFTER TRIMMING**   
 We can see that most detected adapter sequences have been adequately removed after trimming.  
-<img src="img/FASTQC_after2.png" alt="module_spider" width="800px"/>  
+<img src="assets/FASTQC_after2.png" alt="module_spider" width="800px"/>  
 </figure>
   
 
