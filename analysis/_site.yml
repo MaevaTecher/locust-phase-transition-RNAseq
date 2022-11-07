@@ -23,7 +23,7 @@ navbar:
       - text: "Indexing and stats on bam files"
         href: bam-stats.html
       - text: "DEG-DEseq2 workflow"
-        href: deseq-workflow.html
+        href: deseq2-workflow.html
       - text: "DEG-EdgeR workflow"
         href: edgeR-workflow.html
       - text: "DEseq2-EdgeR overlap"
