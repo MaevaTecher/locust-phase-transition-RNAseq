@@ -11,7 +11,7 @@
 
 <meta name="author" content="Maeva Techer" />
 
-<meta name="date" content="2022-11-01" />
+<meta name="date" content="2022-11-06" />
 
 <title>Mapping reads to Schistocerca RefSeq genome</title>
 
@@ -430,7 +430,7 @@ div.tocify {
 <h1 class="title toc-ignore">Mapping reads to Schistocerca RefSeq
 genome</h1>
 <h4 class="author">Maeva Techer</h4>
-<h4 class="date">2022-11-01</h4>
+<h4 class="date">2022-11-06</h4>
 
 </div>
 
@@ -459,7 +459,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-01
+<strong>Last updated:</strong> 2022-11-06
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -591,15 +591,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2afc036f1854fb1ba29bf47d9e989ae51082c689targetblank2afc036a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree4e6386baec1e068b7f9fbdf265a87504e09b25e5targetblank4e6386ba">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2afc036f1854fb1ba29bf47d9e989ae51082c689" target="_blank">2afc036</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/4e6386baec1e068b7f9fbdf265a87504e09b25e5" target="_blank">4e6386b</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2afc036f1854fb1ba29bf47d9e989ae51082c689targetblank2afc036a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree4e6386baec1e068b7f9fbdf265a87504e09b25e5targetblank4e6386ba"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -609,7 +609,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2afc036f1854fb1ba29bf47d9e989ae51082c689" target="_blank">2afc036</a>.
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/4e6386baec1e068b7f9fbdf265a87504e09b25e5" target="_blank">4e6386b</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -640,15 +640,16 @@ Ignored files:
     Ignored:    data/nitens/.DS_Store
     Ignored:    data/nitens/STAR_counts_4thcol/.DS_Store
     Ignored:    data/piceifrons/.DS_Store
+    Ignored:    data/piceifrons/.Rhistory
+    Ignored:    data/piceifrons/DEseq2_SPICE_HEAD 2/
     Ignored:    data/piceifrons/DEseq2_SPICE_HEAD/.DS_Store
     Ignored:    data/piceifrons/STAR_counts_4thcol/.DS_Store
     Ignored:    data/piceifrons/edgeR_SPICE_HEAD/.DS_Store
     Ignored:    data/piceifrons/list/.DS_Store
 
-Untracked files:
-    Untracked:  data/piceifrons/DE-genes_strict_[SPICE_HEAD]_[238_genes].txt
-    Untracked:  data/piceifrons/DEseq2_SPICE_HEAD/DE-genes_[SPICE_HEAD_DEseq2]_[378_genes].txt
-    Untracked:  data/piceifrons/edgeR_SPICE_HEAD/DE-genes_[SPICE_HEAD_edgeR]_[342_genes].txt
+Unstaged changes:
+    Modified:   data/metadata/RNAseq_modified_METADATA2022.xlsx
+    Deleted:    data/metadata/~$RNAseq_modified_METADATA2022.xlsx
 
 </code></pre>
 <p>
@@ -694,6 +695,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/4e6386baec1e068b7f9fbdf265a87504e09b25e5/analysis/map-refseq.Rmd" target="_blank">4e6386b</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-06
+</td>
+<td>
+workflowr::wflow_publish("analysis/map-refseq.RmD")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/1fa8b999192f9d5432c6632954c26e8b5cf61967/docs/map-refseq.html" target="_blank">1fa8b99</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -937,6 +972,37 @@ class="section level1">
 <p>We used <code>STAR</code> for mapping reads to either 1) their own
 species reference genome or 2) an alternate sister reference genome. The
 pipeline is the same, except that the code will change index.</p>
+<p>We index each genome using the following bash script:</p>
+<pre><code>#!/bin/bash
+
+##NECESSARY JOB SPECIFICATIONS
+#SBATCH --job-name=STARindex        #Set the job name to &quot;JobExample4&quot;
+#SBATCH --time=06:00:00         #Set the wall clock limit to 1hr and 30min
+#SBATCH --ntasks=2              #Request 1 task
+#SBATCH --cpus-per-task=4       #Request 1 task
+#SBATCH --mem=30G              #Request 100GB per node
+
+module purge
+module load GCC/11.2.0 STAR/2.7.9a
+
+REFDIR=&quot;/scratch/user/maeva-techer/refgenomes/locusts_complete/index_rRNA_gregaria/STAR&quot;
+GENOME=&quot;/scratch/user/maeva-techer/refgenomes/locusts_complete/rRNA_gregaria.fasta&quot;
+ANNOTATION=&quot;/scratch/user/maeva-techer/refgenomes/locusts_complete/rRNA_gregaria.gtf&quot;
+
+STAR --runMode genomeGenerate --runThreadN 8 --genomeDir $REFDIR --genomeFastaFiles $GENOME --genomeSAindexNbases 10 --sjdbGTFfile $ANNOTATION --sjdbGTFfeatureExon exon --sjdbOverhang 149
+</code></pre>
+<p>The parameters were chosen for the following reasons:<br />
+<code>--runMode genomeGenerate</code> indicates we are in the mode to
+build genome index<br />
+<code>--genomeSAindexNbases 22</code> should be
+min(18,log2[max(GenomeLength/NumberOfReferences,ReadLength)]) according
+to the manual. We have a genome of ~9000000000 and with around 1475
+contigs so our value is around 22.<br />
+<code>--sjdbGTFfile $ANNOTATION --sjdbGTFfeatureExon exon</code> we use
+these parameters to indicates that we want the annotation file to be
+already accounted for.<br />
+<code>--sjdbOverhang 149</code> this should be ideally (mate_length -1),
+and our reads are PE150.</p>
 <pre><code>########################################
 # Snakefile rule
 ########################################
@@ -945,18 +1011,20 @@ pipeline is the same, except that the code will change index.</p>
 
 rule STAR_align:
     input:
-        index = REFdir + &quot;/locusts_complete/index_GCF_021461395.2_iqSchAmer2.1_genomic/STAR&quot;,
+        index = REFdir + &quot;/locusts_complete/index_{genome}/STAR&quot;,
+        annotation = REFdir + &quot;/locusts_complete/{genome}.gtf&quot;,
         read1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
         read2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;
     params:
-        prefix = OUTdir + &quot;/alignment/STAR/{locust}_&quot;
+        prefix = OUTdir + &quot;/alignment/STAR/{genome}/{locust}_&quot;
     output:
-        OUTdir + &quot;/alignment/STAR/{locust}_Aligned.sortedByCoord.out.bam&quot;
+        OUTdir + &quot;/alignment/STAR/{genome}/{locust}_Aligned.sortedByCoord.out.bam&quot;
     shell:
         &quot;&quot;&quot;
         module load GCC/11.2.0 STAR/2.7.9a
-        STAR --runThreadN 8 --genomeDir {input.index} --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts --outFileNamePrefix {params.prefix} --readFilesCommand zcat --readFilesIn {input.read1} {input.read2} 
+        STAR --runThreadN 8 --genomeDir {input.index} --readFilesIn {input.read1} {input.read2} --outFileNamePrefix {params.prefix} --readFilesCommand zcat --genomeLoad NoSharedMemory --twopassMode Basic --sjdbGTFfile {input.annotation} --sjdbScore 2 --sjdbOverhang 149 --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMatchNmin 50 --outFilterMismatchNmax 999 --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outSAMunmapped Within --outFilterType BySJout --outSAMattributes NH HI AS NM MD --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --quantTranscriptomeBan IndelSoftclipSingleend --limitBAMsortRAM 32000000000 --seedSearchStartLmax 30 --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0
         &quot;&quot;&quot;
+
         
 ########################################
 # Parameters in the cluster.json file
@@ -964,12 +1032,57 @@ rule STAR_align:
 
     &quot;STAR_align&quot;:
     {
-        &quot;cpus-per-task&quot; : 12,
+        &quot;cpus-per-task&quot; : 10,
         &quot;partition&quot; : &quot;medium&quot;,
         &quot;ntasks&quot;: 1,
         &quot;mem&quot; : &quot;100G&quot;,
         &quot;time&quot;: &quot;0-08:00:00&quot;
     }</code></pre>
+<p>The parameters were chosen as follow:<br />
+<code>--runThreadN 8</code> indicates that we run the mapping process
+using 8 threads.<br />
+<code>--genomeDir {input.index}</code> indicates where the genome index
+is located.<br />
+<code>--readFilesIn {input.read1} {input.read2}</code> path to the PE
+reads.<br />
+<code>--outFileNamePrefix {params.prefix}</code> is the prefix of our
+output file.<br />
+<code>--readFilesCommand zcat</code> signifies that we our reads are
+compressed and need to be read as fastq.gz files.<br />
+<code>--genomeLoad NoSharedMemory</code><br />
+<code>--twopassMode Basic</code> indicates that we wish to use a
+two-passes mapping mode that will first extract the junctions and insert
+them into the genome index and re-map everything during a 2nd pass. The
+option basic allows us to perform this on multiple files in
+parallel.<br />
+<code>--sjdbGTFfile {input.annotation}</code> indicates the path of our
+annotation file.<br />
+<code>--sjdbScore 2</code><br />
+<code>--sjdbOverhang 149</code> is the same parameter used for building
+our index.<br />
+<code>--outFilterMultimapNmax 20</code><br />
+<code>--alignSJoverhangMin 8</code><br />
+<code>--alignSJDBoverhangMin 1</code><br />
+<code>--outFilterMatchNmin 50</code><br />
+<code>--outFilterMismatchNmax 999</code><br />
+<code>--outFilterMismatchNoverReadLmax 0.04</code><br />
+<code>--alignIntronMin 20</code><br />
+<code>--alignIntronMax 1000000</code><br />
+<code>--alignMatesGapMax 1000000</code><br />
+<code>--outSAMunmapped Within</code><br />
+<code>--outFilterType BySJout</code><br />
+<code>--outSAMattributes NH HI AS NM MD</code> indicates that the
+temporary .sam alignment file should contain headers.
+<code>--outSAMtype BAM SortedByCoordinate</code> indicates that the
+output should be in a .bam format and sorted by coordines.<br />
+<code>--quantMode TranscriptomeSAM GeneCounts</code> indicates that we
+wish to have two outputs, one with the Read Count for each gene and one
+with the gene aligned to the transcriptome only.<br />
+<code>--quantTranscriptomeBan IndelSoftclipSingleend</code><br />
+<code>--limitBAMsortRAM 32000000000</code><br />
+<code>--seedSearchStartLmax 30</code><br />
+<code>--outFilterScoreMinOverLread 0</code><br />
+<code>--outFilterMatchNminOverLread 0</code></p>
 <p>After mapping, we obtained alignment statistics from the
 <code>*_Log.final.out</code> file and filled out the metadata table with
 it.</p>
@@ -1010,7 +1123,7 @@ imbalance between number of reads mapped to known genes in forward
 versus reverse strands. This is what we observe for example on <em>S.
 cancellata</em> libraries here.</p>
 <figure class="center">
-<img src="img/ReadPerGene.png" alt="module_spider" width="800px"/>
+<img src="assets/ReadPerGene.png" alt="module_spider" width="800px"/>
 </figure>
 <p><strong>PREFERRED OPTION:</strong> We need to extract in our case the
 1st and 4th columns for each file.</p>
@@ -1039,12 +1152,15 @@ sed -e &quot;1igene_name\t$(ls SPICE_*ReadsPerGene.out.tab | tr &#39;\n&#39; &#3
 </div>
 <div id="star-and-rsem" class="section level2">
 <h2>STAR and RSEM</h2>
+<p>[NEED TO DO]</p>
 </div>
 <div id="star-and-salmon" class="section level2">
 <h2>STAR and Salmon</h2>
+<p>[NEED TO DO]</p>
 </div>
 <div id="hisat2" class="section level2">
 <h2>HISAT2</h2>
+<p>[NEED TO DO]</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1072,33 +1188,34 @@ FALSE other attached packages:
 FALSE  [1] reshape2_1.4.4   ggthemes_4.2.4   plotly_4.10.0    DT_0.26         
 FALSE  [5] forcats_0.5.2    stringr_1.4.1    dplyr_1.0.10     purrr_0.3.5     
 FALSE  [9] readr_2.1.3      tidyr_1.2.1      tibble_3.1.8     ggplot2_3.3.6   
-FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40      
+FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40       workflowr_1.7.0 
 FALSE 
 FALSE loaded via a namespace (and not attached):
-FALSE  [1] httr_1.4.4          sass_0.4.2          jsonlite_1.8.3     
-FALSE  [4] viridisLite_0.4.1   modelr_0.1.9        bslib_0.4.0        
-FALSE  [7] assertthat_0.2.1    googlesheets4_1.0.1 cellranger_1.1.0   
-FALSE [10] yaml_2.3.6          pillar_1.8.1        backports_1.4.1    
-FALSE [13] glue_1.6.2          digest_0.6.30       promises_1.2.0.1   
-FALSE [16] rvest_1.0.3         colorspace_2.0-3    htmltools_0.5.3    
-FALSE [19] httpuv_1.6.6        plyr_1.8.7          pkgconfig_2.0.3    
-FALSE [22] broom_1.0.1         haven_2.5.1         bookdown_0.29      
-FALSE [25] scales_1.2.1        whisker_0.4         later_1.3.0        
-FALSE [28] tzdb_0.3.0          git2r_0.30.1        googledrive_2.0.0  
-FALSE [31] generics_0.1.3      ellipsis_0.3.2      cachem_1.0.6       
-FALSE [34] withr_2.5.0         lazyeval_0.2.2      cli_3.4.1          
-FALSE [37] magrittr_2.0.3      crayon_1.5.2        readxl_1.4.1       
-FALSE [40] evaluate_0.17       fs_1.5.2            fansi_1.0.3        
-FALSE [43] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
-FALSE [46] hms_1.1.2           formatR_1.12        gargle_1.2.1       
-FALSE [49] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
-FALSE [52] compiler_4.2.1      jquerylib_0.1.4     rlang_1.0.6        
-FALSE [55] grid_4.2.1          rstudioapi_0.14     htmlwidgets_1.5.4  
-FALSE [58] rmarkdown_2.17      gtable_0.3.1        DBI_1.1.3          
-FALSE [61] R6_2.5.1            lubridate_1.8.0     fastmap_1.1.0      
-FALSE [64] utf8_1.2.2          workflowr_1.7.0     rprojroot_2.0.3    
-FALSE [67] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
-FALSE [70] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
+FALSE  [1] httr_1.4.4          sass_0.4.2          viridisLite_0.4.1  
+FALSE  [4] jsonlite_1.8.3      modelr_0.1.9        bslib_0.4.0        
+FALSE  [7] assertthat_0.2.1    getPass_0.2-2       googlesheets4_1.0.1
+FALSE [10] cellranger_1.1.0    yaml_2.3.6          pillar_1.8.1       
+FALSE [13] backports_1.4.1     glue_1.6.2          digest_0.6.30      
+FALSE [16] promises_1.2.0.1    rvest_1.0.3         colorspace_2.0-3   
+FALSE [19] plyr_1.8.7          htmltools_0.5.3     httpuv_1.6.6       
+FALSE [22] pkgconfig_2.0.3     broom_1.0.1         haven_2.5.1        
+FALSE [25] bookdown_0.29       scales_1.2.1        processx_3.7.0     
+FALSE [28] whisker_0.4         later_1.3.0         tzdb_0.3.0         
+FALSE [31] git2r_0.30.1        googledrive_2.0.0   generics_0.1.3     
+FALSE [34] ellipsis_0.3.2      cachem_1.0.6        withr_2.5.0        
+FALSE [37] lazyeval_0.2.2      cli_3.4.1           magrittr_2.0.3     
+FALSE [40] crayon_1.5.2        readxl_1.4.1        evaluate_0.17      
+FALSE [43] ps_1.7.1            fs_1.5.2            fansi_1.0.3        
+FALSE [46] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
+FALSE [49] hms_1.1.2           formatR_1.12        gargle_1.2.1       
+FALSE [52] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
+FALSE [55] callr_3.7.2         compiler_4.2.1      jquerylib_0.1.4    
+FALSE [58] rlang_1.0.6         grid_4.2.1          rstudioapi_0.14    
+FALSE [61] htmlwidgets_1.5.4   rmarkdown_2.17      gtable_0.3.1       
+FALSE [64] DBI_1.1.3           R6_2.5.1            lubridate_1.8.0    
+FALSE [67] fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.3    
+FALSE [70] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
+FALSE [73] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
 </div>
 </div>
 </div>
