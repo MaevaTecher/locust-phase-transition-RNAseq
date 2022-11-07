@@ -35,6 +35,35 @@ opts_knit$set(width=75)
 
 We used `STAR` for mapping reads to either 1) their own species reference genome or 2) an alternate sister reference genome. The pipeline is the same, except that the code will change index.
 
+We index each genome using the following bash script:  
+
+```
+#!/bin/bash
+
+##NECESSARY JOB SPECIFICATIONS
+#SBATCH --job-name=STARindex       	#Set the job name to "JobExample4"
+#SBATCH --time=06:00:00         #Set the wall clock limit to 1hr and 30min
+#SBATCH --ntasks=2              #Request 1 task
+#SBATCH --cpus-per-task=4       #Request 1 task
+#SBATCH --mem=30G              #Request 100GB per node
+
+module purge
+module load GCC/11.2.0 STAR/2.7.9a
+
+REFDIR="/scratch/user/maeva-techer/refgenomes/locusts_complete/index_rRNA_gregaria/STAR"
+GENOME="/scratch/user/maeva-techer/refgenomes/locusts_complete/rRNA_gregaria.fasta"
+ANNOTATION="/scratch/user/maeva-techer/refgenomes/locusts_complete/rRNA_gregaria.gtf"
+
+STAR --runMode genomeGenerate --runThreadN 8 --genomeDir $REFDIR --genomeFastaFiles $GENOME --genomeSAindexNbases 10 --sjdbGTFfile $ANNOTATION --sjdbGTFfeatureExon exon --sjdbOverhang 149
+
+```
+
+The parameters were chosen for the following reasons:  
+`--runMode genomeGenerate` indicates we are in the mode to build genome index  
+`--genomeSAindexNbases 22` should be  min(18,log2[max(GenomeLength/NumberOfReferences,ReadLength)]) according to the manual. We have a genome of ~9000000000 and with around 1475 contigs so our value is around 22.  
+`--sjdbGTFfile $ANNOTATION --sjdbGTFfeatureExon exon` we use these parameters to indicates that we want the annotation file to be already accounted for.  
+`--sjdbOverhang 149` this should be ideally (mate_length -1), and our reads are PE150.  
+
 ```
 ########################################
 # Snakefile rule
@@ -44,18 +73,20 @@ We used `STAR` for mapping reads to either 1) their own species reference genome
 
 rule STAR_align:
 	input:
-		index = REFdir + "/locusts_complete/index_GCF_021461395.2_iqSchAmer2.1_genomic/STAR",
+		index = REFdir + "/locusts_complete/index_{genome}/STAR",
+		annotation = REFdir + "/locusts_complete/{genome}.gtf",
 		read1 = OUTdir + "/trimming/{locust}_trim1P_1.fastq.gz",
 		read2 = OUTdir + "/trimming/{locust}_trim2P_2.fastq.gz"
 	params:
-		prefix = OUTdir + "/alignment/STAR/{locust}_"
+		prefix = OUTdir + "/alignment/STAR/{genome}/{locust}_"
 	output:
-		OUTdir + "/alignment/STAR/{locust}_Aligned.sortedByCoord.out.bam"
+		OUTdir + "/alignment/STAR/{genome}/{locust}_Aligned.sortedByCoord.out.bam"
 	shell:
 		"""
 		module load GCC/11.2.0 STAR/2.7.9a
-		STAR --runThreadN 8 --genomeDir {input.index} --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts --outFileNamePrefix {params.prefix} --readFilesCommand zcat --readFilesIn {input.read1} {input.read2} 
+		STAR --runThreadN 8 --genomeDir {input.index} --readFilesIn {input.read1} {input.read2} --outFileNamePrefix {params.prefix} --readFilesCommand zcat --genomeLoad NoSharedMemory --twopassMode Basic --sjdbGTFfile {input.annotation} --sjdbScore 2 --sjdbOverhang 149 --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMatchNmin 50 --outFilterMismatchNmax 999 --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outSAMunmapped Within --outFilterType BySJout --outSAMattributes NH HI AS NM MD --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --quantTranscriptomeBan IndelSoftclipSingleend --limitBAMsortRAM 32000000000 --seedSearchStartLmax 30 --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0
 		"""
+
 		
 ########################################
 # Parameters in the cluster.json file
@@ -63,13 +94,45 @@ rule STAR_align:
 
     "STAR_align":
     {
-        "cpus-per-task" : 12,
+        "cpus-per-task" : 10,
         "partition" : "medium",
         "ntasks": 1,
         "mem" : "100G",
         "time": "0-08:00:00"
     }
 ```
+
+The parameters were chosen as follow:  
+`--runThreadN 8` indicates that we run the mapping process using 8 threads.  
+`--genomeDir {input.index}` indicates where the genome index is located.  
+`--readFilesIn {input.read1} {input.read2}` path to the PE reads.  
+`--outFileNamePrefix {params.prefix}` is the prefix of our output file.  
+`--readFilesCommand zcat` signifies that we our reads are compressed and need to be read as fastq.gz files.  
+`--genomeLoad NoSharedMemory`   
+`--twopassMode Basic` indicates that we wish to use a two-passes mapping mode that will first extract the junctions and insert them into the genome index and re-map everything during a 2nd pass. The option basic allows us to perform this on multiple files in parallel.  
+`--sjdbGTFfile {input.annotation}` indicates the path of our annotation file.     
+`--sjdbScore 2`   
+`--sjdbOverhang 149` is the same parameter used for building our index.  
+`--outFilterMultimapNmax 20`   
+`--alignSJoverhangMin 8`   
+`--alignSJDBoverhangMin 1`   
+`--outFilterMatchNmin 50`   
+`--outFilterMismatchNmax 999`   
+`--outFilterMismatchNoverReadLmax 0.04`   
+`--alignIntronMin 20`   
+`--alignIntronMax 1000000`   
+`--alignMatesGapMax 1000000`   
+`--outSAMunmapped Within`   
+`--outFilterType BySJout`   
+`--outSAMattributes NH HI AS NM MD` indicates that the temporary .sam alignment file should contain headers.
+`--outSAMtype BAM SortedByCoordinate` indicates that the output should be in a .bam format and sorted by coordines.     
+`--quantMode TranscriptomeSAM GeneCounts` indicates that we wish to have two outputs, one with the Read Count for each gene and one with the gene aligned to the transcriptome only.    
+`--quantTranscriptomeBan IndelSoftclipSingleend`   
+`--limitBAMsortRAM 32000000000`   
+`--seedSearchStartLmax 30`  
+`--outFilterScoreMinOverLread 0`  
+`--outFilterMatchNminOverLread 0`  
+
 
 After mapping, we obtained alignment statistics from the `*_Log.final.out` file and filled out the metadata table with it.
 
@@ -111,7 +174,7 @@ for i in *_ReadsPerGene.out.tab; do echo $i; grep -v "N_" $i | awk '{unst+=$2;fo
 In a stranded library preparation protocol, there should be a strong imbalance between number of reads mapped to known genes in forward versus reverse strands. This is what we observe for example on _S. cancellata_ libraries here.  
   
 <figure class="center">
-<img src="img/ReadPerGene.png" alt="module_spider" width="800px"/>  
+<img src="assets/ReadPerGene.png" alt="module_spider" width="800px"/>  
 </figure>   
   
 **PREFERRED OPTION:** We need to extract in our case the 1st and 4th columns for each file.
@@ -145,10 +208,12 @@ sed -e "1igene_name\t$(ls SPICE_*ReadsPerGene.out.tab | tr '\n' '\t' | sed 's/_R
 
 ## STAR and RSEM
 
+[NEED TO DO]
 
 ## STAR and Salmon 
 
+[NEED TO DO]
 
 ## HISAT2  
 
-
+[NEED TO DO]
