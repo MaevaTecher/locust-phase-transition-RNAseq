@@ -11,7 +11,7 @@
 
 <meta name="author" content="Maeva Techer" />
 
-<meta name="date" content="2022-11-01" />
+<meta name="date" content="2022-11-06" />
 
 <title>Sequence data quality control</title>
 
@@ -429,7 +429,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Sequence data quality control</h1>
 <h4 class="author">Maeva Techer</h4>
-<h4 class="date">2022-11-01</h4>
+<h4 class="date">2022-11-06</h4>
 
 </div>
 
@@ -458,7 +458,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-01
+<strong>Last updated:</strong> 2022-11-06
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -590,15 +590,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2afc036f1854fb1ba29bf47d9e989ae51082c689targetblank2afc036a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreebb5af6be1b48df48d5a3c61cf306f655d6757525targetblankbb5af6ba">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2afc036f1854fb1ba29bf47d9e989ae51082c689" target="_blank">2afc036</a>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/bb5af6be1b48df48d5a3c61cf306f655d6757525" target="_blank">bb5af6b</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2afc036f1854fb1ba29bf47d9e989ae51082c689targetblank2afc036a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtreebb5af6be1b48df48d5a3c61cf306f655d6757525targetblankbb5af6ba"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -608,7 +608,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2afc036f1854fb1ba29bf47d9e989ae51082c689" target="_blank">2afc036</a>.
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/bb5af6be1b48df48d5a3c61cf306f655d6757525" target="_blank">bb5af6b</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -639,15 +639,16 @@ Ignored files:
     Ignored:    data/nitens/.DS_Store
     Ignored:    data/nitens/STAR_counts_4thcol/.DS_Store
     Ignored:    data/piceifrons/.DS_Store
+    Ignored:    data/piceifrons/.Rhistory
+    Ignored:    data/piceifrons/DEseq2_SPICE_HEAD 2/
     Ignored:    data/piceifrons/DEseq2_SPICE_HEAD/.DS_Store
     Ignored:    data/piceifrons/STAR_counts_4thcol/.DS_Store
     Ignored:    data/piceifrons/edgeR_SPICE_HEAD/.DS_Store
     Ignored:    data/piceifrons/list/.DS_Store
 
-Untracked files:
-    Untracked:  data/piceifrons/DE-genes_strict_[SPICE_HEAD]_[238_genes].txt
-    Untracked:  data/piceifrons/DEseq2_SPICE_HEAD/DE-genes_[SPICE_HEAD_DEseq2]_[378_genes].txt
-    Untracked:  data/piceifrons/edgeR_SPICE_HEAD/DE-genes_[SPICE_HEAD_edgeR]_[342_genes].txt
+Unstaged changes:
+    Modified:   data/metadata/RNAseq_modified_METADATA2022.xlsx
+    Deleted:    data/metadata/~$RNAseq_modified_METADATA2022.xlsx
 
 </code></pre>
 <p>
@@ -693,6 +694,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/bb5af6be1b48df48d5a3c61cf306f655d6757525/analysis/seqdata-qc.Rmd" target="_blank">bb5af6b</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-06
+</td>
+<td>
+workflowr::wflow_publish("analysis/seqdata-qc.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/1fa8b999192f9d5432c6632954c26e8b5cf61967/docs/seqdata-qc.html" target="_blank">1fa8b99</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -933,6 +968,11 @@ Snakemake pipeline on it. If not provided beforehand by TxGen, we need
 to check the quality of the sequences downloaded or generated using
 <code>FASTQC</code>.</p>
 <p>Results can be view by opening the *.html files in web browser.</p>
+<p>However as we analyzed a large number of files, it is easier to
+inspect them using the <code>multiqc</code> report that summarize
+everything into one single file.</p>
+<pre><code>module load GCC/9.3.0  OpenMPI/4.0.3 MultiQC/1.9-Python-3.8.2
+multiqc --title &#39;TYPE THE TITLE YOU WANT&#39; -v /PATHTODIRECTORY</code></pre>
 <p>[WRITE ABOUT MULTIQC]</p>
 </div>
 <div id="trim-and-adapter-removal" class="section level1">
@@ -1056,17 +1096,20 @@ wget https://kaiju.binf.ku.dk/database/kaiju_db_nr_euk_2022-03-10.tgz</code></pr
 
 rule kaiju:
         input:
-                read1 = OUTdir + &quot;/trimming/{locust}_trim1P_R1_001.fastq.gz&quot;,
-                read2 = OUTdir + &quot;/trimming/{locust}_trim2P_R2_001.fastq.gz&quot;,
+                read1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
+                read2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;,
                 database = KAIJUdir + &quot;/kaiju_db_nr_euk.fmi&quot;,
                 taxonid = KAIJUdir + &quot;/nodes.dmp&quot;,
+                taxonnames = KAIJUdir + &quot;/names.dmp&quot;,
         output:
                 report = OUTdir + &quot;/kaiju/{locust}_kaiju.out&quot;,
-        shell:
+                classification = OUTdir + &quot;/kaiju/{locust}_kaiju.tsv&quot;,        
+    shell:
                 &quot;&quot;&quot;
                 ml GCC/8.3.0  OpenMPI/3.1.4 Kaiju/1.7.3-Python-3.7.4
                 kaiju -z 12 -v -a greedy -f {input.database} -t {input.taxonid} -i {input.read1} -j {input.read2} -o {output.report}
-                &quot;&quot;&quot;
+        kaiju2table -v -t {input.taxonid} -n {input.taxonnames} -r phylum -o {output.classification} {output.report}
+        &quot;&quot;&quot;
                 
         
 ########################################
@@ -1080,8 +1123,11 @@ rule kaiju:
         &quot;ntasks&quot;: 2,
         &quot;mem&quot; : &quot;200G&quot;,
         &quot;time&quot;: &quot;0-12:00:00&quot;
-    },
+   },
 </code></pre>
+<p>The ouput produced here allows us to see the percentage of reads that
+map to unclassified (likely our locust host here) and the percentage of
+microbial contamination ranked in a phylum level.</p>
 </div>
 <div id="visualize-the-metatranscriptomics-result"
 class="section level2">
@@ -1092,16 +1138,42 @@ href="https://github.com/marbl/Krona/wiki"><code>Krona</code></a>. The
 results are generated by a .html page. We followed the <a
 href="https://github.com/bioinformatics-centre/kaiju">Kaiju tutorial</a>
 on the Github page:</p>
-<pre><code>## Need to have Kaiju loaded
-ml GCC/8.3.0  OpenMPI/3.1.4 Kaiju/1.7.3-Python-3.7.4
-kaiju2krona -t nodes.dmp -n names.dmp -i {locust}_kaiju.out -o {locust}_kaiju.out.krona
+<pre><code>########################################
+# Snakefile rule
+########################################
 
-## Need to use Krona functions
-ml GCCcore/8.2.0 KronaTools/2.7.1
-ktImportText -o {locust}_kaiju.out.html {locust}_kaiju.out.krona</code></pre>
+rule krona:
+        input:
+                kaijuout = OUTdir + &quot;/kaiju/{locust}_kaiju.out&quot;,
+                taxonid = KAIJUdir + &quot;/nodes.dmp&quot;,
+        taxonnames = KAIJUdir + &quot;/names.dmp&quot;,
+        output:
+                conversion = OUTdir + &quot;/kaiju/{locust}_krona.out&quot;,
+        webreport = OUTdir + &quot;/kaiju/{locust}_krona.html&quot;,
+        shell:
+                &quot;&quot;&quot;
+                ml GCCcore/8.2.0 KronaTools/2.7.1
+                kaiju2krona -t {input.taxonid} -n {input.taxonnames} -i {input.kaijuout} -o {output.conversion}
+        ktImportText -o {output.webreport} {output.conversion} 
+                &quot;&quot;&quot;
+
+        
+########################################
+# Parameters in the cluster.json file
+########################################
+
+    &quot;krona&quot;:
+    {
+        &quot;cpus-per-task&quot; : 2,
+        &quot;partition&quot; : &quot;short&quot;,
+        &quot;ntasks&quot;: 1,
+        &quot;mem&quot; : &quot;500M&quot;,
+        &quot;time&quot;: &quot;0-0:10:00&quot;
+   },</code></pre>
 </div>
 <div id="filter-for-rrna" class="section level2">
-<h2>Filter for rRNA</h2>
+<h2>Filter for rRNA?</h2>
+<p>[SHOULD WE USE SORTMERNA]</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1129,33 +1201,34 @@ FALSE other attached packages:
 FALSE  [1] reshape2_1.4.4   ggthemes_4.2.4   plotly_4.10.0    DT_0.26         
 FALSE  [5] forcats_0.5.2    stringr_1.4.1    dplyr_1.0.10     purrr_0.3.5     
 FALSE  [9] readr_2.1.3      tidyr_1.2.1      tibble_3.1.8     ggplot2_3.3.6   
-FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40      
+FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40       workflowr_1.7.0 
 FALSE 
 FALSE loaded via a namespace (and not attached):
-FALSE  [1] httr_1.4.4          sass_0.4.2          jsonlite_1.8.3     
-FALSE  [4] viridisLite_0.4.1   modelr_0.1.9        bslib_0.4.0        
-FALSE  [7] assertthat_0.2.1    googlesheets4_1.0.1 cellranger_1.1.0   
-FALSE [10] yaml_2.3.6          pillar_1.8.1        backports_1.4.1    
-FALSE [13] glue_1.6.2          digest_0.6.30       promises_1.2.0.1   
-FALSE [16] rvest_1.0.3         colorspace_2.0-3    htmltools_0.5.3    
-FALSE [19] httpuv_1.6.6        plyr_1.8.7          pkgconfig_2.0.3    
-FALSE [22] broom_1.0.1         haven_2.5.1         bookdown_0.29      
-FALSE [25] scales_1.2.1        whisker_0.4         later_1.3.0        
-FALSE [28] tzdb_0.3.0          git2r_0.30.1        googledrive_2.0.0  
-FALSE [31] generics_0.1.3      ellipsis_0.3.2      cachem_1.0.6       
-FALSE [34] withr_2.5.0         lazyeval_0.2.2      cli_3.4.1          
-FALSE [37] magrittr_2.0.3      crayon_1.5.2        readxl_1.4.1       
-FALSE [40] evaluate_0.17       fs_1.5.2            fansi_1.0.3        
-FALSE [43] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
-FALSE [46] hms_1.1.2           formatR_1.12        gargle_1.2.1       
-FALSE [49] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
-FALSE [52] compiler_4.2.1      jquerylib_0.1.4     rlang_1.0.6        
-FALSE [55] grid_4.2.1          rstudioapi_0.14     htmlwidgets_1.5.4  
-FALSE [58] rmarkdown_2.17      gtable_0.3.1        DBI_1.1.3          
-FALSE [61] R6_2.5.1            lubridate_1.8.0     fastmap_1.1.0      
-FALSE [64] utf8_1.2.2          workflowr_1.7.0     rprojroot_2.0.3    
-FALSE [67] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
-FALSE [70] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
+FALSE  [1] httr_1.4.4          sass_0.4.2          viridisLite_0.4.1  
+FALSE  [4] jsonlite_1.8.3      modelr_0.1.9        bslib_0.4.0        
+FALSE  [7] assertthat_0.2.1    getPass_0.2-2       googlesheets4_1.0.1
+FALSE [10] cellranger_1.1.0    yaml_2.3.6          pillar_1.8.1       
+FALSE [13] backports_1.4.1     glue_1.6.2          digest_0.6.30      
+FALSE [16] promises_1.2.0.1    rvest_1.0.3         colorspace_2.0-3   
+FALSE [19] plyr_1.8.7          htmltools_0.5.3     httpuv_1.6.6       
+FALSE [22] pkgconfig_2.0.3     broom_1.0.1         haven_2.5.1        
+FALSE [25] bookdown_0.29       scales_1.2.1        processx_3.7.0     
+FALSE [28] whisker_0.4         later_1.3.0         tzdb_0.3.0         
+FALSE [31] git2r_0.30.1        googledrive_2.0.0   generics_0.1.3     
+FALSE [34] ellipsis_0.3.2      cachem_1.0.6        withr_2.5.0        
+FALSE [37] lazyeval_0.2.2      cli_3.4.1           magrittr_2.0.3     
+FALSE [40] crayon_1.5.2        readxl_1.4.1        evaluate_0.17      
+FALSE [43] ps_1.7.1            fs_1.5.2            fansi_1.0.3        
+FALSE [46] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
+FALSE [49] hms_1.1.2           formatR_1.12        gargle_1.2.1       
+FALSE [52] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
+FALSE [55] callr_3.7.2         compiler_4.2.1      jquerylib_0.1.4    
+FALSE [58] rlang_1.0.6         grid_4.2.1          rstudioapi_0.14    
+FALSE [61] htmlwidgets_1.5.4   rmarkdown_2.17      gtable_0.3.1       
+FALSE [64] DBI_1.1.3           R6_2.5.1            lubridate_1.8.0    
+FALSE [67] fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.3    
+FALSE [70] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
+FALSE [73] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
 </div>
 </div>
 </div>
