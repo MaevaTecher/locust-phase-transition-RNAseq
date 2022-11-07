@@ -82,32 +82,28 @@ We generated new whole transcriptomes from two density conditions for the desert
 
 The details of the sequences are as follow:  
 **Bulk tissue from 2nd generation solitary control**  
-| Sample name                        | Description                                 |
-| ---------------------------------- | ------------------------------------------- |
-|GREG-HATCH-S1-FULL_S20| Solitary hatch-ling 1st instar from Pearl and Atticus   |	
-|GREG-S-ICT-9-ALB_S6| Antenna lobes from replicate #9  	|
-|GREG-S-ICT-9-ANT_S5| Antennae from replicate #9  |
-|GREG-S-ICT-9-FAT_S3| Fat body from replicate #9  |
-|GREG-S-ICT-9-MHB_S7| Mushroom body from replicate #9  |
-|GREG-S-ICT-9-MOP_S4| Maxillary palps from replicate #9  |
-|GREG-S-ICT-9-MTG_S2| Metathoracic ganglia from replicate #9  |
-|GREG-S-ICT-9-OLB_S8| Optical lobes from replicate #9  |
-|GREG-S-ICT-9-WG_S1| Whole gut from replicate #9  |
+GREG-HATCH-S1-FULL_S20: Solitary hatch-ling 1st instar from Pearl and Atticus  
+GREG-S-ICT-9-ALB_S6: Antenna lobes from replicate #9  	 
+GREG-S-ICT-9-ANT_S5: Antennae from replicate #9   
+GREG-S-ICT-9-FAT_S3: Fat body from replicate #9   
+GREG-S-ICT-9-MHB_S7: Mushroom body from replicate #9  
+GREG-S-ICT-9-MOP_S4: Maxillary palps from replicate #9    
+GREG-S-ICT-9-MTG_S2: Metathoracic ganglia from replicate #9   
+GREG-S-ICT-9-OLB_S8: Optical lobes from replicate #9   
+GREG-S-ICT-9-WG_S1: Whole gut from replicate #9   
   
 **Bulk tissue from highly crowded control**  
-| Sample name                        | Description                                 |
-| ---------------------------------- | ------------------------------------------- |
-GREG-G-CCT-11-ALB_S14| Antenna lobes from replicate #11  |
-GREG-G-CCT-11-ALB-FULL_S17| Antenna lobes from replicate #11  |
-GREG-G-CCT-11-ANT_S13| Antennae from replicate #11  |
-GREG-G-CCT-11-FAT_S11| Fat body from replicate #11  |
-GREG-G-CCT-11-FAT-FULL_S19| Fat body from replicate #11  |
-GREG-G-CCT-11-MHB_S15| Mushroom body from replicate #11  |
-GREG-G-CCT-11-MOP_S12| Maxillary palps from replicate #11  |
-GREG-G-CCT-11-MTG_S10| Metathoracic ganglia from replicate #11  |
-GREG-G-CCT-11-OLB_S16| Optical lobes from replicate #11  |
-GREG-G-CCT-11-OLB-FULL_S18| Optical lobes from replicate #11  |
-GREG-G-CCT-11-WG_S9| Whole gut from replicate #11  |
+GREG-G-CCT-11-ALB_S1: Antenna lobes from replicate #11  
+GREG-G-CCT-11-ALB-FULL_S17: Antenna lobes from replicate #11  
+GREG-G-CCT-11-ANT_S13: Antennae from replicate #11  
+GREG-G-CCT-11-FAT_S11: Fat body from replicate #11  
+GREG-G-CCT-11-FAT-FULL_S19: Fat body from replicate #11  
+GREG-G-CCT-11-MHB_S15: Mushroom body from replicate #11  
+GREG-G-CCT-11-MOP_S12: Maxillary palps from replicate #11  
+GREG-G-CCT-11-MTG_S10: Metathoracic ganglia from replicate #11  
+GREG-G-CCT-11-OLB_S16: Optical lobes from replicate #11  
+GREG-G-CCT-11-OLB-FULL_S18: Optical lobes from replicate #11  
+GREG-G-CCT-11-WG_S9: Whole gut from replicate #11  
 
 ## Merging several runs into a single fastq.gz file
 
