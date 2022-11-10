@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Maeva Techer" />
+
+<meta name="date" content="2022-10-31" />
+
+<title>Sequence data quality control</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Locust Phase Transition RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Bioinformatics code
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Sequence data pre-processing</li>
+    <li>
+      <a href="workenvs-prep.html">Preparation for the analysis</a>
+    </li>
+    <li>
+      <a href="seqdata-prep.html">Download/obtain sequencing data</a>
+    </li>
+    <li>
+      <a href="seqdata-qc.html">Data quality control</a>
+    </li>
+    <li class="dropdown-header">Genome alignment and gene quantification</li>
+    <li>
+      <a href="map-refseq.html">Mapping reads to Schistocerca RefSeq</a>
+    </li>
+    <li class="dropdown-header">Data post-processing and stats</li>
+    <li>
+      <a href="bam-stats.html">Indexing and stats on bam files</a>
+    </li>
+    <li>
+      <a href="deg-workflow.html">DEG workflow</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis &amp; Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Mapping success</li>
+    <li>
+      <a href="map-star.html">Using STAR</a>
+    </li>
+    <li>
+      <a href="map-hisat2.html">Using HISAT2</a>
+    </li>
+    <li class="dropdown-header">Differential Gene Expression</li>
+    <li>
+      <a href="deg-tissue.html">DEG per tissue</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Sequence data quality control</h1>
+<h4 class="author">Maeva Techer</h4>
+<h4 class="date">2022-10-31</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-10-31
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong>
+<code>locust-phase-transition-RNAseq/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20221025code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20221025)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20221025code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20221025)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2ccb4bc5e57b273db98e89c4b87c580ee510cd67targetblank2ccb4bca">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2ccb4bc5e57b273db98e89c4b87c580ee510cd67" target="_blank">2ccb4bc</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomMaevaTecherlocustphasetransitionRNAseqtree2ccb4bc5e57b273db98e89c4b87c580ee510cd67targetblank2ccb4bca"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/tree/2ccb4bc5e57b273db98e89c4b87c580ee510cd67" target="_blank">2ccb4bc</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    analysis/.DS_Store
+    Ignored:    data/.DS_Store
+    Ignored:    data/americana/.DS_Store
+    Ignored:    data/americana/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/cancellata/.DS_Store
+    Ignored:    data/cancellata/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/cubense/.DS_Store
+    Ignored:    data/cubense/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/gregaria/.DS_Store
+    Ignored:    data/gregaria/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/gregaria/list/.DS_Store
+    Ignored:    data/metadata/.DS_Store
+    Ignored:    data/nitens/.DS_Store
+    Ignored:    data/nitens/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/piceifrons/.DS_Store
+    Ignored:    data/piceifrons/STAR_counts_4thcol/.DS_Store
+    Ignored:    data/piceifrons/list/.DS_Store
+
+Unstaged changes:
+    Deleted:    analysis/gene-quant.Rmd
+    Deleted:    analysis/own-refseq.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/seqdata-qc.Rmd</code>) and HTML
+(<code>docs/seqdata-qc.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/8481823d9015b1cc26ecb64e487d74f829d2643f/docs/seqdata-qc.html" target="_blank">8481823</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/ea70380071caa0d86932413a6c0120d766a79768/docs/seqdata-qc.html" target="_blank">ea70380</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/de64b6bfd0f4a47e2f2cae212c8eb07a05a30c10/analysis/seqdata-qc.Rmd" target="_blank">de64b6b</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-31
+</td>
+<td>
+wflow_publish(c("analysis/_site.yml", "analysis/map-refseq.Rmd",
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/8b34f19e548dccf41714638a6e5862030e68bfae/docs/seqdata-qc.html" target="_blank">8b34f19</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/bd04bb56b25f982ed729cec095ff5ada3eb61535/docs/seqdata-qc.html" target="_blank">bd04bb5</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/MaevaTecher/locust-phase-transition-RNAseq/61f4b75dd51dd84ad06beaa4a5701c0e58c0c22a/docs/seqdata-qc.html" target="_blank">61f4b75</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/MaevaTecher/locust-phase-transition-RNAseq/blob/f65c630ff5f9a5de44bcfdfb29dfbf01e606946a/analysis/seqdata-qc.Rmd" target="_blank">f65c630</a>
+</td>
+<td>
+MaevaTecher
+</td>
+<td>
+2022-10-30
+</td>
+<td>
+wflow_publish(c("analysis/_site.yml", "analysis/gene-quant.Rmd",
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<p>Load R libraries (install first from CRAN or Bioconductor)</p>
+<pre class="r"><code>library(&quot;knitr&quot;)
+library(&quot;rmdformats&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;DT&quot;)  # for making interactive search table
+library(&quot;plotly&quot;) # for interactive plots
+library(&quot;ggthemes&quot;) # for theme_calc
+library(&quot;reshape2&quot;)
+
+## Global options
+options(max.print=&quot;10000&quot;)
+knitr::opts_chunk$set(
+    echo = TRUE,
+    message = FALSE,
+    warning = FALSE,
+    cache = FALSE,
+    comment = FALSE,
+    prompt = FALSE,
+    tidy = TRUE
+)
+opts_knit$set(width=75)</code></pre>
+<div id="control-the-quality-of-fastq-files" class="section level1">
+<h1>Control the quality of fastq files</h1>
+<p>From the point we have the renamed, and paired-end / single-end read
+for the species of interest (one folder), we are ready to run our
+Snakemake pipeline on it. If not provided beforehand by TxGen, we need
+to check the quality of the sequences downloaded or generated using
+<code>FASTQC</code>.</p>
+<p>Results can be view by opening the *.html files in web browser.</p>
+<p>[WRITE ABOUT MULTIQC]</p>
+</div>
+<div id="trim-and-adapter-removal" class="section level1">
+<h1>Trim and adapter removal</h1>
+<p>After checking the initial sequence quality, we can determine any
+parameters change for <code>Trimmomatic</code>.</p>
+<pre><code>########################################
+# Snakefile rule
+########################################
+
+rule trim_adapt:
+    input:
+        read1 = OUTdir + &quot;/reads/{locust}_1.fastq.gz&quot;,
+        read2 = OUTdir + &quot;/reads/{locust}_2.fastq.gz&quot;,
+        adaptfile = OUTdir + &quot;/list/TruSeqNextera_PE.fa&quot;
+    output:
+        trimmedread1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
+        badread1 = OUTdir + &quot;/trimming/{locust}_trim1U_1.fastq.gz&quot;,
+        trimmedread2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;,
+        badread2 = OUTdir + &quot;/trimming/{locust}_trim2U_2.fastq.gz&quot;,
+    shell:
+        &quot;&quot;&quot;
+        module load Trimmomatic/0.39-Java-11
+        java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 2 -phred33 {input.read1} {input.read2} {output.trimmedread1} {output.badread1} {output.trimmedread2} {output.badread2} ILLUMINACLIP:{input.adaptfile}:2:30:10 LEADING:30 TRAILING:30 SLIDINGWINDOW:4:15 MINLEN:36 
+        &quot;&quot;&quot;
+        
+########################################
+# Parameters in the cluster.json file
+########################################
+
+    &quot;trim_adapt&quot;:
+    {
+        &quot;cpus-per-task&quot; : 2,
+        &quot;partition&quot; : &quot;medium&quot;,
+    &quot;ntasks&quot;: 2,
+        &quot;mem&quot; : &quot;1G&quot;,
+        &quot;time&quot;: &quot;0-04:00:00&quot;
+    },
+</code></pre>
+</div>
+<div id="trim-quality-control" class="section level1">
+<h1>Trim quality control</h1>
+<p>We always QC after trimming to ensure fine-tuning that the sequences
+clipping and filtering were not unnecessarily harsh. Given the number of
+sequences we work with, we do not need to go through each file
+immediately for time purposes. Instead, sample randomly across species,
+rearing conditions, and tissues to see that the process worked well.</p>
+<pre><code>########################################
+# Snakefile rule
+########################################
+
+#Quality control step after trimming: checked for adapter content in particular and quality scores
+rule trim_fastqc:
+    input:
+        read1 = OUTdir + &quot;/trimming/{locust}_trim1P_1.fastq.gz&quot;,
+        read2 = OUTdir + &quot;/trimming/{locust}_trim2P_2.fastq.gz&quot;,
+    output:
+        htmlqc1 = OUTdir + &quot;/trimming/{locust}_trim1P_1_fastqc.html&quot;,
+        htmlqc2 = OUTdir + &quot;/trimming/{locust}_trim2P_2_fastqc.html&quot;,
+    shell:
+        &quot;&quot;&quot;
+        module load FastQC/0.11.9-Java-11
+        fastqc {input.read1}
+        fastqc {input.read2}
+        &quot;&quot;&quot;
+        
+########################################
+# Parameters in the cluster.json file
+########################################
+
+    &quot;trim_fastqc&quot;:
+    {
+        &quot;cpus-per-task&quot; : 2,
+        &quot;partition&quot; : &quot;medium&quot;,
+        &quot;ntasks&quot;: 1,
+        &quot;mem&quot; : &quot;500M&quot;,
+        &quot;time&quot;: &quot;0-03:00:00&quot;
+    },
+</code></pre>
+<figure class="center">
+<p><strong>EXAMPLE OF READS QUALITY BEFORE TRIMMING</strong><br />
+<img src="img/FASTQC_before.png" alt="module_spider" width="800px"/><br />
+<strong>EXAMPLE OF READS QUALITY AFTER TRIMMING</strong><br />
+We can see that the sequence length has changed and that the 5’ and 3’
+end positions with lower quality have been removed.<br />
+<img src="img/FASTQC_after.png" alt="module_spider" width="800px"/></p>
+<strong>EXAMPLE OF READS QUALITY BEFORE TRIMMING</strong><br />
+<img src="img/FASTQC_before2.png" alt="module_spider" width="800px"/><br />
+<strong>EXAMPLE OF READS QUALITY AFTER TRIMMING</strong><br />
+We can see that most detected adapter sequences have been adequately
+removed after trimming.<br />
+<img src="img/FASTQC_after2.png" alt="module_spider" width="800px"/>
+</figure>
+</div>
+<div id="check-for-sequencing-data-contamination"
+class="section level1">
+<h1>Check for sequencing data contamination</h1>
+<p>Contamination is likely bound to happen during experiments, tissue
+acquisition, RNA extraction and library preparation. One can hope to
+reduces as much as possible its impact on the final sequencing data
+which can affect the mapping rate success.</p>
+<div id="screen-for-microbial-contamination" class="section level2">
+<h2>Screen for microbial contamination</h2>
+<p>We decided to screen for microbes sequences present in the trimmed
+paired end reads fastq.gz files using the tool <a
+href="https://kaiju.binf.ku.dk/"><code>Kaiju</code></a>.
+<code>Kaiju</code> translates metatranscriptomics sequencing reads into
+six possible reading frames and searches for maximum exact matches of
+amino acid sequences in a given annotation protein database.</p>
+<p>We used the most extensive microbial database <code>nr_euk</code>
+which encompass the subset of NCBI BLAST nr database containing all
+proteins belonging to Archaea, Bacteria, Viruses, Fungi and microbial
+Eukaryotes.</p>
+<pre><code>## Downloading the 2022-03-10 database from Kaiju webserver
+wget https://kaiju.binf.ku.dk/database/kaiju_db_nr_euk_2022-03-10.tgz</code></pre>
+<p>To run <code>Kaiju</code> we used the following
+<code>Snakemake</code> rule:</p>
+<pre><code>########################################
+# Snakefile rule
+########################################
+
+rule kaiju:
+        input:
+                read1 = OUTdir + &quot;/trimming/{locust}_trim1P_R1_001.fastq.gz&quot;,
+                read2 = OUTdir + &quot;/trimming/{locust}_trim2P_R2_001.fastq.gz&quot;,
+                database = KAIJUdir + &quot;/kaiju_db_nr_euk.fmi&quot;,
+                taxonid = KAIJUdir + &quot;/nodes.dmp&quot;,
+        output:
+                report = OUTdir + &quot;/kaiju/{locust}_kaiju.out&quot;,
+        shell:
+                &quot;&quot;&quot;
+                ml GCC/8.3.0  OpenMPI/3.1.4 Kaiju/1.7.3-Python-3.7.4
+                kaiju -z 12 -v -a greedy -f {input.database} -t {input.taxonid} -i {input.read1} -j {input.read2} -o {output.report}
+                &quot;&quot;&quot;
+                
+        
+########################################
+# Parameters in the cluster.json file
+########################################
+
+    &quot;kaiju&quot;:
+    {
+        &quot;cpus-per-task&quot; : 6,
+        &quot;partition&quot; : &quot;medium&quot;,
+        &quot;ntasks&quot;: 2,
+        &quot;mem&quot; : &quot;200G&quot;,
+        &quot;time&quot;: &quot;0-12:00:00&quot;
+    },
+</code></pre>
+</div>
+<div id="visualize-the-metatranscriptomics-result"
+class="section level2">
+<h2>Visualize the metatranscriptomics result</h2>
+<p><code>Kaiju</code> output can be exported to be view in a interactive
+and hierarchical multi-layered pie-charts using <a
+href="https://github.com/marbl/Krona/wiki"><code>Krona</code></a>. The
+results are generated by a .html page. We followed the <a
+href="https://github.com/bioinformatics-centre/kaiju">Kaiju tutorial</a>
+on the Github page:</p>
+<pre><code>## Need to have Kaiju loaded
+ml GCC/8.3.0  OpenMPI/3.1.4 Kaiju/1.7.3-Python-3.7.4
+kaiju2krona -t nodes.dmp -n names.dmp -i {locust}_kaiju.out -o {locust}_kaiju.out.krona
+
+## Need to use Krona functions
+ml GCCcore/8.2.0 KronaTools/2.7.1
+ktImportText -o {locust}_kaiju.out.html {locust}_kaiju.out.krona</code></pre>
+</div>
+<div id="filter-for-rrna" class="section level2">
+<h2>Filter for rRNA</h2>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>FALSE R version 4.2.1 (2022-06-23)
+FALSE Platform: x86_64-apple-darwin17.0 (64-bit)
+FALSE Running under: macOS Big Sur ... 10.16
+FALSE 
+FALSE Matrix products: default
+FALSE BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
+FALSE LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+FALSE 
+FALSE locale:
+FALSE [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+FALSE 
+FALSE attached base packages:
+FALSE [1] stats     graphics  grDevices utils     datasets  methods   base     
+FALSE 
+FALSE other attached packages:
+FALSE  [1] reshape2_1.4.4   ggthemes_4.2.4   plotly_4.10.0    DT_0.26         
+FALSE  [5] forcats_0.5.2    stringr_1.4.1    dplyr_1.0.10     purrr_0.3.5     
+FALSE  [9] readr_2.1.3      tidyr_1.2.1      tibble_3.1.8     ggplot2_3.3.6   
+FALSE [13] tidyverse_1.3.2  rmdformats_1.0.4 knitr_1.40       workflowr_1.7.0 
+FALSE 
+FALSE loaded via a namespace (and not attached):
+FALSE  [1] httr_1.4.4          sass_0.4.2          viridisLite_0.4.1  
+FALSE  [4] jsonlite_1.8.3      modelr_0.1.9        bslib_0.4.0        
+FALSE  [7] assertthat_0.2.1    getPass_0.2-2       googlesheets4_1.0.1
+FALSE [10] cellranger_1.1.0    yaml_2.3.6          pillar_1.8.1       
+FALSE [13] backports_1.4.1     glue_1.6.2          digest_0.6.30      
+FALSE [16] promises_1.2.0.1    rvest_1.0.3         colorspace_2.0-3   
+FALSE [19] plyr_1.8.7          htmltools_0.5.3     httpuv_1.6.6       
+FALSE [22] pkgconfig_2.0.3     broom_1.0.1         haven_2.5.1        
+FALSE [25] bookdown_0.29       scales_1.2.1        processx_3.7.0     
+FALSE [28] whisker_0.4         later_1.3.0         tzdb_0.3.0         
+FALSE [31] git2r_0.30.1        googledrive_2.0.0   generics_0.1.3     
+FALSE [34] ellipsis_0.3.2      cachem_1.0.6        withr_2.5.0        
+FALSE [37] lazyeval_0.2.2      cli_3.4.1           magrittr_2.0.3     
+FALSE [40] crayon_1.5.2        readxl_1.4.1        evaluate_0.17      
+FALSE [43] ps_1.7.1            fs_1.5.2            fansi_1.0.3        
+FALSE [46] xml2_1.3.3          tools_4.2.1         data.table_1.14.4  
+FALSE [49] hms_1.1.2           formatR_1.12        gargle_1.2.1       
+FALSE [52] lifecycle_1.0.3     munsell_0.5.0       reprex_2.0.2       
+FALSE [55] callr_3.7.2         compiler_4.2.1      jquerylib_0.1.4    
+FALSE [58] rlang_1.0.6         grid_4.2.1          rstudioapi_0.14    
+FALSE [61] htmlwidgets_1.5.4   rmarkdown_2.17      gtable_0.3.1       
+FALSE [64] DBI_1.1.3           R6_2.5.1            lubridate_1.8.0    
+FALSE [67] fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.3    
+FALSE [70] stringi_1.7.8       Rcpp_1.0.9          vctrs_0.5.0        
+FALSE [73] dbplyr_2.2.1        tidyselect_1.2.0    xfun_0.34</code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

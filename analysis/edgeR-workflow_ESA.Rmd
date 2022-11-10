@@ -1,0 +1,226 @@
+---
+title: "Differential Gene Expression using EdgeR"
+author: "Maeva Techer"
+date: "`r Sys.Date()`"
+output:
+  workflowr::wflow_html
+---
+
+# Load required R libraries 
+```{r libraries, message=FALSE, warning=FALSE}
+#(install first from CRAN or Bioconductor)
+library("knitr")
+library("rmdformats")
+library("tidyverse")
+library("DT")  # for making interactive search table
+library("plotly") # for interactive plots
+library("ggthemes") # for theme_calc
+library("reshape2")
+library("DESeq2")
+library("data.table")
+library("apeglm")
+library("ggpubr")
+library("ggplot2")
+library("ggrepel")
+library("EnhancedVolcano")
+library("SARTools")
+library("pheatmap")
+
+## Global options
+options(max.print="10000")
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = FALSE,
+	comment = FALSE,
+	prompt = FALSE,
+	tidy = TRUE
+)
+opts_knit$set(width=75)
+```
+
+Here we present the workflow example with the head data from _S. piceifrons_  
+
+# EdgeR analysis using STAR input
+## Preparing input files 
+#### Raw count matrices
+
+We generated this in the precedent section.
+
+### Transcript-to-gene annotation file
+  
+Below is the example with _S. piceifrons_
+```
+# Download annotation and place it into the folder refgenomes
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/461/385/GCF_021461385.2_iqSchPice1.1/GCF_021461385.2_iqSchPice1.1_genomic.gtf.gz
+
+# first column is the transcript ID, second column is the gene ID, third column is the gene symbol
+zcat GCF_021461385.2_iqSchPice1.1_genomic.gtf.gz | awk -F "\t" 'BEGIN{OFS="\t"}{if($3=="transcript"){split($9, a, "\""); print a[4],a[2],a[8]}}' > tx2gene.piceifrons.csv
+```
+  
+### Sample sheet 
+  
+
+## Differential expression analysis
+### Import input count data
+
+We start by reading the sample sheet.
+```{r EdgeR prep, message=FALSE, warning=FALSE}
+
+###############################
+#  MOSTLY FOR THE HMTL REPORT
+###############################
+## PARAMETERS for running the script
+homeDir <- "/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq"
+workDir <- "/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons"  		# Working directory
+projectName <- "SPICE_HEAD"             			# name of the project
+author <- "Maeva TECHER"                    	# author of the statistical analysis/report
+
+## Create all the needed directories
+setwd(workDir)
+Dirname <- paste("edgeR_", projectName, sep = "")
+dir.create(Dirname)
+setwd(Dirname)
+workDir_edgeR <- getwd()
+# path to the directory containing raw counts files
+rawDir <- "/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/STAR_counts_4thcol"  
+
+## PARAMETERS for running EdgeR
+tresh_logfold <- 1					          # Treshold for log2(foldchange) in final DE-files
+tresh_padj <- 0.05					          # Treshold for adjusted p-valued in final DE-files
+alpha_edgeR <- 0.05                   # threshold of statistical significance
+pAdjustMethod_edgeR <- "BH"           # p-value adjustment method: "BH" (default) or "BY"
+featuresToRemove <- c(NULL)           # names of the features to be removed, NULL if none or if using Idxstats
+varInt <- "RearingCondition"          # factor of interest
+condRef <- "Isolated"                 # reference biological condition
+batch <- NULL                         # blocking factor: NULL (default) or "batch" for example  
+cpmCutoff <- 1                        # counts-per-million cut-off to filter low counts
+gene.selection <- "pairwise"          # selection of the features in MDSPlot
+normalizationMethod <- "TMM"          # normalization method: "TMM" (default), "RLE" (DESeq) or "upperquartile"
+
+# Path and name of targetfile containing conditions and file names
+targetFile <- "/Users/alphamanae/Documents/GitHub/locust-phase-transition-RNAseq/data/piceifrons/list/HeadSPICE.txt"    
+colors <- c("#B31B21", "#1465AC")
+
+
+# checking parameters
+setwd(workDir_edgeR)
+checkParameters.edgeR(projectName=projectName,author=author,targetFile=targetFile,
+                      rawDir=rawDir,featuresToRemove=featuresToRemove,varInt=varInt,
+                      condRef=condRef,batch=batch,alpha=alpha_edgeR,pAdjustMethod=pAdjustMethod_edgeR,
+                      cpmCutoff=cpmCutoff,gene.selection=gene.selection,
+                      normalizationMethod=normalizationMethod,colors=colors)
+```
+
+We followed the comprehensive tutorial for [`edgeR`](https://www.reneshbedre.com/blog/edger-tutorial.html)
+
+### Filtering and normalizing
+
+```{r EdgeR filter, message=FALSE, warning=FALSE}
+
+# loading target file
+target <- loadTargetFile(targetFile=targetFile, varInt=varInt, condRef=condRef, batch=batch)
+
+# loading counts
+counts <- loadCountData(target=target, rawDir=rawDir, featuresToRemove=featuresToRemove)
+
+## Create DGEList data class
+dge <- DGEList(counts = counts, group = target[,varInt])
+dge
+
+## Filter out the genes with low counts
+keep <- filterByExpr(y = dge)
+dge <- dge[keep, , keep.lib.sizes=FALSE]
+dge
+
+## Normalization and effective library sizes
+dge <- calcNormFactors(object = dge)
+dge
+```
+
+### Run the model fit with EdgeR
+
+```{r EdgeR DGE, message=FALSE, warning=FALSE}
+
+## Dispersion estimation
+dge <- estimateDisp(y = dge)
+
+## Testing for differential gene expression
+et <- exactTest(object = dge)
+
+## Extract the table with adjusted p-values (FDR = padj for DEseq2)
+top_degs = topTags(object = et, n = "Inf")
+top_degs
+
+## Obtain the summary
+summary(decideTests(object = et, lfc = 1))
+
+## Export the table
+#write.csv(as.data.frame(top_degs), file="condition_infected_vs_control_dge.csv")
+```
+
+### DGE Visualization
+## Volcano plot
+
+```{r EdgeR Volcano, message=FALSE, warning=FALSE}
+
+sakura <- as.data.frame(top_degs)
+
+keyvals <-ifelse( 
+  sakura$logFC >= 1 & sakura$FDR <= 0.05, '#B31B21', 
+  ifelse(sakura$logFC <= -1 & sakura$FDR <= 0.05, '#1465AC', 'darkgray')) 
+
+keyvals[is.na(keyvals)] <-'darkgray' 
+names(keyvals)[keyvals == "#B31B21"] <-'Upregulated' 
+names(keyvals)[keyvals == "#1465AC"] <-'Downregulated' 
+names(keyvals)[keyvals == 'darkgray'] <-'NS'
+
+EnhancedVolcano(sakura,
+                lab = rownames(sakura),
+                x = 'logFC',
+                y = 'FDR',
+                pCutoff = 0.05,
+                FCcutoff = 1,
+                pointSize = 3,
+                labSize = 4,
+                colAlpha = 4/5,
+                colCustom = keyvals,
+                drawConnectors = TRUE)
+```
+
+## MA plot
+
+```{r EdgeR MAplot, message=FALSE, warning=FALSE}
+
+plotMD(object = et, p.value = 0.05)
+
+```
+
+
+## Create a html report with EdgeR
+
+```{r EdgeR html report version , message=FALSE, warning=FALSE}
+setwd(workDir_edgeR)
+# description plots
+majSequences <- descriptionPlots(counts=counts, group=target[,varInt], col=colors)
+
+# edgeR analysis
+out.edgeR <- run.edgeR(counts=counts, target=target, varInt=varInt, condRef=condRef,
+                       batch=batch, cpmCutoff=cpmCutoff, normalizationMethod=normalizationMethod,
+                       pAdjustMethod=pAdjustMethod_edgeR)
+
+# MDS + clustering
+exploreCounts(object=out.edgeR$dge, group=target[,varInt], gene.selection=gene.selection, col=colors)
+
+# summary of the analysis (boxplots, dispersions, export table, nDiffTotal, histograms, MA plot)
+summaryResults <- summarizeResults.edgeR(out.edgeR, group=target[,varInt], counts=counts, alpha=alpha_edgeR, col=colors)
+
+# generating HTML report
+writeReport.edgeR(target=target, counts=counts, out.edgeR=out.edgeR, summaryResults=summaryResults,
+                  majSequences=majSequences, workDir=workDir_edgeR, projectName=projectName, author=author,
+                  targetFile=targetFile, rawDir=rawDir, featuresToRemove=featuresToRemove, varInt=varInt,
+                  condRef=condRef, batch=batch, alpha=alpha_edgeR, pAdjustMethod=pAdjustMethod_edgeR, colors=colors,
+                  gene.selection=gene.selection, normalizationMethod=normalizationMethod, cpmCutoff =cpmCutoff)
+
+```
